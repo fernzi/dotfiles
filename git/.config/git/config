@@ -7,7 +7,7 @@
 
 [alias]
 	co = checkout
-  cm = commit
+	cm = commit
 	st = status
 	br = branch
 	curr = show --stat HEAD

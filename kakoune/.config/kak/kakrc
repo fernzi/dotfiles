@@ -13,7 +13,7 @@ add-highlighter global/ wrap -word
 add-highlighter global/ show-matching
 add-highlighter global/ line '%val{cursor_line}' LineCol
 add-highlighter global/ dynregex '%reg{/}' 0:+u
-add-highlighter global/ column 81 LineCol
+add-highlighter global/ column '%opt{autowrap_column}' LineCol
 
 set-option global ui_options ncurses_assistant=cat
 set-option global scrolloff  4,8
@@ -65,6 +65,10 @@ hook global WinSetOption filetype=python %{
   jedi-enable-autocomplete
   lint-enable
   set-option global lintcmd 'flake8'
+}
+
+hook global WinSetOption filetype=(git-commit|mail) %{
+  set-option window autowrap_column 72
 }
 
 ### Mappings ###################################################################
