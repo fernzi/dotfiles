@@ -1,0 +1,104 @@
+################################################################################
+# LF File Manager
+################################################################################
+
+### Options ####################################################################
+
+set color256  on
+set drawbox   on
+set shell     'sh'
+set shellopts '-eu'
+set ifs       "\n"
+set scrolloff 8
+
+### Startup ####################################################################
+
+%test ! -d $XDG_RUNTIME_DIR/lf && mkdir -m 700 $XDG_RUNTIME_DIR/lf
+
+### Commands ###################################################################
+
+cmd open ${{
+  case $(file -iLb $f) in
+    text/*)
+      $EDITOR $fx ;;
+    *)
+      for f in $fx; do
+        $OPENER $f > /dev/null 2>&1 &
+      done
+      ;;
+  esac
+}}
+
+cmd rename %test -e $1 && printf 'file exists' || mv $f $1
+
+cmd mkd %mkdir -pv "$@"
+
+cmd trash %gio trash $fx
+
+cmd extract ${{
+  set -f
+  case "$f" in
+    *.tar.bz|*.tar.bz2|*.tbz|*.tbz2)
+      tar -xvjf "$f" ;;
+    *.tar.gz|*.tgz)
+      tar -xvzf "$f" ;;
+    *.tar.xz|*.txz)
+      tar -xvJf "$f" ;;
+    *.tar)
+      tar -xvf "$f" ;;
+    *.zip)
+      unzip "$f" ;;
+    *.rar)
+      unar "$f" ;;
+    *.7z)
+      7z x "$f" ;;
+    *.exe)
+      cabextract "$f" ;;
+    *)
+      printf "Unknown archive format: '%s'\\n" "$f" ;;
+  esac
+}}
+
+cmd tgz ${{
+  set -f
+  tar -czf "$1.tar.gz" "$fx"
+}}
+
+cmd zip ${{
+  set -f
+  zip -r "$1.zip" "$fx"
+}}
+
+cmd bulkrename ${{
+  set -f
+  ofile=$(mktemp -p "$XDG_RUNTIME_DIR/lf" rename.ori.XXXXXXXX)
+  rfile=$(mktemp -p "$XDG_RUNTIME_DIR/lf" rename.new.XXXXXXXX)
+  efile=$(mktemp -p "$XDG_RUNTIME_DIR/lf" rename.exe.XXXXXXXX.sh)
+  realpath --relative-to "$PWD" $fx | tee "$ofile" > "$rfile"
+  $EDITOR $rfile
+  printf '# The following commands will be executed.\n' >> "$efile"
+  printf '# Clear the file to abort.\n\n' >> "$efile"
+  while read old <&3 && read new <&4; do
+    if [ "$old" != "$new" ]; then
+      printf "mv -- '%s' '%s'\\n" "$old" "$new" >> "$efile"
+    fi
+  done 3< "$ofile" 4< "$rfile"
+  $EDITOR "$efile"
+  sh "$efile"
+  rm $ofile $rfile $efile
+}}
+
+### Mappings ###################################################################
+
+map <enter> shell
+map r push :rename<space>
+map a push :mkd<space>
+map x $$f
+map X !$f
+
+map o &mimeopen $f
+map O $mimeopen --ask $f
+
+map <delete> trash
+
+################################################################################

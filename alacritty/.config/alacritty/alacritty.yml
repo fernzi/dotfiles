@@ -1,0 +1,146 @@
+################################################################################
+# Alacritty Terminal Emulator
+################################################################################
+
+### General ####################################################################
+
+# env:
+#   TERM: xterm-256color
+
+scrolling:
+  history:         20000
+  multiplier:      4
+  faux_multiplier: 3
+  autoscroll:      false
+
+url:
+  # launcher: xdg-open
+  modifiers: Control
+
+selection:
+  semantic_escape_chars: ",│`|:\"' ()[]{}<>"
+  save_to_clipboard:     false
+
+live_config_reload: true
+
+# shell:
+#   program: /usr/bin/fish
+#   args:    []
+
+working_directory: None
+
+### Appearance #################################################################
+
+window:
+  dimensions:
+    columns: 80
+    lines:   24
+  padding:
+    x: 16
+    y: 16
+  dynamic_padding: true
+  decorations:     full
+  startup_mode:    Windowed
+  # title: Alacritty
+  # class: Alacritty
+
+# tabspaces: 8
+
+font:
+  normal:
+    family: Source Code Pro
+  # bold:
+  #   family: Source Code Pro
+  # italic:
+  #   family: Source Code Pro
+  size: 10
+  offset:
+    x: 0
+    y: 6
+  glyph_offset:
+    x: 0
+    y: 2
+  use_thin_strokes: true
+
+dynamic_title: true
+
+cursor:
+  style: Block
+  unfocused_hollow: true
+
+### Colours ###
+
+draw_bold_text_with_bright_colors: true
+
+colors:
+  primary:
+    background: '0x282828'
+    foreground: '0xE0E0E0'
+  cursor:
+    cursor:     '0x9E9E9E'
+  selection:
+    text:       '0x282828'
+    background: '0xFFBCD9'
+  normal:
+    black:      '0x504945'
+    red:        '0xA54242'
+    green:      '0x8C9440'
+    yellow:     '0xDE935F'
+    blue:       '0x5F819D'
+    magenta:    '0x85678F'
+    cyan:       '0x5E8D87'
+    white:      '0x9E9E9E'
+  bright:
+    black:      '0x665c54'
+    red:        '0xCC6666'
+    green:      '0xB5BD68'
+    yellow:     '0xF0C674'
+    blue:       '0x81A2BE'
+    magenta:    '0xB294BB'
+    cyan:       '0x8ABEB7'
+    white:      '0xE0E0E0'
+  # dim:
+  #   black:      '0x'
+  #   red:        '0x'
+  #   green:      '0x'
+  #   yellow:     '0x'
+  #   blue:       '0x'
+  #   magenta:    '0x'
+  #   cyan:       '0x'
+  #   white:      '0x'
+  # indexed_colors: []
+
+background_opacity: 0.98
+
+visual_bell:
+  animation: EaseOutExpo
+  duration:  0
+  color:     '0xe0e0e0'
+
+### Mouse ######################################################################
+
+mouse:
+  double_click:
+    threshold: 300
+  triple_click:
+    threshold: 300
+  hide_when_typing: true
+
+mouse_bindings:
+  - mouse:  Middle
+    action: PasteSelection
+
+### Bindings ###################################################################
+
+key_bindings:
+  - key:    N
+    mods:   Control|Shift
+    action: SpawnNewInstance
+  - key:    T
+    mods:   Control|Shift
+    action: SpawnNewInstance
+  - key:    Q
+    mods:   Control|Shift
+    action: Quit
+
+################################################################################

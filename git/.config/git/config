@@ -1,0 +1,25 @@
+################################################################################
+# Git Version Control
+################################################################################
+
+[core]
+	autocrlf = input
+
+[alias]
+	co = checkout
+  cm = commit
+	st = status
+	br = branch
+	curr = show --stat HEAD
+	killit = reset --hard
+
+[url "https://github.com/"]
+	insteadOf = gh:
+
+[url "git@gitlab.com:"]
+	insteadOf = gl:
+
+[include]
+	path = local
+
+################################################################################

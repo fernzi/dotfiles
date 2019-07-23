@@ -1,0 +1,95 @@
+################################################################################
+# Kakoune User Configuration
+################################################################################
+
+### Interface ##################################################################
+
+colorscheme termcolors
+
+set-face global LineCol default,rgb:32302f
+
+add-highlighter global/ number-lines -relative -hlcursor -separator '▕ '
+add-highlighter global/ wrap -word
+add-highlighter global/ show-matching
+add-highlighter global/ line '%val{cursor_line}' LineCol
+add-highlighter global/ dynregex '%reg{/}' 0:+u
+add-highlighter global/ column 81 LineCol
+
+set-option global ui_options ncurses_assistant=cat
+set-option global scrolloff  4,8
+set-option global grepcmd    'ag --column'
+
+hook global WinSetOption filetype=c %{
+  add-highlighter window/ regex '[X_]{7}' 0:comment
+}
+
+hook global InsertCompletionShow .* %{
+  map window insert <tab> <c-n>
+  map window insert <s-tab> <c-p>
+}
+
+hook global InsertCompletionHide .* %{
+  unmap window insert <tab> <c-n>
+  unmap window insert <s-tab> <c-p>
+}
+
+### Editor #####################################################################
+
+set-option global tabstop           2
+set-option global indentwidth       2
+set-option global autoclose         true
+set-option global autosave_interval 3
+
+hook global InsertChar \t %{
+  execute-keys -draft h@
+}
+
+hook global BufNewFile .* %{
+  editorconfig-load
+}
+
+hook global BufOpenFile .* %{
+  editorconfig-load
+}
+
+hook global WinSetOption filetype=markdown %{
+  set-option -add window autoclose_pairs * *
+}
+
+hook global WinSetOption filetype=c(pp)? %{
+  clang-enable-autocomplete
+  clang-enable-diagnostics
+}
+
+hook global WinSetOption filetype=python %{
+  jedi-enable-autocomplete
+  lint-enable
+  set-option global lintcmd 'flake8'
+}
+
+### Mappings ###################################################################
+
+map global normal <ret> ':w<ret>'
+map global normal '#'   ':comment-line<ret>'
+map global normal <c-q> ':quit<ret>'
+
+map global user   y     ':clipboard-yank<ret>'
+map global user   p     ':clipboard-paste<ret>'
+map global user   P     ':clipboard-paste-before<ret>'
+map global user   R     ':clipboard-replace<ret>'
+
+### Commands ###################################################################
+
+define-command mkd %{
+  nop %sh{
+    mkdir -p ${kak_buffile%/*}
+  }
+}
+
+### Local ######################################################################
+
+try %{
+  source "%val{config}/kakrc.local"
+}
+
+################################################################################
