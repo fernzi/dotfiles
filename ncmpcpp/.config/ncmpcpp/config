@@ -1,0 +1,112 @@
+################################################################################
+# NCurses Music Player Client (Plus Plus)
+################################################################################
+
+### Directories ################################################################
+
+ncmpcpp_directory = ~/.local/share/ncmpcpp
+lyrics_directory  = ~/.local/share/ncmpcpp/lyrics
+
+### Server #####################################################################
+
+mpd_host               = localhost
+mpd_port               = 6600
+mpd_connection_timeout = 3
+mpd_music_dir          = ~/Music
+mpd_crossfade_time     = 5
+
+### General ####################################################################
+
+user_interface                 = classic
+colors_enabled                 = yes
+empty_tag_color                = black
+header_window_color            = default
+volume_color                   = default
+state_line_color               = default
+state_flags_color              = default
+main_window_color              = default
+color1                         = white
+color2                         = green
+player_state_color             = white
+alternative_ui_separator_color = black
+window_border_color            = green
+active_window_border           = red
+
+ignore_leading_the = yes
+
+### Display ###
+
+message_delay_time = 5
+autocenter_mode    = yes
+centered_cursor    = yes
+
+### Progress Bar ###
+
+progressbar_look          = ━━
+progressbar_color         = black:b
+progressbar_elapsed_color = green:b
+
+### Status Bar ###
+
+song_status_format   = {{$b%t$/b}{ $8by$9 $b%a$/b{ $8in$9 $b%b$/b{ (%y)}}}}|{$b%f/$b}
+statusbar_visibility = yes
+statusbar_color      = default
+statusbar_time_color = default
+
+### Playlist ###################################################################
+
+### Display ###
+
+playlist_disable_highlight_delay = 5
+playlist_show_mpd_host = no
+playlist_show_remaining_time = yes
+playlist_shorten_total_times = yes
+playlist_separate_albums = no
+playlist_display_mode = columns
+
+### Song Format ###
+
+song_columns_list_format = (5f)[black]{NEr: } (50)[]{t|f:Title} (15)[magenta]{a} (20)[magenta]{b} (7f)[white]{l}
+
+### Browser ####################################################################
+
+browser_display_mode = classic
+browser_sort_mode = name
+browser_sort_format = {%a - }{%t}|{%f} {(%l)}
+show_hidden_files_in_local_browser = no
+
+### Search #####################################################################
+
+search_engine_display_mode = columns
+ignore_diacritics          = yes
+
+### Library ####################################################################
+
+song_library_format = {%n. }{%t}|{%f}
+media_library_primary_tag = album_artist
+media_library_albums_split_by_date = no
+
+### Playlist Editor ############################################################
+
+
+
+### Tag Editor #################################################################
+
+
+
+### Visualizer #################################################################
+
+### Input ###
+
+visualizer_fifo_path     = ~/.cache/mpd/fifo
+visualizer_output_name   = visualizer
+visualizer_in_stereo     = yes
+visualizer_sync_interval = 30
+
+### Appearance ###
+
+visualizer_type  = wave_filled
+visualizer_look  = ✦✦
+visualizer_color = blue, cyan, green, yellow, red
+
+################################################################################
