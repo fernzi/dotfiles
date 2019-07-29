@@ -33,7 +33,7 @@ cmd rename %test -e $1 && printf 'file exists' || mv $f $1
 
 cmd mkd %mkdir -pv "$@"
 
-cmd trash %gio trash $fx
+cmd trash %gio trash $fx 2> /dev/null || rm $fx
 
 cmd extract ${{
   set -f
