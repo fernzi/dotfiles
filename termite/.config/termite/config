@@ -16,7 +16,7 @@ scrollbar         = off
 [colors]
 
 # Special
-background      = rgba(40,40,40,0.98)
+background      = #282828
 foreground      = #E0E0E0
 foreground_bold = #E0E0E0
 cursor          = #9E9E9E
