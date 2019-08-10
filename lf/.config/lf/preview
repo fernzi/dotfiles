@@ -1,0 +1,29 @@
+#!/bin/sh
+###############################################################################
+# LF -  File Previewer
+###############################################################################
+
+set -Cfu
+
+imgcmd='chafa -c 240 -w 3 --font-ratio 5/12 --'
+
+case $(file -b --mime-type -- "$1") in
+  text/*)
+    highlight --force -O ansi -- "$1" ;;
+  image/gif|video/*)
+    ffmpeg -hide_banner -v panic -i "$1" -f image2 - | $imgcmd - ;;
+  image/*)
+    $imgcmd "$1" ;;
+  application/pdf)
+    pdftotext -l 8 -nopgbrk -q -- "$1" - ;;
+  application/zip)
+    unzip -l -- "$1" ;;
+  application/x-7z*)
+    7z l -- "$1" ;;
+  application/x-rar)
+    unrar l -- "$1" ;;
+  *)
+    printf '(binary)'
+esac
+
+###############################################################################

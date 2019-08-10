@@ -9,6 +9,7 @@ set drawbox   on
 set shell     'sh'
 set shellopts '-eu'
 set ifs       "\n"
+set previewer ~/.config/lf/preview
 set scrolloff 8
 
 ### Startup ####################################################################
@@ -18,7 +19,7 @@ set scrolloff 8
 ### Commands ###################################################################
 
 cmd open ${{
-  case $(file -iLb $f) in
+  case $(file -b --mime-type -- $f) in
     text/*)
       $EDITOR $fx ;;
     *)
