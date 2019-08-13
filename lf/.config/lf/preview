@@ -5,23 +5,26 @@
 
 set -Cfu
 
-imgcmd='chafa -c 240 -w 3 --font-ratio 5/12 --'
+FILE="$1"
+LINES="$2"
 
-case $(file -b --mime-type -- "$1") in
+imgcmd="chafa -c 240 -s 48x$LINES --symbols ascii+vhalf+block+space -w 3 --font-ratio 5/12"
+
+case $(file -b --mime-type -- "$FILE") in
   text/*)
-    highlight --force -O ansi -- "$1" ;;
+    highlight --force -O ansi -- "$FILE" ;;
   image/gif|video/*)
-    ffmpeg -hide_banner -v panic -i "$1" -f image2 - | $imgcmd - ;;
+    ffmpeg -hide_banner -v panic -i "$FILE" -f image2 - | $imgcmd - ;;
   image/*)
-    $imgcmd "$1" ;;
+    $imgcmd -- "$FILE" ;;
   application/pdf)
-    pdftotext -l 8 -nopgbrk -q -- "$1" - ;;
+    pdftotext -l 8 -nopgbrk -q -- "$FILE" - ;;
   application/zip)
-    unzip -l -- "$1" ;;
+    unzip -l -- "$FILE" ;;
   application/x-7z*)
-    7z l -- "$1" ;;
+    7z l -- "$FILE" ;;
   application/x-rar)
-    unrar l -- "$1" ;;
+    unrar l -- "$FILE" ;;
   *)
     printf '(binary)'
 esac
