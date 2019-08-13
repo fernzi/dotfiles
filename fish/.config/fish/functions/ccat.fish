@@ -1,3 +1,3 @@
-function ccat -w pygmentize -d 'Syntax highlighting'
-  pygmentize -g $argv
+function ccat -w highlight -d 'Syntax highlighting'
+  highlight --force -O ansi $argv
 end
