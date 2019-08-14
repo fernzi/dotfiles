@@ -13,8 +13,13 @@ choice's package manager:
 ```sh
 # For Arch Linux, Manjaro and who knows what else:
 pacman -S stow
+
+# For Void:
+xbps-install -S stow
+
 # For Debian, Ubuntu and the rest of the family:
 apt install stow
+
 # For MacOS w/ Homebrew:
 brew install stow
 ```
