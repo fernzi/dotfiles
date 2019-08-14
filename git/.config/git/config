@@ -10,6 +10,7 @@
 	cm = commit
 	st = status
 	br = branch
+	df = diff
 	curr = show --stat HEAD
 	killit = reset --hard
 
