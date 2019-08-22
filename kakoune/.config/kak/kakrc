@@ -53,7 +53,11 @@ hook global BufOpenFile .* %{
 }
 
 hook global WinCreate .*\.rasi %{
-  set-option window filetype 'css'
+  set-option buffer filetype 'css'
+}
+
+hook global WinCreate .*waybar/config %{
+  set-option buffer filetype 'json'
 }
 
 hook global WinSetOption filetype=markdown %{
