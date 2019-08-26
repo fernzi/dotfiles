@@ -56,6 +56,10 @@ hook global WinCreate .*\.rasi %{
   set-option buffer filetype 'css'
 }
 
+hook global WinCreate .*/lfrc %{
+  set-option buffer filetype 'sh'
+}
+
 hook global WinCreate .*waybar/config %{
   set-option buffer filetype 'json'
 }
