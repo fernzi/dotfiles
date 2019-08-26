@@ -14,7 +14,7 @@ set scrolloff 8
 
 ### Startup ####################################################################
 
-%test ! -d $XDG_RUNTIME_DIR/lf && mkdir -m 700 $XDG_RUNTIME_DIR/lf
+%mkdir -pm 700 ${XDG_RUNTIME_DIR:-/tmp/$USER}/lf
 
 ### Commands ###################################################################
 
@@ -72,9 +72,9 @@ cmd zip ${{
 
 cmd bulkrename ${{
   set -f
-  ofile=$(mktemp -p "$XDG_RUNTIME_DIR/lf" rename.ori.XXXXXXXX)
-  rfile=$(mktemp -p "$XDG_RUNTIME_DIR/lf" rename.new.XXXXXXXX)
-  efile=$(mktemp -p "$XDG_RUNTIME_DIR/lf" rename.exe.XXXXXXXX.sh)
+  ofile=$(mktemp -p "${XDG_RUNTIME_DIR:-/tmp/$USER}/lf" rename.ori.XXXX)
+  rfile=$(mktemp -p "${XDG_RUNTIME_DIR:-/tmp/$USER}/lf" rename.new.XXXX)
+  efile=$(mktemp -p "${XDG_RUNTIME_DIR:-/tmp/$USER}/lf" rename.exe.XXXX.sh)
   realpath --relative-to "$PWD" $fx | tee "$ofile" > "$rfile"
   $EDITOR $rfile
   printf '# The following commands will be executed.\n' >> "$efile"
