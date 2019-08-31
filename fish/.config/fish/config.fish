@@ -16,6 +16,8 @@ for editor in kak nvim vim vi micro nano
   end
 end
 
+test -f $__fish_config_dir/alias.fish && source $__fish_config_dir/alias.fish
+
 set -x GOPATH ~/.local/share/go
 
 ### Local ######################################################################
