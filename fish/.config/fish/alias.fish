@@ -16,4 +16,8 @@ if command -qs xbps-install
   alias xc xbps-reconfigure
 end
 
+if command -qs gopass
+  alias pass gopass
+end
+
 ###############################################################################
