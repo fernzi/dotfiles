@@ -1,0 +1,15 @@
+###############################################################################
+# Newsboat - Key Bindings
+###############################################################################
+
+bind-key  RIGHT open
+bind-key  LEFT  quit
+bind-key  n     next-unread
+bind-key  N     prev-unread
+bind-key  j     next articlelist
+bind-key  k     prev articlelist
+bind-key  J     next-feed articlelist
+bind-key  K     prev-feed articlelist
+bind-key  a     toggle-article-read
+
+###############################################################################
