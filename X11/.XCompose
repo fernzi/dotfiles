@@ -1,0 +1,7 @@
+include "%L"
+
+<Multi_key> <w> <w> : "ω"
+<Multi_key> <O> <asterisk> : "◕"
+<Multi_key> <asterisk> <asterisk> : "★"
+<Multi_key> <asterisk> <O> : "✪"
+<Multi_key> <parenleft> <underscore> : "⏝"
