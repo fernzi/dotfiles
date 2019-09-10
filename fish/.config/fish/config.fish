@@ -13,6 +13,7 @@ for editor in kak nvim vim vi micro nano
   if type -q $editor
     set -x EDITOR $editor
     set -x VISUAL $editor
+    break
   end
 end
 
