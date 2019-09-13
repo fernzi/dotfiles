@@ -1,8 +1,6 @@
-################################################################################
-# Autosave
-################################################################################
-
-### Options ####################################################################
+###############################################################################
+# Kakoune - Autosave
+###############################################################################
 
 declare-option -docstring 'autosave timer interval' \
   int autosave_interval 0
@@ -12,7 +10,7 @@ declare-option -docstring 'silence save notifications' \
 
 declare-option -hidden bool autosave_blocked false
 
-### Commands ###################################################################
+### Commands ##################################################################
 
 define-command -hidden autosave-exec %{
   evaluate-commands %sh{
@@ -41,7 +39,7 @@ define-command -hidden autosave-trigger %{
   }
 }
 
-### Hooks ######################################################################
+### Hooks #####################################################################
 
 hook global WinSetOption autosave_interval=[1-9]\d* %{
   hook -group autosave window FocusOut .* autosave-exec
@@ -60,4 +58,4 @@ hook global WinSetOption autosave_interval=0 %{
   remove-hooks window autosave
 }
 
-################################################################################
+###############################################################################

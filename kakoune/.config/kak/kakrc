@@ -1,19 +1,20 @@
-################################################################################
+###############################################################################
 # Kakoune User Configuration
-################################################################################
+###############################################################################
 
-### Interface ##################################################################
+### Interface #################################################################
 
 colorscheme termcolors
 
-set-face global LineCol default,rgb:32302f
+set-face global EditRow default,rgb:282828
+set-face global WrapCol default,rgb:303030
 
 add-highlighter global/ number-lines -relative -hlcursor -separator '▕ '
 add-highlighter global/ wrap -word
 add-highlighter global/ show-matching
-add-highlighter global/ line '%val{cursor_line}' LineCol
 add-highlighter global/ dynregex '%reg{/}' 0:+u
-add-highlighter global/ column '%opt{autowrap_column}' LineCol
+add-highlighter global/ line '%val{cursor_line}' EditRow
+add-highlighter global/ column '%opt{autowrap_column}' WrapCol
 
 set-option global ui_options ncurses_assistant=cat
 set-option global scrolloff  4,8
@@ -33,7 +34,7 @@ hook global InsertCompletionHide .* %{
   unmap window insert <s-tab> <c-p>
 }
 
-### Editor #####################################################################
+### Editor ####################################################################
 
 set-option global tabstop           2
 set-option global indentwidth       2
@@ -44,13 +45,8 @@ hook global InsertChar \t %{
   execute-keys -draft h@
 }
 
-hook global BufNewFile .* %{
-  editorconfig-load
-}
-
-hook global BufOpenFile .* %{
-  editorconfig-load
-}
+hook global BufNewFile  .* editorconfig-load
+hook global BufOpenFile .* editorconfig-load
 
 hook global WinCreate .*\.rasi %{
   set-option buffer filetype 'css'
@@ -83,7 +79,7 @@ hook global WinSetOption filetype=(git-commit|mail) %{
   set-option window autowrap_column 72
 }
 
-### Mappings ###################################################################
+### Mappings ##################################################################
 
 map global normal <ret> ':w<ret>'
 map global normal '#'   ':comment-line<ret>'
@@ -94,7 +90,7 @@ map global user   p     ':clipboard-paste<ret>'
 map global user   P     ':clipboard-paste-before<ret>'
 map global user   R     ':clipboard-replace<ret>'
 
-### Commands ###################################################################
+### Commands ##################################################################
 
 define-command mkd %{
   nop %sh{
@@ -102,10 +98,10 @@ define-command mkd %{
   }
 }
 
-### Local ######################################################################
+### Local #####################################################################
 
 try %{
   source "%val{config}/kakrc.local"
 }
 
-################################################################################
+###############################################################################

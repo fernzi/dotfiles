@@ -1,8 +1,6 @@
-################################################################################
-# Closing Pairs
-################################################################################
-
-### Options ####################################################################
+###############################################################################
+# Kakoune - Closing Pairs
+###############################################################################
 
 declare-option -docstring 'enable pair autoclosing' \
   bool autoclose false
@@ -10,7 +8,7 @@ declare-option -docstring 'enable pair autoclosing' \
 declare-option -docstring 'pairs to auto close' \
   str-list autoclose_pairs ( ) { } [ ] \" \" \' \' ` `
 
-### Commands ###################################################################
+### Commands ##################################################################
 
 define-command -hidden -params 3 autoclose-ins-open %{
   try %{
@@ -81,7 +79,7 @@ define-command -hidden autoclose-create-hooks %{
   }
 }
 
-### Hooks ######################################################################
+### Hooks #####################################################################
 
 hook global WinSetOption autoclose=true %{
   autoclose-create-hooks
@@ -95,4 +93,4 @@ hook global WinSetOption autoclose=false %{
   remove-hooks window autoclose-.+
 }
 
-################################################################################
+###############################################################################
