@@ -19,6 +19,15 @@ end
 
 set -x GOPATH ~/.local/share/go
 
+set -x MOZ_ENABLE_WAYLAND 1
+set -x QT_AUTO_SCREEN_SCALE_FACTOR 1
+
+set -x PARALLEL_HOME ~/.config/parallel
+set -x LESSHISTFILE ~/.cache/less.history
+
+set -x FIRESTORM_USER_DIR ~/.local/share/firestorm
+set -x FIRESTORM_X64_USER_DIR $FIRESTORM_USER_DIR
+
 source $__fish_config_dir/alias.fish 2> /dev/null
 
 ### Local #####################################################################
