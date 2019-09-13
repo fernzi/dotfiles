@@ -28,6 +28,7 @@ set -x LESSHISTFILE ~/.cache/less.history
 set -x FIRESTORM_USER_DIR ~/.local/share/firestorm
 set -x FIRESTORM_X64_USER_DIR $FIRESTORM_USER_DIR
 
+source $__fish_config_dir/colors/terminal.fish 2>/dev/null
 source $__fish_config_dir/alias.fish 2> /dev/null
 
 ### Local #####################################################################

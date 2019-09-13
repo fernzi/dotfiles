@@ -1,6 +1,6 @@
 function fish_greeting
   if command -qs fortune
-    set_color -o ffbcd9
+    set_color -o red
     fortune -s
     set_color normal
   end
