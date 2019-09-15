@@ -90,6 +90,9 @@ map global user   p     ':clipboard-paste<ret>'
 map global user   P     ':clipboard-paste-before<ret>'
 map global user   R     ':clipboard-replace<ret>'
 
+map global normal <c-a> ':math +1<ret>'
+map global normal <c-x> ':math -1<ret>'
+
 ### Commands ##################################################################
 
 define-command mkd %{
