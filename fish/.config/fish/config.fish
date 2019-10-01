@@ -18,6 +18,7 @@ for editor in kak nvim vim vi micro nano
 end
 
 set -x GOPATH ~/.local/share/go
+set -x RUSTUP_HOME ~/.local/share/rustup
 
 set -x MOZ_ENABLE_WAYLAND 1
 set -x QT_AUTO_SCREEN_SCALE_FACTOR 1
@@ -27,6 +28,11 @@ set -x LESSHISTFILE ~/.cache/less.history
 
 set -x FIRESTORM_USER_DIR ~/.local/share/firestorm
 set -x FIRESTORM_X64_USER_DIR $FIRESTORM_USER_DIR
+
+if test $XDG_SESSION_TYPE != wayland
+  set -x GDK_SCALE 2
+  set -x GDK_DPI_SCALE -1
+end
 
 source $__fish_config_dir/colors/terminal.fish 2>/dev/null
 source $__fish_config_dir/alias.fish 2> /dev/null
