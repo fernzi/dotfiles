@@ -27,6 +27,7 @@ set -x QT_AUTO_SCREEN_SCALE_FACTOR 1
 
 set -x PARALLEL_HOME ~/.config/parallel
 set -x LESSHISTFILE ~/.cache/less.history
+set -x LESS -R
 
 set -x FIRESTORM_USER_DIR ~/.local/share/firestorm
 set -x FIRESTORM_X64_USER_DIR $FIRESTORM_USER_DIR
