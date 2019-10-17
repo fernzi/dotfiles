@@ -1,5 +1,6 @@
 include "%L"
 
+<Multi_key> <3> <3> : "Ɛ"
 <Multi_key> <w> <w> : "ω"
 <Multi_key> <O> <asterisk> : "◕"
 <Multi_key> <asterisk> <asterisk> : "★"
