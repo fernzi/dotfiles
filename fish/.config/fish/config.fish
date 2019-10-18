@@ -29,6 +29,8 @@ set -x PARALLEL_HOME ~/.config/parallel
 set -x LESSHISTFILE ~/.cache/less.history
 set -x LESS -R
 
+set -x LF_ICONS 'di= :fi= :ln= :or= :ex= '
+
 set -x FIRESTORM_USER_DIR ~/.local/share/firestorm
 set -x FIRESTORM_X64_USER_DIR $FIRESTORM_USER_DIR
 

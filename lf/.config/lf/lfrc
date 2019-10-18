@@ -6,6 +6,7 @@
 
 set color256  on
 set drawbox   on
+set icons     on
 set shell     'sh'
 set shellopts '-eu'
 set ifs       "\n"
