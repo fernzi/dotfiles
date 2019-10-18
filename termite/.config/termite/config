@@ -6,6 +6,7 @@
 
 font = Iosevka Term SS09 10.5
 
+bold_is_bright    = false
 cell_height_scale = 1
 mouse_autohide    = true
 scrollback_lines  = 20000
@@ -16,29 +17,27 @@ scrollbar         = off
 [colors]
 
 # Special
-background      = #282828
+background      = #212121
 foreground      = #E0E0E0
 foreground_bold = #E0E0E0
-cursor          = #9E9E9E
+cursor          = #BDBDBD
 
 # Normal
-color0  = #504945
-color1  = #A54242
-color2  = #8C9440
-color3  = #DE935F
-color4  = #5F819D
-color5  = #85678F
-color6  = #5E8D87
-color7  = #9E9E9E
+color0  = #383838
+color1  = #FFA6C9
+color2  = #A5D6A7
+color3  = #FFCC80
+color4  = #81D4FA
+color5  = #B39DDB
+color6  = #80CBC4
+color7  = #BDBDBD
 
 # Bright
-color8  = #665C54
-color9  = #CC6666
-color10 = #B5BD68
-color11 = #F0C674
-color12 = #81A2BE
-color13 = #B294BB
-color14 = #8ABEB7
+color8  = #484848
+color9  = #F8BBD0
+color10 = #C8E6C9
+color11 = #FFE0B2
+color12 = #B3E5FC
+color13 = #D1C4E9
+color14 = #B2DFDB
 color15 = #E0E0E0
-
-###############################################################################

@@ -4,8 +4,8 @@
 
 ### General ###################################################################
 
-# env:
-#   TERM: xterm-256color
+env:
+  TERM: xterm-256color
 
 scrolling:
   history:         20000
@@ -49,10 +49,6 @@ window:
 font:
   normal:
     family: Iosevka Term SS09
-  # bold:
-  #   family: Source Code Pro
-  # italic:
-  #   family: Source Code Pro
   size: 10.5
   # offset:
   #   x: 0
@@ -65,57 +61,45 @@ font:
 dynamic_title: true
 
 cursor:
-  style: Block
+  style: Underline
   unfocused_hollow: true
 
 ### Colours ###
 
-draw_bold_text_with_bright_colors: true
+draw_bold_text_with_bright_colors: false
 
 colors:
   primary:
-    background: '0x282828'
+    background: '0x212121'
     foreground: '0xE0E0E0'
   cursor:
-    cursor:     '0x9E9E9E'
+    cursor:     '0xBDBDBD'
   selection:
-    text:       '0x282828'
-    background: '0xFFBCD9'
+    text:       '0x212121'
+    background: '0xF48FB1'
   normal:
-    black:      '0x504945'
-    red:        '0xA54242'
-    green:      '0x8C9440'
-    yellow:     '0xDE935F'
-    blue:       '0x5F819D'
-    magenta:    '0x85678F'
-    cyan:       '0x5E8D87'
-    white:      '0x9E9E9E'
+    black:      '0x383838'
+    red:        '0xFFA6C9'
+    green:      '0xA5D6A7'
+    yellow:     '0xFFCC80'
+    blue:       '0x81D4FA'
+    magenta:    '0xB39DDB'
+    cyan:       '0x80CBC4'
+    white:      '0xBDBDBD'
   bright:
-    black:      '0x665c54'
-    red:        '0xCC6666'
-    green:      '0xB5BD68'
-    yellow:     '0xF0C674'
-    blue:       '0x81A2BE'
-    magenta:    '0xB294BB'
-    cyan:       '0x8ABEB7'
+    black:      '0x484848'
+    red:        '0xF8BBD0'
+    green:      '0xC8E6C9'
+    yellow:     '0xFFE0B2'
+    blue:       '0xB3E5FC'
+    magenta:    '0xD1C4E9'
+    cyan:       '0xB2DFDB'
     white:      '0xE0E0E0'
-  # dim:
-  #   black:      '0x'
-  #   red:        '0x'
-  #   green:      '0x'
-  #   yellow:     '0x'
-  #   blue:       '0x'
-  #   magenta:    '0x'
-  #   cyan:       '0x'
-  #   white:      '0x'
-  # indexed_colors: []
 
 # background_opacity: 0.98
 
 visual_bell:
-  animation: EaseOutExpo
-  duration:  0
-  color:     '0xe0e0e0'
+  duration: 0
 
 ### Mouse #####################################################################
 
@@ -142,5 +126,12 @@ key_bindings:
   - key:    Q
     mods:   Control|Shift
     action: Quit
-
-###############################################################################
+  - key:    Equals
+    mods:   Control
+    action: IncreaseFontSize
+  - key:    Subtract
+    mods:   Control
+    action: DecreaseFontSize
+  - key:    Key0
+    mods:   Control
+    action: ResetFontSize
