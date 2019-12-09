@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Kakoune
+GenericName=Text Editor
+Comment=Keystroke-efficient modal code editor
+Icon=text-editor
+Exec=kak %F
+Terminal=true
+MimeType=text/plain;
+Categories=Utility;TextEditor;
+Keywords=Text;Editor;Plaintext;Write;Code;Vim;
