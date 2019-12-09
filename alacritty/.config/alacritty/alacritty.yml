@@ -10,7 +10,6 @@ env:
 scrolling:
   history:         20000
   multiplier:      4
-  faux_multiplier: 3
   autoscroll:      false
 
 url:
