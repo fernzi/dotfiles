@@ -21,6 +21,11 @@ set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
 
 set -x GOPATH ~/.local/share/go
 set -x RUSTUP_HOME ~/.local/share/rustup
+set -x CARGO_HOME ~/.local/share/cargo
+set -x KERAS_HOME ~/.local/share/keras
+set -x NPM_CONFIG_USERCONFIG ~/.config/npm/npmrc
+set -x CCACHE_CONFIGPATH ~/.config/ccache/config
+set -x CCACHE_DIR ~/.cache/ccache
 
 set -x MOZ_ENABLE_WAYLAND 1
 set -x QT_AUTO_SCREEN_SCALE_FACTOR 1
