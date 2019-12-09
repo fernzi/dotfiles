@@ -24,6 +24,7 @@ set -x RUSTUP_HOME ~/.local/share/rustup
 
 set -x MOZ_ENABLE_WAYLAND 1
 set -x QT_AUTO_SCREEN_SCALE_FACTOR 1
+set -x XCOMPOSEFILE ~/.config/gtk-3.0/Compose
 
 set -x PARALLEL_HOME ~/.config/parallel
 set -x LESSHISTFILE ~/.cache/less.history
