@@ -43,11 +43,11 @@ define-command -hidden autosave-trigger %{
 
 hook global WinSetOption autosave_interval=[1-9]\d* %{
   hook -group autosave window FocusOut .* autosave-exec
-  hook -group autosave window InsertBegin .* %{
+  hook -group autosave window ModeChange push:.*:insert %{
     autosave-exec
     set-option window autosave_blocked true
   }
-  hook -group autosave window InsertEnd .* %{
+  hook -group autosave window ModeChange pop:insert:.* %{
     set-option window autosave_blocked false
     autosave-exec
   }
