@@ -17,7 +17,9 @@ for editor in kak nvim vim vi micro nano
   end
 end
 
-set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
+if command -qs gpgconf
+  set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
+end
 
 set -x GOPATH ~/.local/share/go
 set -x RUSTUP_HOME ~/.local/share/rustup
