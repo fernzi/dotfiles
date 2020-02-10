@@ -1,5 +1,5 @@
 ###############################################################################
-# Fish Shell
+# Fish - Environment
 ###############################################################################
 
 set -l paths \
@@ -42,6 +42,7 @@ end
 
 set -x FIRESTORM_USER_DIR ~/.local/share/firestorm
 set -x FIRESTORM_X64_USER_DIR $FIRESTORM_USER_DIR
+set -x NETHACKOPTIONS ~/.config/nethack/nethackrc
 
 if test $XDG_SESSION_DESKTOP != gnome
   set -x MOZ_ENABLE_WAYLAND 1
@@ -51,18 +52,3 @@ if test $XDG_SESSION_TYPE != wayland
   set -x GDK_SCALE 2
   set -x GDK_DPI_SCALE -1
 end
-
-source $__fish_config_dir/colors/terminal.fish 2>/dev/null
-source $__fish_config_dir/alias.fish 2> /dev/null
-
-### Local #####################################################################
-
-set -l lconfs \
-  $__fish_config_dir/local.fish \
-  $__fish_config_dir/local.$hostname.fish
-
-for lconf in $lconfs
-  source $lconf 2> /dev/null
-end
-
-###############################################################################
