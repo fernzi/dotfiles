@@ -1,0 +1,11 @@
+#!/bin/sh
+[ -r conf ] && . conf
+YAMS_SESSION="${XDG_DATA_HOME:-$HOME/.local/share}/yams/session"
+YAMS_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/yams/scrobbles"
+[ -f $HOME/.config/yams/yams.pid ] && rm $HOME/.config/yams/yams.pid
+exec python -m yams \
+  --no-daemon \
+  --disable-log \
+  --session-file-path "$YAMS_SESSION" \
+  --cache-file "$YAMS_CACHE" \
+  ${OPTS}

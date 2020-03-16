@@ -1,0 +1,5 @@
+#!/bin/sh
+[ -r conf ] && . ./conf
+mkdir -p ${XDG_CACHE_HOME:-$HOME/.cache}/mpd \
+         ${XDG_DATA_HOME:-$HOME/.local/share}/mpd
+exec mpd --no-daemon --stderr
