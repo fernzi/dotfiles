@@ -3,7 +3,8 @@
 ###############################################################################
 
 set -l paths \
-  $HOME/.local/bin
+  $HOME/.local/bin \
+  ~/.local/share/xbps/usr/bin
 
 for path in $paths
   test -d $path && set -a fish_user_paths $path
