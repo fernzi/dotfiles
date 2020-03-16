@@ -75,7 +75,7 @@ hook global WinSetOption filetype=python %{
   set-option global lintcmd 'flake8'
 }
 
-hook global WinSetOption filetype=(git-commit|mail) %{
+hook global WinSetOption filetype=(git-commit|mail|troff) %{
   set-option window autowrap_column 72
 }
 
