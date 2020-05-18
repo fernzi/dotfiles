@@ -1,23 +1,16 @@
-################################################################################
+#######################################################################
 # LF File Manager
-################################################################################
-
-### Options ####################################################################
+#######################################################################
 
 set color256  on
-set drawbox   on
 set icons     on
 set shell     'sh'
 set shellopts '-eu'
 set ifs       "\n"
-set previewer ~/.config/lf/preview
-set scrolloff 8
+set previewer ~/.config/lf/preview.sh
+set scrolloff 4
 
-### Startup ####################################################################
-
-%mkdir -pm 700 ${XDG_RUNTIME_DIR:-/tmp/$USER}/lf
-
-### Commands ###################################################################
+## Commands ###########################################################
 
 cmd open ${{
   case $(file -b --mime-type -- $f) in
@@ -33,30 +26,41 @@ cmd open ${{
 
 cmd mkd %mkdir -pv "$@"
 
-cmd trash %gio trash $fx 2> /dev/null || rm $fx
+cmd trash ${{
+  if command -v trash-put >/dev/null; then
+    trash-put $fx
+  elif command -v gio >/dev/null; then
+    gio trash $fx
+  elif command -v osascript >/dev/null; then
+    for fl in $fx; do
+      osascript -e "tell app \"Finder\" delete POSIX file \"$fl\""
+    done
+  else
+    mkdir -p ~/.trash
+    mv $fx ~/.trash
+  fi
+}}
 
 cmd extract ${{
   set -f
-  case "$f" in
-    *.tar.bz|*.tar.bz2|*.tbz|*.tbz2)
-      tar -xvjf "$f" ;;
-    *.tar.gz|*.tgz)
-      tar -xvzf "$f" ;;
-    *.tar.xz|*.txz)
-      tar -xvJf "$f" ;;
-    *.tar)
-      tar -xvf "$f" ;;
-    *.zip)
-      unzip "$f" ;;
-    *.rar)
-      unar "$f" ;;
-    *.7z)
-      7z x "$f" ;;
-    *.exe)
-      cabextract "$f" ;;
-    *)
-      printf "Unknown archive format: '%s'\\n" "$f" ;;
-  esac
+  if command -v atool >/dev/null; then
+    atool --extract -- "$f"
+  else
+    case "$f" in
+      *.tar*|*.tb2|*.tbz|*.tbz2|*.tgz|*.tlz|*.txz|*.tZ|*.tzst)
+        tar -xvf "$f" ;;
+      *.zip)
+        unzip "$f" ;;
+      *.rar)
+        unar "$f" ;;
+      *.7z)
+        7z x "$f" ;;
+      *.exe)
+        cabextract "$f" ;;
+      *)
+        printf "Unknown archive format: '%s'\\n" "$f" ;;
+    esac
+  fi
 }}
 
 cmd tgz ${{
@@ -71,9 +75,10 @@ cmd zip ${{
 
 cmd bulkrename ${{
   set -f
-  ofile=$(mktemp -p "${XDG_RUNTIME_DIR:-/tmp/$USER}/lf" rename.ori.XXXX)
-  rfile=$(mktemp -p "${XDG_RUNTIME_DIR:-/tmp/$USER}/lf" rename.new.XXXX)
-  efile=$(mktemp -p "${XDG_RUNTIME_DIR:-/tmp/$USER}/lf" rename.exe.XXXX.sh)
+  LFDIR="${XDG_RUNTIME_DIR:-/tmp/$USER}/lf"
+  ofile=$(mktemp -p "$LFDIR" rename.ori.XXXX)
+  rfile=$(mktemp -p "$LFDIR" rename.new.XXXX)
+  efile=$(mktemp -p "$LFDIR" rename.exe.XXXX.sh)
   realpath --relative-to "$PWD" $fx | tee "$ofile" > "$rfile"
   $EDITOR $rfile
   printf '# The following commands will be executed.\n' >> "$efile"
@@ -88,7 +93,28 @@ cmd bulkrename ${{
   rm $ofile $rfile $efile
 }}
 
-### Mappings ###################################################################
+cmd jump $lf -remote "send $id select \"$(rg --files | fzy)\""
+
+cmd recol %{{
+  set -f
+  readonly width=$(tput cols)
+  ratios='1:2:3:6'
+  if [ $width -le 80 ]; then
+    ratios='1:2'
+  elif [ $width -le 160 ]; then
+    ratios='1:2:3'
+  fi
+  lf -remote "send $id set ratios $ratios"
+}}
+
+
+## Mappings ###########################################################
+
+### Navigation ###
+map gg top
+map ge bottom
+map ga push ''
+map gf jump
 
 map <enter> shell
 map a push :mkd<space>
@@ -100,4 +126,8 @@ map O $mimeopen --ask $f
 
 map <delete> trash
 
-################################################################################
+## Startup ############################################################
+
+%mkdir -pm 700 ${XDG_RUNTIME_DIR:-/tmp/$USER}/lf
+
+recol
