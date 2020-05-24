@@ -1,6 +1,6 @@
 #!/bin/sh
 #######################################################################
-# LF -  File Previewer
+# LF - File Previewer
 #######################################################################
 
 set -Cfu
@@ -74,6 +74,15 @@ preview_arc() {
   fi
 }
 
+preview_sym() {
+  readonly nf=$(readlink "$1")
+  if [ $(file -b --mime-type -- "$nf") != 'inode/symlink' ]; then
+    exec "$0" "$nf"
+  else
+    echo '(symlink)'
+  fi
+}
+
 case $(file -b --mime-type -- "$1") in
   text/*)
     preview_txt "$1" ;;
@@ -98,6 +107,8 @@ case $(file -b --mime-type -- "$1") in
   application/x-rar*|\
   application/x-gtar)
     preview_arc "$1" ;;
+  inode/symlink)
+    preview_sym "$1" ;;
   *)
     echo '(binary)'
 esac

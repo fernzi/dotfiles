@@ -26,7 +26,7 @@ cmd open ${{
 
 cmd mkd %mkdir -pv "$@"
 
-cmd trash ${{
+cmd trash %{{
   if command -v trash-put >/dev/null; then
     trash-put $fx
   elif command -v gio >/dev/null; then
@@ -107,6 +107,16 @@ cmd recol %{{
   lf -remote "send $id set ratios $ratios"
 }}
 
+cmd newfromtemplate ${{
+  set -f
+  readonly tdir=${XDG_TEMPLATES_DIR:-$HOME/Templates}
+  readonly tmpf=$(rg -L --files "$tdir" | fzy)
+  readonly newf="new_file.${tmpf##*.}"
+  if [ -r "$tmpf" ]; then
+    cp --no-preserve=all -- "$tmpf" "$newf"
+    lf -remote "send $id select \"$newf\""
+  fi
+}}
 
 ## Mappings ###########################################################
 
@@ -117,13 +127,15 @@ map ga push ''
 map gf jump
 
 map <enter> shell
-map a push :mkd<space>
 map x $$f
 map X !$f
 
 map o &mimeopen $f
 map O $mimeopen --ask $f
 
+### Files ###
+map a push :mkd<space>
+map A newfromtemplate
 map <delete> trash
 
 ## Startup ############################################################

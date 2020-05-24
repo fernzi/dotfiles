@@ -18,4 +18,4 @@ else
   esac
 fi
 
-setsid $cmd -- "$@" &>/dev/null &
+setsid $cmd "$@" &>/dev/null &
