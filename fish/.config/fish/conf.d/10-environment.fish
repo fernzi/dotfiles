@@ -32,6 +32,9 @@ set -x CCACHE_DIR ~/.cache/ccache
 
 set -x QT_AUTO_SCREEN_SCALE_FACTOR 1
 set -x XCOMPOSEFILE ~/.config/gtk-3.0/Compose
+set -x XMODIFIERS @im=ibus
+set -x GTK_IM_MODULE ibus
+set -x QT_IM_MODULE ibus
 
 set -x PARALLEL_HOME ~/.config/parallel
 set -x LESSHISTFILE ~/.cache/less.history
@@ -48,6 +51,8 @@ set -x SDL_AUDIODRIVER pulse
 
 if test "$XDG_SESSION_DESKTOP" != gnome
   set -x MOZ_ENABLE_WAYLAND 1
+else
+  set -x WINIT_UNIX_BACKEND x11
 end
 
 if test "$XDG_SESSION_TYPE" != wayland
