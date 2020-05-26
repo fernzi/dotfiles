@@ -1,13 +1,13 @@
-################################################################################
+#######################################################################
 # NCurses Music Player Client (Plus Plus)
-################################################################################
+#######################################################################
 
-### Directories ################################################################
+## Directories ########################################################
 
 ncmpcpp_directory = ~/.local/share/ncmpcpp
 lyrics_directory  = ~/.local/share/ncmpcpp/lyrics
 
-### Server #####################################################################
+## Server #############################################################
 
 mpd_host               = localhost
 mpd_port               = 6600
@@ -15,7 +15,7 @@ mpd_connection_timeout = 3
 mpd_music_dir          = ~/Music
 mpd_crossfade_time     = 5
 
-### General ####################################################################
+## General ############################################################
 
 user_interface                 = classic
 colors_enabled                 = yes
@@ -53,7 +53,7 @@ statusbar_visibility = yes
 statusbar_color      = default
 statusbar_time_color = default
 
-### Playlist ###################################################################
+## Playlist ###########################################################
 
 ### Display ###
 
@@ -68,35 +68,33 @@ playlist_display_mode = columns
 
 song_columns_list_format = (5f)[black]{NEr: } (50)[]{t|f:Title} (20)[magenta]{a} (20)[magenta]{b} (7f)[white]{l}
 
-### Browser ####################################################################
+## Browser ############################################################
 
 browser_display_mode = classic
 browser_sort_mode = name
 browser_sort_format = {%a - }{%t}|{%f} {(%l)}
 show_hidden_files_in_local_browser = no
 
-### Search #####################################################################
+## Search #############################################################
 
 search_engine_display_mode = columns
 ignore_diacritics          = yes
 
-### Library ####################################################################
+## Library ############################################################
 
 song_library_format = {%n - }{%t}|{%f}
 media_library_primary_tag = album_artist
 media_library_albums_split_by_date = no
 
-### Playlist Editor ############################################################
+## Playlist Editor ####################################################
 
 
 
-### Tag Editor #################################################################
+## Tag Editor #########################################################
 
 
 
-### Visualizer #################################################################
-
-### Input ###
+## Visualizer #########################################################
 
 visualizer_fifo_path     = ~/.cache/mpd/fifo
 visualizer_output_name   = visualizer
@@ -106,7 +104,5 @@ visualizer_sync_interval = 30
 ### Appearance ###
 
 visualizer_type  = wave_filled
-visualizer_look  = ✦✦
+visualizer_look  = ┃┃
 visualizer_color = blue, cyan, green, yellow, red
-
-################################################################################
