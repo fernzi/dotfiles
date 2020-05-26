@@ -2,12 +2,8 @@
 # NCurses Music Player Client (Plus Plus)
 #######################################################################
 
-## Directories ########################################################
-
 ncmpcpp_directory = ~/.local/share/ncmpcpp
 lyrics_directory  = ~/.local/share/ncmpcpp/lyrics
-
-## Server #############################################################
 
 mpd_host               = localhost
 mpd_port               = 6600
@@ -15,24 +11,26 @@ mpd_connection_timeout = 3
 mpd_music_dir          = ~/Music
 mpd_crossfade_time     = 5
 
-## General ############################################################
+## Interface ##########################################################
 
-user_interface                 = classic
-colors_enabled                 = yes
+user_interface = classic
+colors_enabled = yes
+ignore_leading_the = yes
+
+### Colours ###
+
 empty_tag_color                = black
-header_window_color            = default
-volume_color                   = default
-state_line_color               = default
-state_flags_color              = default
+header_window_color            = 9
+volume_color                   = 9
+state_line_color               = black
+state_flags_color              = cyan
 main_window_color              = default
 color1                         = white
 color2                         = green
-player_state_color             = white
+player_state_color             = black
 alternative_ui_separator_color = black
 window_border_color            = green
 active_window_border           = red
-
-ignore_leading_the = yes
 
 ### Display ###
 
@@ -42,31 +40,30 @@ centered_cursor    = yes
 
 ### Progress Bar ###
 
-progressbar_look          = ━━
-progressbar_color         = black:b
-progressbar_elapsed_color = green
+progressbar_look = ━━
+progressbar_color = black
+progressbar_elapsed_color = red
 
 ### Status Bar ###
 
-song_status_format   = {{$b%t$/b}{ $8by$9 $b%a$/b{ $8in$9 $b%b$/b{ (%y)}}}}|{$b%f/$b}
+song_status_format = {{$b%t$/b}{ by $b%a$/b{ in $b%b$/b}}}|{$b%f/$b}
 statusbar_visibility = yes
-statusbar_color      = default
-statusbar_time_color = default
+statusbar_color = 9
+statusbar_time_color = 9
 
 ## Playlist ###########################################################
 
-### Display ###
-
+playlist_display_mode = columns
 playlist_disable_highlight_delay = 5
 playlist_show_mpd_host = no
 playlist_show_remaining_time = yes
 playlist_shorten_total_times = yes
-playlist_separate_albums = no
-playlist_display_mode = columns
+playlist_separate_albums = yes
 
-### Song Format ###
+current_item_prefix = $(black_magenta)$r
+current_item_suffix = $/r$(end)
 
-song_columns_list_format = (5f)[black]{NEr: } (50)[]{t|f:Title} (20)[magenta]{a} (20)[magenta]{b} (7f)[white]{l}
+song_columns_list_format = (5f)[9]{NEr: } (60)[]{t|f:Title} (15)[]{a} (15)[]{b} (7f)[9]{l: }
 
 ## Browser ############################################################
 
@@ -103,6 +100,6 @@ visualizer_sync_interval = 30
 
 ### Appearance ###
 
-visualizer_type  = wave_filled
-visualizer_look  = ┃┃
-visualizer_color = blue, cyan, green, yellow, red
+visualizer_type = wave_filled
+visualizer_look = ┃┃
+visualizer_color = cyan, blue, magenta, red, red
