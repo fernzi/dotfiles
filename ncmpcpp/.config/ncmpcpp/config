@@ -46,7 +46,7 @@ progressbar_elapsed_color = red
 
 ### Status Bar ###
 
-song_status_format = {{$b%t$/b}{ by $b%a$/b{ in $b%b$/b}}}|{$b%f/$b}
+song_status_format = {{$b%t$/b}{ // $b%a$/b{ // $b%b$/b}}}|{$b%f/$b}
 statusbar_visibility = yes
 statusbar_color = 9
 statusbar_time_color = 9
@@ -58,12 +58,15 @@ playlist_disable_highlight_delay = 5
 playlist_show_mpd_host = no
 playlist_show_remaining_time = yes
 playlist_shorten_total_times = yes
-playlist_separate_albums = yes
 
-current_item_prefix = $(black_magenta)$r
-current_item_suffix = $/r$(end)
+titles_visibility = no
 
-song_columns_list_format = (5f)[9]{NEr: } (60)[]{t|f:Title} (15)[]{a} (15)[]{b} (7f)[9]{l: }
+current_item_prefix = $(white_black)
+current_item_suffix = $(end)
+now_playing_prefix = $b$u
+now_playing_suffix = $/u$/b
+
+song_columns_list_format = (50)[]{t|fr} (20)[magenta]{a} (30)[blue]{b}
 
 ## Browser ############################################################
 
@@ -75,7 +78,7 @@ show_hidden_files_in_local_browser = no
 ## Search #############################################################
 
 search_engine_display_mode = columns
-ignore_diacritics          = yes
+ignore_diacritics = yes
 
 ## Library ############################################################
 
