@@ -1,0 +1,75 @@
+/**********************************************************************
+ * Rofi - Personal theme
+ *********************************************************************/
+
+@import "colors-dark"
+
+* {
+  background-color: #0000;
+  font: inherit;
+  text-color: inherit;
+}
+
+window {
+  location: north;
+  anchor: north;
+  width: 50%;
+  border-radius: 0 0 0.5em 0.5em;
+  background-color: @c00;
+  text-color: @c05;
+  transparency: "real";
+  font: "RobotoCondensed 12";
+}
+
+mainbox {
+  spacing: 0;
+}
+
+inputbar {
+  padding: 1em;
+  background-color: @c01;
+  text-color: @c04;
+  font: "RobotoCondensed 14";
+}
+
+prompt {
+  text-color: @c03;
+  margin: 0.125em 1em 0 0.125em;
+}
+
+textbox {
+  padding: 1em;
+}
+
+listview {
+  padding: 1em;
+}
+
+element {
+  padding: 0.5em;
+  border-radius: 0.25em;
+}
+
+element.normal.active {
+  border: 0 0 0.125em 0;
+  border-color: @c08;
+}
+
+element.normal.urgent {
+  border: 0 0 0.125em 0;
+  border-color: @c14;
+}
+
+element.selected.normal {
+  background-color: @c02;
+}
+
+element.selected.active {
+  background-color: @c08;
+  text-color: @c00;
+}
+
+element.selected.urgent {
+  background-color: @c14;
+  text-color: @c00;
+}

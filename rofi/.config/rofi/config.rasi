@@ -3,12 +3,10 @@
  *****************************************************************************/
 
 configuration {
-  modi: "combi,window,drun,ssh";
-  width: 40;
-  dpi: 192;
-  lines: 12;
+  modi: "drun,run,window";
+  dpi: 0;
+  lines: 8;
   columns: 2;
-  combi-modi: "window,drun";
   display-window: "";
   display-windowcd: "";
   display-run: "";
@@ -17,85 +15,4 @@ configuration {
   display-combi: "";
 }
 
-/** Appearance ***************************************************************/
-
-* {
-  background-color: #0000;
-  font: inherit;
-  text-color: inherit;
-}
-
-window {
-  transparency: "screenshot";
-  padding: 0.75em;
-  border-radius: 0.5em;
-  background-color: #282828;
-  font: "Source Sans Pro 10";
-}
-
-mainbox {
-  spacing: 0.75em;
-}
-
-inputbar {
-  padding: 0.5em;
-  background-color: #504945;
-  text-color: #e0e0e0;
-  border-radius: 0.25em;
-  font: "Source Sans Pro 12";
-}
-
-prompt {
-  text-color: #665c54;
-  margin: 0.125em 0.5em 0 0;
-}
-
-message {
-  padding: 0.5em;
-  text-color: #9e9e9e;
-}
-
-scrollbar {
-  handle-color: #504945;
-  handle-width: 0.25em;
-  margin: 0 0 0 0.5em;
-}
-
-element {
-  padding: 0.25em 0.5em;
-  text-color: #e0e0e0;
-  border-radius: 0.25em;
-}
-
-element.normal.active {
-  text-color: #de935f;
-}
-
-element.normal.urgent {
-  text-color: #a54242;
-}
-
-element.alternate.active {
-  text-color: #de935f;
-}
-
-element.alternate.urgent {
-  text-color: #a54242;
-}
-
-element.selected.normal {
-  text-color: #282828;
-  background-color: #9e9e9e;
-}
-
-element.selected.active {
-  text-color: #282828;
-  background-color: #de935f;
-}
-
-element.selected.urgent {
-  text-color: #282828;
-  background-color: #a54242;
-}
-
-/*****************************************************************************/
+@theme "themes/modern"
