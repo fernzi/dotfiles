@@ -56,21 +56,21 @@ urlview-title-format      " %N %V%> urls "
 
 ### Colors ###
 
-color background        default default
-color listnormal        white   default
-color listfocus         white   default reverse
-color listnormal_unread default default bold
-color listfocus_unread  default default bold reverse
-color info              default black
-color article           default default
-color end-of-text-marker color8 default protect
-search-highlight-colors yellow  default bold reverse
+color background          default default
+color listnormal          default default
+color listfocus           default black
+color listnormal_unread   red     default bold
+color listfocus_unread    red     black   bold
+color info                default black   dim
+color article             default default
+color end-of-text-marker  color8  default
+search-highlight-colors   yellow  default bold reverse
 
 ### Highlighting ###
 
 # Separators
-highlight feedlist "^\\s*--- .+" default black bold
-highlight feedlist "\\(0/0\\)" black black
+highlight feedlist "^\\s*--- .+" default default bold dim underline
+highlight feedlist "\\(0/0\\)" default default invis dim underline
 
 # Article
 highlight article "^(Feed|Title|Author|Date):.*" blue default bold
