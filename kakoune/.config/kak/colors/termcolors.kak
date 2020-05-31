@@ -1,53 +1,51 @@
-###############################################################################
+#######################################################################
 # Kakoune - Terminal Based Colour Scheme
-###############################################################################
+#######################################################################
 
-face global value              magenta
+face global value              red
 face global type               yellow
-face global variable           blue
+face global variable           red
 face global module             green
-face global function           default
+face global function           blue
 face global string             green
-face global keyword            red
+face global keyword            magenta
 face global operator           default
-face global attribute          yellow+i
+face global attribute          cyan+i
 face global comment            bright-black+i
-face global meta               cyan
-face global builtin            default+b
+face global meta               blue
+face global builtin            blue+b
 
 face global title              bright-blue+b
-face global header             bright-blue
-face global bold               default+b
-face global italic             default+i
-face global mono               white
+face global header             blue+b
+face global bold               yellow+b
+face global italic             magenta+i
+face global mono               green
 face global block              cyan
-face global link               blue+iu
-face global bullet             yellow
-face global list               default
+face global link               cyan+iu
+face global bullet             red
+face global list               red
 
 face global Default            default,default
-face global PrimarySelection   default,blue+fg
-face global SecondarySelection black,blue+fg
+face global PrimarySelection   white,black+fg
+face global SecondarySelection white,black+fg
 face global PrimaryCursor      default,default+rfg
 face global SecondaryCursor    black,white+fg
-face global PrimaryCursorEol   default,white+fg
-face global SecondaryCursorEol default,black
+face global PrimaryCursorEol   default,bright-white+rfg
+face global SecondaryCursorEol default,white+rfg
 face global LineNumbers        black
-face global LineNumberCursor   black+b
+face global LineNumberCursor   yellow
 face global LineNumbersWrapped black+i
 face global MenuForeground     black,blue
 face global MenuBackground     default,bright-black
 face global MenuInfo           black
-face global Information        bright-black,default+r
-face global Error              black,red
-face global StatusLine         default,default
-face global StatusLineMode     yellow+b
+face global Information        black,default+r
+face global Error              red,default+r
+face global StatusLine         default,black
+face global StatusLineMode     green+b
 face global StatusLineInfo     magenta
 face global StatusLineValue    red
 face global StatusCursor       default,default+r
-face global Prompt             yellow
-face global MatchingChar       default,bright-black+b
+face global Prompt             blue,black
+face global MatchingChar       white,black+b
 face global BufferPadding      black
 face global Whitespace         bright-black+f
-
-###############################################################################

@@ -116,8 +116,12 @@ def main() -> None:
     colors = np.vstack((colors, bright, dim))
 
   rgb: np.ndarray = color.lab2rgb(colors)
+  rendered: str = render(args.template,
+    color=[Color(*c) for c in rgb],
+    scheme_name=scheme['scheme'],
+    scheme_author=scheme['author'],
+  )
 
-  rendered: str = render(args.template, color=[Color(*c) for c in rgb])
   if args.output is not None:
     with open(args.output, 'w') as f:
       f.write(rendered)

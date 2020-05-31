@@ -1,0 +1,61 @@
+# {{ scheme_name }} colour scheme
+# Copyright © 2020 {{ scheme_author }}
+
+### Code ###
+
+face global value               rgb:{{ color[08].hex }}
+face global type                rgb:{{ color[10].hex }}
+face global variable            rgb:{{ color[08].hex }}
+face global module              rgb:{{ color[11].hex }}
+face global function            rgb:{{ color[13].hex }}
+face global string              rgb:{{ color[11].hex }}
+face global keyword             rgb:{{ color[14].hex }}+b
+face global operator            rgb:{{ color[05].hex }}
+face global attribute           rgb:{{ color[12].hex }}+i
+face global comment             rgb:{{ color[03].hex }}+i
+face global meta                rgb:{{ color[13].hex }}
+face global builtin             rgb:{{ color[13].hex }}+b
+
+### Markup ###
+
+face global title               rgb:{{ color[13].hex }}+b
+face global header              rgb:{{ color[13].hex }}+b
+face global bold                rgb:{{ color[10].hex }}+b
+face global italic              rgb:{{ color[14].hex }}+i
+face global mono                rgb:{{ color[11].hex }}
+face global block               rgb:{{ color[12].hex }}
+face global link                rgb:{{ color[09].hex }}+iu
+face global bullet              rgb:{{ color[08].hex }}
+face global list                rgb:{{ color[08].hex }}
+
+### Builtin ###
+
+face global Default             rgb:{{ color[05].hex }},rgb:{{ color[00].hex }}
+face global PrimarySelection    rgb:{{ color[06].hex }},rgb:{{ color[02].hex }}+F
+face global SecondarySelection  rgb:{{ color[06].hex }},rgb:{{ color[02].hex }}+F
+face global PrimaryCursor       rgb:{{ color[00].hex }},rgb:{{ color[05].hex }}+F
+face global SecondaryCursor     rgb:{{ color[00].hex }},rgb:{{ color[04].hex }}+F
+face global PrimaryCursorEol    rgb:{{ color[00].hex }},rgb:{{ color[07].hex }}+F
+face global SecondaryCursorEol  rgb:{{ color[00].hex }},rgb:{{ color[06].hex }}+F
+face global LineNumbers         rgb:{{ color[02].hex }},rgb:{{ color[00].hex }}
+face global LineNumberCursor    rgb:{{ color[03].hex }},rgb:{{ color[00].hex }}+b
+face global LineNumbersWrapped  rgb:{{ color[01].hex }}+i
+face global MenuForeground      rgb:{{ color[00].hex }},rgb:{{ color[13].hex }}
+face global MenuBackground      rgb:{{ color[05].hex }},rgb:{{ color[03].hex }}
+face global MenuInfo            rgb:{{ color[02].hex }}
+face global Information         rgb:{{ color[05].hex }},rgb:{{ color[02].hex }}
+face global Error               rgb:{{ color[00].hex }},rgb:{{ color[08].hex }}+b
+face global StatusLine          rgb:{{ color[04].hex }},rgb:{{ color[01].hex }}
+face global StatusLineMode      rgb:{{ color[11].hex }}+b
+face global StatusLineInfo      rgb:{{ color[14].hex }}
+face global StatusLineValue     rgb:{{ color[08].hex }}
+face global StatusCursor        rgb:{{ color[00].hex }},rgb:{{ color[05].hex }}
+face global Prompt              rgb:{{ color[13].hex }},rgb:{{ color[01].hex }}+b
+face global MatchingChar        rgb:{{ color[06].hex }},rgb:{{ color[02].hex }}+b
+face global BufferPadding       rgb:{{ color[02].hex }},rgb:{{ color[00].hex }}
+face global Whitespace          rgb:{{ color[03].hex }}+f
+
+### Custom ###
+
+face global LineCursor          default,rgb:{{ color[01].hex }}
+face global WrapColumn          default,rgb:{{ color[01].hex }}

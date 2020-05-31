@@ -1,16 +1,11 @@
-###############################################################################
+#######################################################################
 # Alacritty Terminal Emulator
-###############################################################################
-
-### General ###################################################################
-
-env:
-  TERM: xterm-256color
+#######################################################################
 
 scrolling:
-  history:         20000
-  multiplier:      4
-  autoscroll:      false
+  history:    20000
+  multiplier: 4
+  autoscroll: false
 
 url:
   # launcher: xdg-open
@@ -28,7 +23,7 @@ live_config_reload: true
 
 working_directory: None
 
-### Appearance ################################################################
+## Appearance #########################################################
 
 window:
   dimensions:
@@ -48,7 +43,7 @@ window:
 font:
   normal:
     family: Iosevka Term SS09
-  size: 10.5
+  size: 13
   # offset:
   #   x: 0
   #   y: 6
@@ -69,38 +64,46 @@ draw_bold_text_with_bright_colors: false
 
 colors:
   primary:
-    background: '0x212121'
-    foreground: '0xE0E0E0'
+    background: '#202020'
+    foreground: '#D4D4D4'
   cursor:
-    cursor:     '0xBDBDBD'
+    cursor:     '#E2E2E2'
+    text:       '#303030'
   selection:
-    text:       '0x212121'
-    background: '0xF48FB1'
+    background: '#404040'
+    text:       '#E2E2E2'
   normal:
-    black:      '0x383838'
-    red:        '0xFFA6C9'
-    green:      '0xA5D6A7'
-    yellow:     '0xFFCC80'
-    blue:       '0x81D4FA'
-    magenta:    '0xB39DDB'
-    cyan:       '0x80CBC4'
-    white:      '0xBDBDBD'
+    black:      '#404040'
+    red:        '#FFAED0'
+    green:      '#B0E0AD'
+    yellow:     '#F6CE88'
+    blue:       '#9EDCFF'
+    magenta:    '#D0BCFE'
+    cyan:       '#94D1CE'
+    white:      '#E2E2E2'
   bright:
-    black:      '0x484848'
-    red:        '0xF8BBD0'
-    green:      '0xC8E6C9'
-    yellow:     '0xFFE0B2'
-    blue:       '0xB3E5FC'
-    magenta:    '0xD1C4E9'
-    cyan:       '0xB2DFDB'
-    white:      '0xE0E0E0'
-
-# background_opacity: 0.98
+    black:      '#525252'
+    red:        '#FFCDE3'
+    green:      '#D3FAD3'
+    yellow:     '#FFEEAC'
+    blue:       '#CFF5FF'
+    magenta:    '#E8DAFF'
+    cyan:       '#C1EAE1'
+    white:      '#F0F0F0'
+  dim:
+    black:      '#303030'
+    red:        '#C7789A'
+    green:      '#7BA979'
+    yellow:     '#BC9855'
+    blue:       '#66A5C9'
+    magenta:    '#9986C5'
+    cyan:       '#5E9A98'
+    white:      '#C6C6C6'
 
 visual_bell:
   duration: 0
 
-### Mouse #####################################################################
+## Mouse ##############################################################
 
 mouse:
   double_click:
@@ -113,7 +116,7 @@ mouse_bindings:
   - mouse:  Middle
     action: PasteSelection
 
-### Bindings ##################################################################
+## Bindings ###########################################################
 
 key_bindings:
   - key:    N

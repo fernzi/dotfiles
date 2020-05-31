@@ -1,20 +1,16 @@
-###############################################################################
+#######################################################################
 # Kakoune User Configuration
-###############################################################################
+#######################################################################
 
-### Interface #################################################################
-
-colorscheme termcolors
-
-set-face global EditRow default,rgb:282828
-set-face global WrapCol default,rgb:303030
+colorscheme fern
 
 add-highlighter global/ number-lines -relative -hlcursor -separator '▕ '
 add-highlighter global/ wrap -word
 add-highlighter global/ show-matching
 add-highlighter global/ dynregex '%reg{/}' 0:+u
-add-highlighter global/ line '%val{cursor_line}' EditRow
-add-highlighter global/ column '%opt{autowrap_column}' WrapCol
+add-highlighter global/ line '%val{cursor_line}' LineCursor
+add-highlighter global/ column 72 WrapColumn
+add-highlighter global/ column 80 WrapColumn
 
 set-option global ui_options ncurses_assistant=cat
 set-option global scrolloff  4,8
@@ -34,7 +30,7 @@ hook global InsertCompletionHide .* %{
   unmap window insert <s-tab> <c-p>
 }
 
-### Editor ####################################################################
+## Editor #############################################################
 
 set-option global tabstop           2
 set-option global indentwidth       2
@@ -79,7 +75,7 @@ hook global WinSetOption filetype=(git-commit|mail|troff) %{
   set-option window autowrap_column 72
 }
 
-### Mappings ##################################################################
+## Mappings ###########################################################
 
 map global normal <ret> ':w<ret>'
 map global normal '#'   ':comment-line<ret>'
@@ -93,18 +89,10 @@ map global user   R     ':clipboard-replace<ret>'
 map global normal <c-a> ':math +1<ret>'
 map global normal <c-x> ':math -1<ret>'
 
-### Commands ##################################################################
+## Commands ###########################################################
 
 define-command mkd %{
   nop %sh{
     mkdir -p ${kak_buffile%/*}
   }
 }
-
-### Local #####################################################################
-
-try %{
-  source "%val{config}/kakrc.local"
-}
-
-###############################################################################
