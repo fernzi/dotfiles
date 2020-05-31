@@ -1,0 +1,129 @@
+#!/usr/bin/env python3
+# Copyright © 2020 Fern Zapata
+# This Source Code Form is subject to the terms of the ISC License.
+# If a copy of the license was not distributed with this file, you
+# can obtain one at https://opensource.org/licenses/ISC/.
+
+import os
+import argparse as AP
+from typing import Sequence, Dict
+
+import yaml
+import jinja2
+import numpy as np  # type: ignore
+from skimage import color  # type: ignore
+
+
+class Color:
+  def __init__(self, r: float, g: float, b: float):
+    self.r = r
+    self.g = g
+    self.b = b
+
+  @property
+  def int_r(self) -> int:
+    return int(self.r * 255)
+
+  @property
+  def int_g(self) -> int:
+    return int(self.g * 255)
+
+  @property
+  def int_b(self) -> int:
+    return int(self.b * 255)
+
+  @property
+  def hex_r(self) -> str:
+    return f'{self.int_r:02X}'
+
+  @property
+  def hex_g(self) -> str:
+    return f'{self.int_g:02X}'
+
+  @property
+  def hex_b(self) -> str:
+    return f'{self.int_b:02X}'
+
+  @property
+  def hex(self) -> str:
+    return f'{self.int_r:02X}{self.int_g:02X}{self.int_b:02X}'
+
+
+def parse_args(args: Sequence = None) -> AP.Namespace:
+  p = AP.ArgumentParser(description='Color template builder')
+  p.add_argument('scheme')
+  p.add_argument('template')
+  p.add_argument('-o', '--output',
+    help='Write rendered template to a file',
+  )
+  p.add_argument('-n', '--no-variants',
+    action='store_true',
+    help='Don\'t generate bright and dim variants',
+  )
+  p.add_argument('-l', '--bright-l',
+    default=10,
+    help='Bright variant lightness adjustment',
+  )
+  p.add_argument('-a', '--bright-a',
+    default=-5,
+    help='Bright variant a* axis adjustment',
+  )
+  p.add_argument('-b', '--bright-b',
+    default=-5,
+    help='Bright variant b* axis adjustment',
+  )
+  p.add_argument('-L', '--dim-l',
+    default=-20,
+    help='Dim variant lightness adjustment',
+  )
+  p.add_argument('-A', '--dim-a',
+    default=0,
+    help='Dim variant a* axis adjustment',
+  )
+  p.add_argument('-B', '--dim-b',
+    default=0,
+    help='Dim variant b* axis adjustment',
+  )
+  return p.parse_args(args)
+
+
+def render(name: str, **kwargs) -> str:
+  env = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(searchpath='/')
+  )
+  return env.get_template(os.path.abspath(name)).render(kwargs)
+
+
+def main() -> None:
+  args: AP.Namespace = parse_args()
+
+  with open(args.scheme, 'r') as f:
+    scheme: Dict = yaml.load(f, Loader=yaml.CLoader)
+  colors: np.ndarray = np.array(scheme['colors'])
+
+  if not args.no_variants:
+    bright: np.ndarray = colors[8:].copy()
+    dim: np.ndarray = colors[8:].copy()
+
+    bright[:, 0] += args.bright_l
+    dim[:, 0] += args.dim_l
+
+    bright[:, 1] += np.sign(bright[:, 1]) * args.bright_a
+    bright[:, 2] += np.sign(bright[:, 2]) * args.bright_b
+    dim[:, 1] += np.sign(dim[:, 1]) * args.dim_a
+    dim[:, 2] += np.sign(dim[:, 2]) * args.dim_b
+
+    colors = np.vstack((colors, bright, dim))
+
+  rgb: np.ndarray = color.lab2rgb(colors)
+
+  rendered: str = render(args.template, color=[Color(*c) for c in rgb])
+  if args.output is not None:
+    with open(args.output, 'w') as f:
+      f.write(rendered)
+  else:
+    print(rendered)
+
+
+if __name__ == '__main__':
+  main()

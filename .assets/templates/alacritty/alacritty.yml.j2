@@ -1,0 +1,22 @@
+colors:
+  primary:
+    background: '#{{ color[00].hex }}'
+    foreground: '#{{ color[05].hex }}'
+  cursor:
+    cursor:     '#{{ color[06].hex }}'
+    text:       '#{{ color[01].hex }}'
+  selection:
+    background: '#{{ color[02].hex }}'
+    text:       '#{{ color[06].hex }}'
+{%- set sections = {'normal': (2, 6), 'bright': (3,7), 'dim': (1,4)} -%}
+{%- for section, (bl, wt) in sections.items() %}
+  {{ section }}:
+    black:      '#{{ color[bl].hex }}'
+    red:        '#{{ color[loop.index * 8].hex }}'
+    green:      '#{{ color[loop.index * 8 + 3].hex }}'
+    yellow:     '#{{ color[loop.index * 8 + 2].hex }}'
+    blue:       '#{{ color[loop.index * 8 + 5].hex }}'
+    magenta:    '#{{ color[loop.index * 8 + 6].hex }}'
+    cyan:       '#{{ color[loop.index * 8 + 4].hex }}'
+    white:      '#{{ color[wt].hex }}'
+{%- endfor %}
