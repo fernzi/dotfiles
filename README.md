@@ -14,7 +14,7 @@ each other.
 I'm not good at naming, so I simply call it "Fern." Totally clever, eh?
 
 <p align="center">
-  <img width="75%" src=".assets/colours.png" />
+  <img width="75%" src=".assets/colors.svg" />
 </p>
 
 The scheme follows the style of the [Base16][base16] project, although

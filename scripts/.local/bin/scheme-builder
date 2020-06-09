@@ -4,6 +4,8 @@
 # If a copy of the license was not distributed with this file, you
 # can obtain one at https://opensource.org/licenses/ISC/.
 
+from __future__ import annotations
+
 import os
 import argparse as AP
 from typing import Sequence, Dict
@@ -16,21 +18,27 @@ from skimage import color  # type: ignore
 
 class Color:
   def __init__(self, r: float, g: float, b: float):
-    self.r = r
-    self.g = g
+    self.dec_r = r
+    self.dec_g = g
+    self.dec_b = b
+
+  def set_lab(self, l: float, a: float, b: float) -> Color:
+    self.l = l
+    self.a = a
     self.b = b
+    return self
 
   @property
   def int_r(self) -> int:
-    return int(self.r * 255)
+    return int(self.dec_r * 255)
 
   @property
   def int_g(self) -> int:
-    return int(self.g * 255)
+    return int(self.dec_g * 255)
 
   @property
   def int_b(self) -> int:
-    return int(self.b * 255)
+    return int(self.dec_b * 255)
 
   @property
   def hex_r(self) -> str:
@@ -117,7 +125,7 @@ def main() -> None:
 
   rgb: np.ndarray = color.lab2rgb(colors)
   rendered: str = render(args.template,
-    color=[Color(*c) for c in rgb],
+    color=[Color(*c).set_lab(*l) for c, l in zip(rgb, colors)],
     scheme_name=scheme['scheme'],
     scheme_author=scheme['author'],
   )

@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     version="1.1" viewBox="0 0 24 8" width="24in" height="8in">
+
+<style>
+  .dec {
+    font: 0.18pt sans-serif;
+    text-anchor: start;
+    dominant-baseline: hanging;
+  }
+  .hex {
+    font: 0.18pt sans-serif;
+    text-anchor: end;
+    dominant-baseline: hanging;
+  }
+  .label {
+    font: 0.18pt sans-serif;
+    text-anchor: middle;
+    dominant-baseline: baseline;
+  }
+</style>
+
+<g style="fill:white">
+  <rect x="0" y="0" width="3" height="2"
+        style="fill:#202020" />
+  <text x="0.15" y="0.15"
+        class="dec">00</text>
+  <text x="2.85" y="0.15"
+        class="hex">00</text>
+  <text x="1.5" y="1.85"
+        class="label">#202020</text>
+  <text x="1.5" y="1.5"
+        class="label">lab(12, 0, 0)</text>
+</g>
+<g style="fill:white">
+  <rect x="3" y="0" width="3" height="2"
+        style="fill:#303030" />
+  <text x="3.15" y="0.15"
+        class="dec">01</text>
+  <text x="5.85" y="0.15"
+        class="hex">01</text>
+  <text x="4.5" y="1.85"
+        class="label">#303030</text>
+  <text x="4.5" y="1.5"
+        class="label">lab(20, 0, 0)</text>
+</g>
+<g style="fill:white">
+  <rect x="6" y="0" width="3" height="2"
+        style="fill:#404040" />
+  <text x="6.15" y="0.15"
+        class="dec">02</text>
+  <text x="8.85" y="0.15"
+        class="hex">02</text>
+  <text x="7.5" y="1.85"
+        class="label">#404040</text>
+  <text x="7.5" y="1.5"
+        class="label">lab(28, 0, 0)</text>
+</g>
+<g style="fill:white">
+  <rect x="9" y="0" width="3" height="2"
+        style="fill:#525252" />
+  <text x="9.15" y="0.15"
+        class="dec">03</text>
+  <text x="11.85" y="0.15"
+        class="hex">03</text>
+  <text x="10.5" y="1.85"
+        class="label">#525252</text>
+  <text x="10.5" y="1.5"
+        class="label">lab(35, 0, 0)</text>
+</g>
+<g style="fill:black">
+  <rect x="12" y="0" width="3" height="2"
+        style="fill:#C6C6C6" />
+  <text x="12.15" y="0.15"
+        class="dec">04</text>
+  <text x="14.85" y="0.15"
+        class="hex">04</text>
+  <text x="13.5" y="1.85"
+        class="label">#C6C6C6</text>
+  <text x="13.5" y="1.5"
+        class="label">lab(80, 0, 0)</text>
+</g>
+<g style="fill:black">
+  <rect x="15" y="0" width="3" height="2"
+        style="fill:#D4D4D4" />
+  <text x="15.15" y="0.15"
+        class="dec">05</text>
+  <text x="17.85" y="0.15"
+        class="hex">05</text>
+  <text x="16.5" y="1.85"
+        class="label">#D4D4D4</text>
+  <text x="16.5" y="1.5"
+        class="label">lab(85, 0, 0)</text>
+</g>
+<g style="fill:black">
+  <rect x="18" y="0" width="3" height="2"
+        style="fill:#E2E2E2" />
+  <text x="18.15" y="0.15"
+        class="dec">06</text>
+  <text x="20.85" y="0.15"
+        class="hex">06</text>
+  <text x="19.5" y="1.85"
+        class="label">#E2E2E2</text>
+  <text x="19.5" y="1.5"
+        class="label">lab(90, 0, 0)</text>
+</g>
+<g style="fill:black">
+  <rect x="21" y="0" width="3" height="2"
+        style="fill:#F0F0F0" />
+  <text x="21.15" y="0.15"
+        class="dec">07</text>
+  <text x="23.85" y="0.15"
+        class="hex">07</text>
+  <text x="22.5" y="1.85"
+        class="label">#F0F0F0</text>
+  <text x="22.5" y="1.5"
+        class="label">lab(95, 0, 0)</text>
+</g>
+<g style="fill:black">
+  <rect x="0" y="2" width="3" height="2"
+        style="fill:#FFAED0" />
+  <text x="0.15" y="2.15"
+        class="dec">08</text>
+  <text x="2.85" y="2.15"
+        class="hex">08</text>
+  <text x="1.5" y="3.85"
+        class="label">#FFAED0</text>
+  <text x="1.5" y="3.5"
+        class="label">lab(80, 35, -5)</text>
+</g>
+<g style="fill:black">
+  <rect x="3" y="2" width="3" height="2"
+        style="fill:#FFB099" />
+  <text x="3.15" y="2.15"
+        class="dec">09</text>
+  <text x="5.85" y="2.15"
+        class="hex">09</text>
+  <text x="4.5" y="3.85"
+        class="label">#FFB099</text>
+  <text x="4.5" y="3.5"
+        class="label">lab(80, 30, 25)</text>
+</g>
+<g style="fill:black">
+  <rect x="6" y="2" width="3" height="2"
+        style="fill:#F6CE88" />
+  <text x="6.15" y="2.15"
+        class="dec">10</text>
+  <text x="8.85" y="2.15"
+        class="hex">0A</text>
+  <text x="7.5" y="3.85"
+        class="label">#F6CE88</text>
+  <text x="7.5" y="3.5"
+        class="label">lab(85, 5, 40)</text>
+</g>
+<g style="fill:black">
+  <rect x="9" y="2" width="3" height="2"
+        style="fill:#B0E0AD" />
+  <text x="9.15" y="2.15"
+        class="dec">11</text>
+  <text x="11.85" y="2.15"
+        class="hex">0B</text>
+  <text x="10.5" y="3.85"
+        class="label">#B0E0AD</text>
+  <text x="10.5" y="3.5"
+        class="label">lab(85, -25, 20)</text>
+</g>
+<g style="fill:black">
+  <rect x="12" y="2" width="3" height="2"
+        style="fill:#94D1CE" />
+  <text x="12.15" y="2.15"
+        class="dec">12</text>
+  <text x="14.85" y="2.15"
+        class="hex">0C</text>
+  <text x="13.5" y="3.85"
+        class="label">#94D1CE</text>
+  <text x="13.5" y="3.5"
+        class="label">lab(80, -20, -5)</text>
+</g>
+<g style="fill:black">
+  <rect x="15" y="2" width="3" height="2"
+        style="fill:#9EDCFF" />
+  <text x="15.15" y="2.15"
+        class="dec">13</text>
+  <text x="17.85" y="2.15"
+        class="hex">0D</text>
+  <text x="16.5" y="3.85"
+        class="label">#9EDCFF</text>
+  <text x="16.5" y="3.5"
+        class="label">lab(85, -10, -25)</text>
+</g>
+<g style="fill:black">
+  <rect x="18" y="2" width="3" height="2"
+        style="fill:#D0BCFE" />
+  <text x="18.15" y="2.15"
+        class="dec">14</text>
+  <text x="20.85" y="2.15"
+        class="hex">0E</text>
+  <text x="19.5" y="3.85"
+        class="label">#D0BCFE</text>
+  <text x="19.5" y="3.5"
+        class="label">lab(80, 20, -30)</text>
+</g>
+<g style="fill:white">
+  <rect x="21" y="2" width="3" height="2"
+        style="fill:#909090" />
+  <text x="21.15" y="2.15"
+        class="dec">15</text>
+  <text x="23.85" y="2.15"
+        class="hex">0F</text>
+  <text x="22.5" y="3.85"
+        class="label">#909090</text>
+  <text x="22.5" y="3.5"
+        class="label">lab(60, 0, 0)</text>
+</g>
+<g style="fill:black">
+  <rect x="0" y="4" width="3" height="2"
+        style="fill:#FFCDE3" />
+  <text x="0.15" y="4.15"
+        class="dec">16</text>
+  <text x="2.85" y="4.15"
+        class="hex">10</text>
+  <text x="1.5" y="5.85"
+        class="label">#FFCDE3</text>
+  <text x="1.5" y="5.5"
+        class="label">lab(90, 30, 0)</text>
+</g>
+<g style="fill:black">
+  <rect x="3" y="4" width="3" height="2"
+        style="fill:#FFD0BD" />
+  <text x="3.15" y="4.15"
+        class="dec">17</text>
+  <text x="5.85" y="4.15"
+        class="hex">11</text>
+  <text x="4.5" y="5.85"
+        class="label">#FFD0BD</text>
+  <text x="4.5" y="5.5"
+        class="label">lab(90, 25, 20)</text>
+</g>
+<g style="fill:black">
+  <rect x="6" y="4" width="3" height="2"
+        style="fill:#FFEEAC" />
+  <text x="6.15" y="4.15"
+        class="dec">18</text>
+  <text x="8.85" y="4.15"
+        class="hex">12</text>
+  <text x="7.5" y="5.85"
+        class="label">#FFEEAC</text>
+  <text x="7.5" y="5.5"
+        class="label">lab(95, 0, 35)</text>
+</g>
+<g style="fill:black">
+  <rect x="9" y="4" width="3" height="2"
+        style="fill:#D3FAD3" />
+  <text x="9.15" y="4.15"
+        class="dec">19</text>
+  <text x="11.85" y="4.15"
+        class="hex">13</text>
+  <text x="10.5" y="5.85"
+        class="label">#D3FAD3</text>
+  <text x="10.5" y="5.5"
+        class="label">lab(95, -20, 15)</text>
+</g>
+<g style="fill:black">
+  <rect x="12" y="4" width="3" height="2"
+        style="fill:#C1EAE1" />
+  <text x="12.15" y="4.15"
+        class="dec">20</text>
+  <text x="14.85" y="4.15"
+        class="hex">14</text>
+  <text x="13.5" y="5.85"
+        class="label">#C1EAE1</text>
+  <text x="13.5" y="5.5"
+        class="label">lab(90, -15, 0)</text>
+</g>
+<g style="fill:black">
+  <rect x="15" y="4" width="3" height="2"
+        style="fill:#CFF5FF" />
+  <text x="15.15" y="4.15"
+        class="dec">21</text>
+  <text x="17.85" y="4.15"
+        class="hex">15</text>
+  <text x="16.5" y="5.85"
+        class="label">#CFF5FF</text>
+  <text x="16.5" y="5.5"
+        class="label">lab(95, -5, -20)</text>
+</g>
+<g style="fill:black">
+  <rect x="18" y="4" width="3" height="2"
+        style="fill:#E8DAFF" />
+  <text x="18.15" y="4.15"
+        class="dec">22</text>
+  <text x="20.85" y="4.15"
+        class="hex">16</text>
+  <text x="19.5" y="5.85"
+        class="label">#E8DAFF</text>
+  <text x="19.5" y="5.5"
+        class="label">lab(90, 15, -25)</text>
+</g>
+<g style="fill:black">
+  <rect x="21" y="4" width="3" height="2"
+        style="fill:#ABABAB" />
+  <text x="21.15" y="4.15"
+        class="dec">23</text>
+  <text x="23.85" y="4.15"
+        class="hex">17</text>
+  <text x="22.5" y="5.85"
+        class="label">#ABABAB</text>
+  <text x="22.5" y="5.5"
+        class="label">lab(70, 0, 0)</text>
+</g>
+<g style="fill:white">
+  <rect x="0" y="6" width="3" height="2"
+        style="fill:#C7789A" />
+  <text x="0.15" y="6.15"
+        class="dec">24</text>
+  <text x="2.85" y="6.15"
+        class="hex">18</text>
+  <text x="1.5" y="7.85"
+        class="label">#C7789A</text>
+  <text x="1.5" y="7.5"
+        class="label">lab(60, 35, -5)</text>
+</g>
+<g style="fill:white">
+  <rect x="3" y="6" width="3" height="2"
+        style="fill:#CD7A66" />
+  <text x="3.15" y="6.15"
+        class="dec">25</text>
+  <text x="5.85" y="6.15"
+        class="hex">19</text>
+  <text x="4.5" y="7.85"
+        class="label">#CD7A66</text>
+  <text x="4.5" y="7.5"
+        class="label">lab(60, 30, 25)</text>
+</g>
+<g style="fill:black">
+  <rect x="6" y="6" width="3" height="2"
+        style="fill:#BC9855" />
+  <text x="6.15" y="6.15"
+        class="dec">26</text>
+  <text x="8.85" y="6.15"
+        class="hex">1A</text>
+  <text x="7.5" y="7.85"
+        class="label">#BC9855</text>
+  <text x="7.5" y="7.5"
+        class="label">lab(65, 5, 40)</text>
+</g>
+<g style="fill:black">
+  <rect x="9" y="6" width="3" height="2"
+        style="fill:#7BA979" />
+  <text x="9.15" y="6.15"
+        class="dec">27</text>
+  <text x="11.85" y="6.15"
+        class="hex">1B</text>
+  <text x="10.5" y="7.85"
+        class="label">#7BA979</text>
+  <text x="10.5" y="7.5"
+        class="label">lab(65, -25, 20)</text>
+</g>
+<g style="fill:white">
+  <rect x="12" y="6" width="3" height="2"
+        style="fill:#5E9A98" />
+  <text x="12.15" y="6.15"
+        class="dec">28</text>
+  <text x="14.85" y="6.15"
+        class="hex">1C</text>
+  <text x="13.5" y="7.85"
+        class="label">#5E9A98</text>
+  <text x="13.5" y="7.5"
+        class="label">lab(60, -20, -5)</text>
+</g>
+<g style="fill:black">
+  <rect x="15" y="6" width="3" height="2"
+        style="fill:#66A5C9" />
+  <text x="15.15" y="6.15"
+        class="dec">29</text>
+  <text x="17.85" y="6.15"
+        class="hex">1D</text>
+  <text x="16.5" y="7.85"
+        class="label">#66A5C9</text>
+  <text x="16.5" y="7.5"
+        class="label">lab(65, -10, -25)</text>
+</g>
+<g style="fill:white">
+  <rect x="18" y="6" width="3" height="2"
+        style="fill:#9986C5" />
+  <text x="18.15" y="6.15"
+        class="dec">30</text>
+  <text x="20.85" y="6.15"
+        class="hex">1E</text>
+  <text x="19.5" y="7.85"
+        class="label">#9986C5</text>
+  <text x="19.5" y="7.5"
+        class="label">lab(60, 20, -30)</text>
+</g>
+<g style="fill:white">
+  <rect x="21" y="6" width="3" height="2"
+        style="fill:#5E5E5E" />
+  <text x="21.15" y="6.15"
+        class="dec">31</text>
+  <text x="23.85" y="6.15"
+        class="hex">1F</text>
+  <text x="22.5" y="7.85"
+        class="label">#5E5E5E</text>
+  <text x="22.5" y="7.5"
+        class="label">lab(40, 0, 0)</text>
+</g>
+
+</svg>

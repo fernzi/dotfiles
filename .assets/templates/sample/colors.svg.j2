@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     version="1.1" viewBox="0 0 24 8" width="24in" height="8in">
+
+<style>
+  .dec {
+    font: 0.18pt sans-serif;
+    text-anchor: start;
+    dominant-baseline: hanging;
+  }
+  .hex {
+    font: 0.18pt sans-serif;
+    text-anchor: end;
+    dominant-baseline: hanging;
+  }
+  .label {
+    font: 0.18pt sans-serif;
+    text-anchor: middle;
+    dominant-baseline: baseline;
+  }
+</style>
+{% for c in color -%}
+  {%- set dx = loop.index0 % 8 * 3 %}
+  {%- set dy = loop.index0 // 8 * 2 %}
+  {%- set cl = 'lab({:.2g}, {:.2g}, {:.2g})'.format(c.l, c.a, c.b) %}
+<g style="{{ 'fill:black' if c.l > 60 else 'fill:white' }}">
+  <rect x="{{ dx }}" y="{{ dy }}" width="3" height="2"
+        style="fill:#{{ c.hex }}" />
+  <text x="{{ dx + 0.15 }}" y="{{ dy + 0.15 }}"
+        class="dec">{{ "{:02}".format(loop.index0) }}</text>
+  <text x="{{ dx + 2.85 }}" y="{{ dy + 0.15 }}"
+        class="hex">{{ "{:02X}".format(loop.index0) }}</text>
+  <text x="{{ dx + 1.5 }}" y="{{ dy + 1.85 }}"
+        class="label">#{{ c.hex }}</text>
+  <text x="{{ dx + 1.5 }}" y="{{ dy + 1.5 }}"
+        class="label">{{ cl }}</text>
+</g>
+{%- endfor %}
+
+</svg>

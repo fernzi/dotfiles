@@ -3,7 +3,7 @@
  *********************************************************************/
 
 * {
-{%- for c in colors_hex %}
-  c{{ '{:02}'.format(loop.index0) }}: #{{ c }};
+{%- for c in color %}
+  c{{ '{:02}'.format(loop.index0) }}: #{{ c.hex }};
 {%- endfor %}
 }
