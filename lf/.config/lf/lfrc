@@ -7,7 +7,7 @@ set icons     on
 set shell     'sh'
 set shellopts '-eu'
 set ifs       "\n"
-set previewer ~/.config/lf/preview.sh
+set previewer ~/.config/lf/scripts/preview
 set scrolloff 4
 
 ## Commands ###########################################################
@@ -124,6 +124,7 @@ cmd newfromtemplate ${{
 map gg top
 map ge bottom
 map ga push ''
+map gh cd ~
 map gf jump
 
 map <enter> shell
