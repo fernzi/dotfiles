@@ -24,7 +24,7 @@ cmd open ${{
   esac
 }}
 
-cmd mkd %mkdir -pv "$@"
+cmd mkd %mkdir -pv "$(echo $* | tr ' ' '\ ')"
 
 cmd trash %{{
   if command -v trash-put >/dev/null; then
