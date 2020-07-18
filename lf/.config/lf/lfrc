@@ -18,7 +18,7 @@ cmd open ${{
       $EDITOR $fx ;;
     *)
       for f in $fx; do
-        $OPENER $f > /dev/null 2>&1 &
+        setsid $OPENER $f >/dev/null 2>&1 &
       done
       ;;
   esac
@@ -118,6 +118,9 @@ cmd newfromtemplate ${{
   fi
 }}
 
+cmd guidrag %dragdrop -t 'Copy from…' $fx
+cmd guidrop %dragdrop -t 'Copy here…' | xargs -rI% cp % .
+
 ## Mappings ###########################################################
 
 ### Navigation ###
@@ -138,6 +141,9 @@ map O $mimeopen --ask $f
 map a push :mkd<space>
 map A newfromtemplate
 map <delete> trash
+
+map .. guidrag
+map ., guidrop
 
 ## Startup ############################################################
 

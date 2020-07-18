@@ -1,0 +1,172 @@
+#!/usr/bin/env python3
+# Copyright © 2020 Fern Zapata
+# This source code form is subject to the terms of the ISC License.
+# If a copy of the license was not distributed with this file, you
+# can obtain one at https://opensource.org/licenses/ISC/.
+
+import sys
+import gi
+gi.require_version("Gtk", "3.0")
+from gi.repository import GLib, Gio, Gtk, Gdk, GObject
+
+
+TARGETS = [
+  Gtk.TargetEntry.new('text/uri-list', Gtk.TargetFlags.OTHER_APP, 1),
+]
+
+
+class DragArea(Gtk.TreeView):
+  def __init__(self, files):
+    super().__init__(
+      model=Gtk.ListStore(str, str),
+      headers_visible=False,
+      search_column=1,
+    )
+
+    self.get_selection().set_mode(Gtk.SelectionMode.MULTIPLE)
+    self.get_selection().unselect_all()
+
+    self.insert_column_with_attributes(-1,
+      'Icon',
+      Gtk.CellRendererPixbuf(stock_size=Gtk.IconSize.DND),
+      icon_name=0,
+    )
+    self.insert_column_with_attributes(-1,
+      'URI',
+      Gtk.CellRendererText(),
+      text=1,
+    )
+
+    for f in files:
+      self.add_file(f)
+
+    self.enable_model_drag_source(
+      Gdk.ModifierType.BUTTON1_MASK,
+      TARGETS,
+      Gdk.DragAction.COPY | Gdk.DragAction.LINK | Gdk.DragAction.ASK,
+    )
+    self.connect('drag-data-get', self.on_drag_data_get)
+
+  def on_drag_data_get(self, widget, context, data, info, time):
+    model, paths = self.get_selection().get_selected_rows()
+    iters = map(model.get_iter, paths)
+    uris = [model.get_value(i, 1) for i in iters]
+    data.set_uris(uris)
+
+  def add_file(self, gfile):
+    icon = gfile.query_info('*', 0, None).get_icon().get_names()[0]
+    self.get_model().append((icon, gfile.get_uri()))
+
+
+class DropArea(Gtk.Box):
+  __gsignals__ = {
+    'files-received': (GObject.SignalFlags.RUN_LAST, None, [object]),
+  }
+
+  def __init__(self):
+    super().__init__()
+
+    self.add(Gtk.Image(
+      icon_name='folder-open-symbolic',
+      icon_size=Gtk.IconSize.DIALOG,
+      margin=32,
+    ))
+
+    self.drag_dest_set(Gtk.DestDefaults.ALL, TARGETS, Gdk.DragAction.COPY)
+    self.connect('drag-data-received', self.on_drag_data_received)
+
+  def on_drag_data_received(self, widget, context, x, y, data, info, time):
+    uris = map(Gio.File.new_for_uri, data.get_uris())
+    self.emit('files-received', uris)
+
+
+class DragDropWindow(Gtk.ApplicationWindow):
+  def __init__(self, files, multiple, uris):
+    super().__init__(
+      title='Drag & Drop',
+      resizable=False,
+    )
+
+    self._uris = uris
+    self._mult = multiple
+
+    self.add_action_entries([
+      ('cancel', self.do_cancel),
+    ])
+
+    if files:
+      drag = DragArea(files)
+      self.add(drag)
+    else:
+      area = DropArea()
+      area.connect('files-received', self.on_files_received)
+      self.add(area)
+
+  def on_files_received(self, widget, files):
+    if self._uris:
+      paths = [f.get_uri() for f in files]
+    else:
+      paths = [f.get_path() for f in files]
+
+    print(*paths, sep='\n')
+
+    if not self._mult:
+      self.destroy()
+
+  def do_cancel(self, *_):
+    self.destroy()
+
+
+class DragDrop(Gtk.Application):
+  _files = []
+
+  def __init__(self):
+    super().__init__(
+      flags=Gio.ApplicationFlags.NON_UNIQUE |
+            Gio.ApplicationFlags.HANDLES_OPEN
+    )
+
+    self.set_accels_for_action('win.cancel', ['Escape'])
+
+    self.add_main_option('multiple', b'm',
+      GLib.OptionFlags.NONE,
+      GLib.OptionArg.NONE,
+      "Don't exit after a single drop",
+      None,
+    )
+    self.add_main_option('uris', b'u',
+      GLib.OptionFlags.NONE,
+      GLib.OptionArg.NONE,
+      "Print URIs instead of plain paths",
+      None,
+    )
+    self.add_main_option('title', b't',
+      GLib.OptionFlags.NONE,
+      GLib.OptionArg.STRING,
+      'Set the window title',
+      'TITLE',
+    )
+
+  def do_activate(self):
+    self.window = DragDropWindow(self._files, self._multi, self._uris)
+    if self._title is not None:
+      self.window.set_title(self._title)
+    self.add_window(self.window)
+    self.window.show_all()
+
+  def do_handle_local_options(self, opts):
+    self._multi = opts.contains('multiple')
+    self._uris = opts.contains('uris')
+    try:
+      self._title = opts.lookup_value('title').get_string()
+    except AttributeError:
+      self._title = None
+    return -1
+
+  def do_open(self, files, n_files, hint):
+    self._files = [f for f in files if f.query_exists()]
+    self.activate()
+
+
+if __name__ == '__main__':
+  DragDrop().run(sys.argv)
