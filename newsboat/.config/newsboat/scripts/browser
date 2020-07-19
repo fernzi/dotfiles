@@ -5,17 +5,12 @@
 
 set -Cf
 
-if [ "$(uname)" = Darwin ]; then
+if [ -n "$OPENER" ]; then
+  cmd="$OPENER"
+elif command -v open >/dev/null 2>&1; then
   cmd='open'
-else
-  case "$XDG_SESSION_DESKTOP" in
-    gnome|pantheon|budgie*)
-      cmd='gio open' ;;
-    xfce)
-      cmd='exo-open' ;;
-    *)
-      cmd='xdg-open' ;;
-  esac
+elif command -v xdg-open >/dev/null 2>&1; then
+  cmd='xdg-open'
 fi
 
-setsid $cmd "$@" &>/dev/null &
+setsid "$cmd" "$@" >/dev/null 2>&1 &

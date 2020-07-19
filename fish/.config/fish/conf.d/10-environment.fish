@@ -18,6 +18,10 @@ for editor in kak nvim vim vi micro nano
   end
 end
 
+if command -q open
+  set -x OPENER open
+end
+
 if command -qs gpgconf
   set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
 end
