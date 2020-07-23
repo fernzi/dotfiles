@@ -14,7 +14,6 @@ local util = require('util')
 local keys = require('keys')
 local titlebar = require('decorations.default')
 local setupbar = require('bars.default')
-local autostart = require('autostart')
 
 local dpi = beautiful.xresources.apply_dpi
 
@@ -158,6 +157,6 @@ end)
 
 -- Autostart ----------------------------------------------------------
 
-for i,v in ipairs(autostart) do
+for i,v in ipairs(settings.autostart) do
   awful.spawn.once(v)
 end

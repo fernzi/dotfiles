@@ -14,4 +14,10 @@ return {
     'a', 'o', 'e', 'u', 'i',
     'd', 'h', 't', 'n', 's',
   },
+  autostart = {
+    'setxkbmap -option compose:ralt',
+    'ibus-daemon -dxr',
+    'picom --experimental-backends',
+    'nm-applet',
+  },
 }
