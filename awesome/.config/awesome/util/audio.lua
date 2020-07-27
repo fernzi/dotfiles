@@ -4,8 +4,10 @@
 -- Awesome Window Manager - Audio Utilities
 -----------------------------------------------------------------------
 
-local fs = require 'gears.filesystem'
-local lgi = require 'lgi'
+local fs = require('gears.filesystem')
+local awful = require('awful')
+local naughty = require('naughty')
+local lgi = require('lgi')
 local gsound = lgi.GSound
 
 local audio = {}
