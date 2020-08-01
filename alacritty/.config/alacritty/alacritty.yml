@@ -7,10 +7,6 @@ scrolling:
   multiplier: 4
   autoscroll: false
 
-url:
-  # launcher: xdg-open
-  modifiers: Control
-
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>"
   save_to_clipboard:     false
@@ -20,8 +16,6 @@ live_config_reload: true
 # shell:
 #   program: /usr/bin/fish
 #   args:    []
-
-working_directory: None
 
 ## Appearance #########################################################
 
@@ -44,15 +38,10 @@ font:
   normal:
     family: Iosevka Term SS09
   size: 13
-  # offset:
-  #   x: 0
-  #   y: 6
-  # glyph_offset:
-  #   x: 0
-  #   y: 2
+  offset:
+    x: 0
+    y: 4
   use_thin_strokes: true
-
-dynamic_title: true
 
 cursor:
   style: Underline
@@ -100,8 +89,13 @@ colors:
     cyan:       '#5E9A98'
     white:      '#C6C6C6'
 
-visual_bell:
+bell:
   duration: 0
+  command:
+    program: gsound-play
+    args:
+      - -i
+      - bell
 
 ## Mouse ##############################################################
 
@@ -111,6 +105,9 @@ mouse:
   triple_click:
     threshold: 300
   hide_when_typing: true
+  url:
+    launcher:
+      program: open
 
 mouse_bindings:
   - mouse:  Middle
