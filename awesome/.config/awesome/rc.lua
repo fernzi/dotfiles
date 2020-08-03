@@ -109,6 +109,17 @@ awful.rules.rules = {
     },
   },
   {
+    rule = {
+      class = 'kruler',
+    },
+    properties = {
+      floating = true,
+      titlebars_enabled = false,
+      border_width = 0,
+      placement = awful.placement.under_mouse,
+    },
+  },
+  {
     rule_any = {
       instance = {
         'pinentry',
