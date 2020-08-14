@@ -9,7 +9,7 @@ return {
   launcher = 'rofi -show drun',
   window_switcher = 'rofi -show window',
   file_manager = 'thunar',
-  wallpaper = 'Pictures/wallpapers/other/deco.png',
+  wallpaper = 'Pictures/Wallpapers/Other/deco.png',
   tags = {
     'a', 'o', 'e', 'u', 'i',
     'd', 'h', 't', 'n', 's',

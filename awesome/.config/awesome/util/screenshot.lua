@@ -19,8 +19,10 @@ local screenshot = {}
 
 -----------------------------------------------------------------------
 
-local screenshot_path = path.pictures .. 'screenshots/'
-local screencast_path = path.videos .. 'screencasts/'
+local screenshot_path = settings.screenshot_path
+                     or path.pictures .. 'Screenshots/'
+local screencast_path = settings.screencast_path
+                     or path.videos .. 'Screencasts/'
 
 local function _run(command, file)
   gears.filesystem.make_parent_directories(file)
