@@ -93,7 +93,10 @@ cmd bulkrename ${{
   rm $ofile $rfile $efile
 }}
 
-cmd jump $lf -remote "send $id select \"$(rg --files | fzy)\""
+cmd jump ${{
+  [ "$lf_hidden" = true ] && hidden='--hidden' || hidden=
+  lf -remote "send $id select \"$(rg --files $hidden | fzy)\""
+}}
 
 cmd recol %{{
   set -f
