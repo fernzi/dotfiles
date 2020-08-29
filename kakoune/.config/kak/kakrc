@@ -48,6 +48,10 @@ hook global WinCreate .*\.rasi %{
   set-option buffer filetype 'css'
 }
 
+hook global WinCreate .*\.ebuild %{
+  set-option buffer filetype 'sh'
+}
+
 hook global WinCreate .*/lfrc %{
   set-option buffer filetype 'sh'
 }
