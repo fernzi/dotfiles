@@ -1,0 +1,3 @@
+#!/bin/sh
+[ -r conf ] && . ./conf
+exec syncthing -no-browser -no-restart -logflags=0 $OPTS
