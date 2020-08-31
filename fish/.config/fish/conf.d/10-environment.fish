@@ -40,6 +40,7 @@ set -x XMODIFIERS @im=ibus
 set -x GTK_IM_MODULE ibus
 set -x QT_IM_MODULE ibus
 
+set -x PASSWORD_STORE_DIR ~/.local/share/password-store
 set -x PARALLEL_HOME ~/.config/parallel
 set -x LESSHISTFILE ~/.cache/less.history
 set -x LESS -R
