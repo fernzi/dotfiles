@@ -14,6 +14,6 @@ function fish_right_prompt
     printf ' %s %s ' (git rev-parse --abbrev-ref @ 2>/dev/null) "$gstatus"
   end
   set_color -r blue
-  printf ' %s ' (hostname -s)
+  printf " $hostname "
   set_color normal
 end

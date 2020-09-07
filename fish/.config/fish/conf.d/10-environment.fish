@@ -65,6 +65,6 @@ if test "$XDG_SESSION_TYPE" != wayland
   set -x GDK_DPI_SCALE -1
 end
 
-if status --is-login
+if status --is-login && set -q DISPLAY
   dbus-update-activation-environment --systemd --all
 end
