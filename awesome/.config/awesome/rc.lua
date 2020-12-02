@@ -29,20 +29,10 @@ awful.layout.layouts = {
 
 awful.screen.connect_for_each_screen(function(scn)
   util.set_wallpaper(scn)
-
-  scn.padding = {
-    left = dpi(80),
-    bottom = dpi(24),
-    top = dpi(24),
-    right = dpi(80),
-  }
-
   awful.tag(settings.tags, scn, awful.layout.layouts[1])
-
-  setupbar(scn)
 end)
 
-beautiful.useless_gap = 24
+beautiful.useless_gap = 32
 
 -- Rules --------------------------------------------------------------
 
@@ -61,6 +51,18 @@ awful.rules.rules = {
       screen = awful.screen.preferred,
       placement = awful.placement.no_overlap
                 + awful.placement.no_offscreen,
+    },
+  },
+  {
+    rule_any = {
+      type = {
+        'dock',
+        'desktop',
+      },
+    },
+    properties = {
+      border_width = 0,
+      sticky = true,
     },
   },
   {
@@ -100,7 +102,7 @@ awful.rules.rules = {
   },
   {
     rule = {
-      class = 'Dragdrop',
+      class = 'dragdrop',
     },
     properties = {
       placement = function(c)

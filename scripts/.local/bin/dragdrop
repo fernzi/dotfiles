@@ -1,172 +1,140 @@
 #!/usr/bin/env python3
 # Copyright © 2020 Fern Zapata
-# This source code form is subject to the terms of the ISC License.
+# This Source Code Form is subject to the terms of the ISC License.
 # If a copy of the license was not distributed with this file, you
 # can obtain one at https://opensource.org/licenses/ISC/.
 
-import sys
-import gi
-gi.require_version("Gtk", "3.0")
-from gi.repository import GLib, Gio, Gtk, Gdk, GObject
+from PySide2 import QtCore as QtC, QtGui as QtG, QtWidgets as QtW
+from PySide2.QtCore import Qt
 
 
-TARGETS = [
-  Gtk.TargetEntry.new('text/uri-list', Gtk.TargetFlags.OTHER_APP, 1),
-]
+class DragArea(QtW.QListWidget):
+  def __init__(self, files, parent=None):
+    super().__init__(parent)
+    self.setSelectionMode(self.ExtendedSelection)
+    self.setDragDropMode(self.DragOnly)
+    self.setIconSize(QtC.QSize(32, 32))
+    self.setFrameShape(self.NoFrame)
+    self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+    self.setSizeAdjustPolicy(self.AdjustToContents)
+    self.itemDoubleClicked.connect(self.onItemDoubleClicked)
+    self.addFiles(files)
 
-
-class DragArea(Gtk.TreeView):
-  def __init__(self, files):
-    super().__init__(
-      model=Gtk.ListStore(str, str),
-      headers_visible=False,
-      search_column=1,
+  def sizeHint(self):
+    screenh = self.screen().size().height()
+    return QtC.QSize(
+      self.sizeHintForColumn(0),
+      min(self.sizeHintForRow(0) * self.count(), screenh // 3),
     )
 
-    self.get_selection().set_mode(Gtk.SelectionMode.MULTIPLE)
-    self.get_selection().unselect_all()
+  def startDrag(self, actions):
+    items = self.selectedItems()
+    mime = QtC.QMimeData()
+    mime.setUrls([i.data(Qt.UserRole) for i in items])
+    drag = QtG.QDrag(self)
+    drag.setMimeData(mime)
+    drag.exec_(Qt.CopyAction | Qt.LinkAction)
 
-    self.insert_column_with_attributes(-1,
-      'Icon',
-      Gtk.CellRendererPixbuf(stock_size=Gtk.IconSize.DND),
-      icon_name=0,
-    )
-    self.insert_column_with_attributes(-1,
-      'URI',
-      Gtk.CellRendererText(),
-      text=1,
-    )
-
+  def addFiles(self, files):
+    db = QtC.QMimeDatabase()
     for f in files:
-      self.add_file(f)
+      url = QtC.QUrl.fromLocalFile(f.canonicalFilePath())
+      mime = db.mimeTypeForFile(f)
+      icon = QtG.QIcon.fromTheme(mime.iconName())
+      item = QtW.QListWidgetItem(icon, f.filePath(), self)
+      item.setData(Qt.UserRole, url)
 
-    self.enable_model_drag_source(
-      Gdk.ModifierType.BUTTON1_MASK,
-      TARGETS,
-      Gdk.DragAction.COPY | Gdk.DragAction.LINK | Gdk.DragAction.ASK,
-    )
-    self.connect('drag-data-get', self.on_drag_data_get)
-
-  def on_drag_data_get(self, widget, context, data, info, time):
-    model, paths = self.get_selection().get_selected_rows()
-    iters = map(model.get_iter, paths)
-    uris = [model.get_value(i, 1) for i in iters]
-    data.set_uris(uris)
-
-  def add_file(self, gfile):
-    icon = gfile.query_info('*', 0, None).get_icon().get_names()[0]
-    self.get_model().append((icon, gfile.get_uri()))
+  def onItemDoubleClicked(self, item):
+    QtG.QDesktopServices.openUrl(item.data(Qt.UserRole))
 
 
-class DropArea(Gtk.Box):
-  __gsignals__ = {
-    'files-received': (GObject.SignalFlags.RUN_LAST, None, [object]),
-  }
+class DropArea(QtW.QWidget):
+  filesReceived = QtC.Signal(list)
 
-  def __init__(self):
-    super().__init__()
+  def __init__(self, parent=None):
+    super().__init__(parent)
+    self.setAcceptDrops(True)
+    layout = QtW.QVBoxLayout(self)
+    layout.setContentsMargins(*[32] * 4)
+    layout.setAlignment(Qt.AlignCenter)
+    icon = QtG.QIcon.fromTheme('folder-open-symbolic')
+    label = QtW.QLabel()
+    label.setPixmap(icon.pixmap(48, 48))
+    layout.addWidget(label, Qt.AlignCenter)
 
-    self.add(Gtk.Image(
-      icon_name='folder-open-symbolic',
-      icon_size=Gtk.IconSize.DIALOG,
-      margin=32,
-    ))
+  def dragEnterEvent(self, e):
+    if e.mimeData().hasUrls():
+      e.accept()
+    else:
+      e.ignore()
 
-    self.drag_dest_set(Gtk.DestDefaults.ALL, TARGETS, Gdk.DragAction.COPY)
-    self.connect('drag-data-received', self.on_drag_data_received)
-
-  def on_drag_data_received(self, widget, context, x, y, data, info, time):
-    uris = map(Gio.File.new_for_uri, data.get_uris())
-    self.emit('files-received', uris)
+  def dropEvent(self, e):
+    self.filesReceived.emit(e.mimeData().urls())
 
 
-class DragDropWindow(Gtk.ApplicationWindow):
-  def __init__(self, files, multiple, uris):
-    super().__init__(
-      title='Drag & Drop',
-      resizable=False,
-    )
-
+class DragDropWindow(QtW.QDialog):
+  def __init__(self, files, multiple, uris, parent=None):
+    super().__init__(parent)
+    self._multiple = multiple
     self._uris = uris
-    self._mult = multiple
-
-    self.add_action_entries([
-      ('cancel', self.do_cancel),
-    ])
-
+    self.setWindowTitle('Drag & Drop')
+    layout = QtW.QVBoxLayout(self)
+    layout.setContentsMargins(*[0] * 4)
     if files:
-      drag = DragArea(files)
-      self.add(drag)
+      area = DragArea(files)
     else:
       area = DropArea()
-      area.connect('files-received', self.on_files_received)
-      self.add(area)
+      area.filesReceived.connect(self.onFilesReceived)
+    layout.addWidget(area)
 
-  def on_files_received(self, widget, files):
+  def onFilesReceived(self, files):
     if self._uris:
-      paths = [f.get_uri() for f in files]
+      paths = map(QtC.QUrl.url, files)
     else:
-      paths = [f.get_path() for f in files]
-
+      paths = map(QtC.QUrl.path, files)
     print(*paths, sep='\n')
-
-    if not self._mult:
-      self.destroy()
-
-  def do_cancel(self, *_):
-    self.destroy()
+    if not self._multiple:
+      self.close()
 
 
-class DragDrop(Gtk.Application):
-  _files = []
-
-  def __init__(self):
-    super().__init__(
-      flags=Gio.ApplicationFlags.NON_UNIQUE |
-            Gio.ApplicationFlags.HANDLES_OPEN
+class DragDropApp(QtW.QApplication):
+  def __init__(self, argv):
+    self.setAttribute(Qt.AA_EnableHighDpiScaling)
+    self.setAttribute(Qt.AA_UseHighDpiPixmaps)
+    super().__init__(argv)
+    self.opt = QtC.QCommandLineParser()
+    self.opt.setApplicationDescription('Drag and drop in the terminal')
+    self.opt.addHelpOption()
+    self.opt.addPositionalArgument('files',
+      'Files to display',
+      '[files...]'
     )
+    self.opt.addOption(QtC.QCommandLineOption(['m', 'multiple'],
+        "Don't exit after a single drop",
+    ))
+    self.opt.addOption(QtC.QCommandLineOption(['u', 'uris'],
+        'Print URIs instead of plain paths',
+    ))
+    self.opt.addOption(QtC.QCommandLineOption(['t', 'title'],
+        'Set the dialog title',
+        'TITLE',
+    ))
+    self.opt.process(self)
 
-    self.set_accels_for_action('win.cancel', ['Escape'])
-
-    self.add_main_option('multiple', b'm',
-      GLib.OptionFlags.NONE,
-      GLib.OptionArg.NONE,
-      "Don't exit after a single drop",
-      None,
+  def exec_(self):
+    args = self.opt.positionalArguments()
+    files = [f for f in map(QtC.QFileInfo, args) if f.exists()]
+    win = DragDropWindow(
+      files,
+      self.opt.isSet('multiple'),
+      self.opt.isSet('uris')
     )
-    self.add_main_option('uris', b'u',
-      GLib.OptionFlags.NONE,
-      GLib.OptionArg.NONE,
-      "Print URIs instead of plain paths",
-      None,
-    )
-    self.add_main_option('title', b't',
-      GLib.OptionFlags.NONE,
-      GLib.OptionArg.STRING,
-      'Set the window title',
-      'TITLE',
-    )
-
-  def do_activate(self):
-    self.window = DragDropWindow(self._files, self._multi, self._uris)
-    if self._title is not None:
-      self.window.set_title(self._title)
-    self.add_window(self.window)
-    self.window.show_all()
-
-  def do_handle_local_options(self, opts):
-    self._multi = opts.contains('multiple')
-    self._uris = opts.contains('uris')
-    try:
-      self._title = opts.lookup_value('title').get_string()
-    except AttributeError:
-      self._title = None
-    return -1
-
-  def do_open(self, files, n_files, hint):
-    self._files = [f for f in files if f.query_exists()]
-    self.activate()
+    if self.opt.isSet('title'):
+      win.setWindowTitle(self.opt.value('title'))
+    win.show()
+    return super().exec_()
 
 
 if __name__ == '__main__':
-  DragDrop().run(sys.argv)
+  import sys
+  sys.exit(DragDropApp(sys.argv).exec_())
