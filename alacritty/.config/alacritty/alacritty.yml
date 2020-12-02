@@ -128,7 +128,7 @@ key_bindings:
   - key:    Equals
     mods:   Control
     action: IncreaseFontSize
-  - key:    Subtract
+  - key:    Minus
     mods:   Control
     action: DecreaseFontSize
   - key:    Key0
