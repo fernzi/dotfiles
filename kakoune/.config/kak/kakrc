@@ -2,8 +2,6 @@
 # Kakoune User Configuration
 #######################################################################
 
-colorscheme fern
-
 add-highlighter global/ number-lines -relative -hlcursor -separator '▕ '
 add-highlighter global/ wrap -word
 add-highlighter global/ show-matching
@@ -11,10 +9,11 @@ add-highlighter global/ dynregex '%reg{/}' 0:+u
 add-highlighter global/ line '%val{cursor_line}' LineCursor
 add-highlighter global/ column 72 WrapColumn
 add-highlighter global/ column 80 WrapColumn
+add-highlighter global/ regex (TODO|FIXME):? 0:rgb:F6CE88+brf
 
 set-option global ui_options ncurses_assistant=cat
-set-option global scrolloff  4,8
-set-option global grepcmd    'ag --column'
+set-option global scrolloff 4,8
+set-option global grepcmd 'rg --column'
 
 hook global WinSetOption filetype=c %{
   add-highlighter window/ regex '[X_]{7}' 0:comment
@@ -69,20 +68,27 @@ hook global WinSetOption filetype=c(pp)? %{
   clang-enable-diagnostics
 }
 
-hook global WinSetOption filetype=python %{
-  jedi-enable-autocomplete
-  lint-enable
-  set-option global lintcmd 'flake8'
-}
-
 hook global WinSetOption filetype=(git-commit|mail|troff) %{
   set-option window autowrap_column 72
 }
+
+## Language Server ####################################################
+
+evaluate-commands %sh{kak-lsp --kakoune -s $kak_session}
+
+set-option global lsp_diagnostic_line_error_sign '●'
+set-option global lsp_diagnostic_line_warning_sign '○'
+set-option global lsp_hover_anchor true
+set-option global lsp_hover_max_lines 7
+
+lsp-auto-hover-enable
+lsp-enable
 
 ## Mappings ###########################################################
 
 map global normal <ret> ':w<ret>'
 map global normal '#'   ':comment-line<ret>'
+map global normal <c-w> ':delete-buffer<ret>'
 map global normal <c-q> ':quit<ret>'
 
 map global user   y     ':clipboard-yank<ret>'
@@ -93,6 +99,8 @@ map global user   R     ':clipboard-replace<ret>'
 map global normal <c-a> ':math +1<ret>'
 map global normal <c-x> ':math -1<ret>'
 
+map global normal \' ':enter-user-mode lsp<ret>'
+
 ## Commands ###########################################################
 
 define-command mkd %{
@@ -100,3 +108,5 @@ define-command mkd %{
     mkdir -p ${kak_buffile%/*}
   }
 }
+
+colorscheme fern

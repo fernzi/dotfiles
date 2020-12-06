@@ -55,6 +55,12 @@ face global MatchingChar        rgb:E2E2E2,rgb:404040+b
 face global BufferPadding       rgb:404040,rgb:202020
 face global Whitespace          rgb:525252+f
 
+### Language Server ###
+
+face global DiagnosticError     rgb:FFAED0+u
+face global DiagnosticWarning   rgb:F6CE88+u
+face global LineFlagErrors      rgb:FFAED0+d
+
 ### Custom ###
 
 face global LineCursor          default,rgb:303030
