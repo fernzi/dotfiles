@@ -2,6 +2,7 @@ include "%L"
 
 <Multi_key> <3> <3> : "Ɛ"
 <Multi_key> <w> <w> : "ω"
+<Multi_key> <w> <period> : "ᆺ"
 <Multi_key> <O> <asterisk> : "◕"
 <Multi_key> <asterisk> <asterisk> : "★"
 <Multi_key> <asterisk> <O> : "✪"

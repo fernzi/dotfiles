@@ -99,6 +99,8 @@ map global user   R     ':clipboard-replace<ret>'
 map global normal <c-a> ':math +1<ret>'
 map global normal <c-x> ':math -1<ret>'
 
+map -docstring 'rename symbol' \
+  global lsp R ':lsp-rename-prompt<ret>'
 map global normal \' ':enter-user-mode lsp<ret>'
 
 ## Commands ###########################################################
