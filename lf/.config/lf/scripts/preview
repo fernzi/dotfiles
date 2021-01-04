@@ -6,7 +6,9 @@
 set -Cfu
 
 readonly WIDTH=$(($(tput cols) / 2))
-readonly HEIGHT=$(($(tput lines) - 2))
+readonly HEIGHT=$2
+
+readonly T_SEP=$(printf '\37')
 
 preview_txt() {
   if command -v highlight >/dev/null; then
@@ -24,6 +26,11 @@ preview_txt() {
 
 preview_pdf() {
   if command -v pdftotext >/dev/null; then
+    pdfinfo "$1" \
+    | grep -E '^(Title|Author|CreationDate)' \
+    | sed "s/:\s*/$T_SEP/" \
+    | column -ts "$T_SEP" -o ' : '
+    echo
     pdftotext -l 8 -nopgbrk -q -- "$1" -
   else
     echo '(document)'
@@ -46,11 +53,10 @@ preview_img() {
 
 preview_snd() {
   if command -v ffmpeg >/dev/null; then
-    readonly c=$(printf '\01')
     ffmpeg -hide_banner -v panic -i "$1" -f ffmetadata - \
     | grep -i '^\(artist\|title\|album\|date\)=' \
-    | sed "s/=/$c/" \
-    | column -t -s "$c" -o ' : '
+    | sed "s/=/$T_SEP/" \
+    | column -ts "$T_SEP" -o ' : '
   else
     echo '(audio)'
   fi
@@ -77,7 +83,7 @@ preview_arc() {
 preview_sym() {
   readonly nf=$(readlink "$1")
   if [ $(file -b --mime-type -- "$nf") != 'inode/symlink' ]; then
-    exec "$0" "$nf"
+    exec "$0" "$nf" "$HEIGHT"
   else
     echo '(symlink)'
   fi

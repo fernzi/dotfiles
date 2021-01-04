@@ -10,7 +10,7 @@ set ifs       "\n"
 set previewer ~/.config/lf/scripts/preview
 set scrolloff 4
 
-## Commands ###########################################################
+# Commands ############################################################
 
 cmd open ${{
   case $(file -b --mime-type -- $f) in
@@ -24,7 +24,11 @@ cmd open ${{
   esac
 }}
 
-cmd mkd %mkdir -pv "$(echo $* | tr ' ' '\ ')"
+cmd mkd %{{
+  new=$(echo $* | tr ' ' '\ ')
+  mkdir -pv "$new"
+  lf -remote "send $id select \"$new\""
+}}
 
 cmd trash %{{
   if command -v trash-put >/dev/null; then
@@ -41,7 +45,7 @@ cmd trash %{{
   fi
 }}
 
-cmd extract ${{
+cmd extract %{{
   set -f
   if command -v atool >/dev/null; then
     atool --extract -- "$f"
@@ -63,43 +67,30 @@ cmd extract ${{
   fi
 }}
 
-cmd tgz ${{
-  set -f
-  tar -czf "$1.tar.gz" "$fx"
-}}
+cmd tgz %tar -czf "$1.tgz" "$fx"
+cmd zip %zip -r "$1.zip" "$fx"
 
-cmd zip ${{
-  set -f
-  zip -r "$1.zip" "$fx"
-}}
-
-cmd bulkrename ${{
-  set -f
+cmd bulk-rename ${{
   LFDIR="${XDG_RUNTIME_DIR:-/tmp/$USER}/lf"
-  ofile=$(mktemp -p "$LFDIR" rename.ori.XXXX)
-  rfile=$(mktemp -p "$LFDIR" rename.new.XXXX)
-  efile=$(mktemp -p "$LFDIR" rename.exe.XXXX.sh)
-  realpath --relative-to "$PWD" $fx | tee "$ofile" > "$rfile"
-  $EDITOR $rfile
-  printf '# The following commands will be executed.\n' >> "$efile"
-  printf '# Clear the file to abort.\n\n' >> "$efile"
-  while read old <&3 && read new <&4; do
-    if [ "$old" != "$new" ]; then
-      printf "mv -- '%s' '%s'\\n" "$old" "$new" >> "$efile"
-    fi
-  done 3< "$ofile" 4< "$rfile"
-  $EDITOR "$efile"
-  sh "$efile"
-  rm $ofile $rfile $efile
+  OF=$(mktemp -p "$LFDIR" rename.ori.XXXX)
+  RF=$(mktemp -p "$LFDIR" rename.new.XXXX)
+  EF=$(mktemp -p "$LFDIR" rename.exe.XXXX.sh)
+  realpath --relative-to "$PWD" $fx | tee "$OF" > "$RF"
+  $EDITOR "$RF"
+  paste -d '\n' "$OF" "$RF" \
+  | xargs -d '\n' printf 'mv -- %q %q\n' \
+  | cat ~/.config/lf/templates/bulk-rename.sh - > "$EF"
+  $EDITOR "$EF"
+  $lf_shell "$EF"
+  rm "$OF" "$RF" "$EF"
 }}
 
 cmd jump ${{
-  [ "$lf_hidden" = true ] && hidden='--hidden' || hidden=
-  lf -remote "send $id select \"$(rg --files $hidden | fzy)\""
+  [ "$lf_hidden" = true ] && hidden='--hidden'
+  lf -remote "send $id select \"$(rg --files ${hidden:-} | fzy)\""
 }}
 
 cmd recol %{{
-  set -f
   readonly width=$(tput cols)
   ratios='1:2:3:6'
   if [ $width -le 80 ]; then
@@ -110,23 +101,28 @@ cmd recol %{{
   lf -remote "send $id set ratios $ratios"
 }}
 
-cmd newfromtemplate ${{
-  set -f
-  readonly tdir=${XDG_TEMPLATES_DIR:-$HOME/Templates}
-  readonly tmpf=$(rg -L --files "$tdir" | fzy)
-  readonly newf="new_file.${tmpf##*.}"
-  if [ -r "$tmpf" ]; then
-    cp --no-preserve=all -- "$tmpf" "$newf"
-    lf -remote "send $id select \"$newf\""
+cmd new-from-menu ${{
+  cd "${XDG_TEMPLATES_DIR:-$HOME/Templates}"
+  readonly tmp=$(find -type f,l ! -path '*/.*' | sed s:^./:: | fzy)
+  if [ -r "$tmp" ]; then
+    new="new.${tmp##*.}"
+    lf -remote "send $id push :new-from<space>$tmp<space>$new"
   fi
+}}
+
+cmd new-from %{{
+  tdir="${XDG_TEMPLATES_DIR:-$HOME/Templates}"
+  ~/.config/lf/scripts/make-template "$tdir/$1" -o "$2"
+  lf -remote "send $id select \"$2\""
+  printf 'created `%s` from template `%s`' "$2" "$1"
 }}
 
 cmd guidrag %dragdrop -t 'Copy from…' $fx
 cmd guidrop %dragdrop -t 'Copy here…' | xargs -rI% cp % .
 
-## Mappings ###########################################################
+# Mappings ############################################################
 
-### Navigation ###
+# Navigation
 map gg top
 map ge bottom
 map ga push ''
@@ -140,15 +136,15 @@ map X !$f
 map o &mimeopen $f
 map O $mimeopen --ask $f
 
-### Files ###
+# Files
 map a push :mkd<space>
-map A newfromtemplate
+map A new-from-menu
 map <delete> trash
 
 map .. guidrag
 map ., guidrop
 
-## Startup ############################################################
+# Startup #############################################################
 
 %mkdir -pm 700 ${XDG_RUNTIME_DIR:-/tmp/$USER}/lf
 
