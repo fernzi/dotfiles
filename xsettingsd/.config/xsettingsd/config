@@ -1,0 +1,16 @@
+#######################################################################
+# XSettings
+#######################################################################
+
+Net/ThemeName "Materia"
+Net/IconThemeName "Papirus"
+Net/SoundThemeName "default"
+
+Net/EnableEventSounds 1
+
+# Fonts ###############################################################
+
+Xft/Hinting 1
+Xft/HintStyle "hintslight"
+Xft/Antialias 1
+Xft/RGBA "rgb"
