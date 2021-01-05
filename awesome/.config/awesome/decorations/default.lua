@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 -- Fern Zapata
--- https://github.com/ferzapata/dotfiles
+-- https://github.com/fernzi/dotfiles
 -- Awesome Window Manager - Default Titlebar
 -----------------------------------------------------------------------
 
@@ -16,14 +16,17 @@ local keys = require('keys')
 -----------------------------------------------------------------------
 
 return function(c)
-  awful.titlebar(c):setup {
+  awful.titlebar(c, {
+    size = dpi(32),
+  }):setup {
     {
       {
         widget = wibox.container.margin,
-        right = dpi(64),
-        left = dpi(64),
+        left = dpi(32 * 3 + 8),
+        right = dpi(32 * 3 + 8),
         {
           widget = awful.titlebar.widget.titlewidget(c),
+          font = beautiful.font_title,
           align = 'center',
         }
       },
@@ -31,20 +34,30 @@ return function(c)
     },
     {
       {
-        awful.titlebar.widget.closebutton(c),
-        awful.titlebar.widget.maximizedbutton(c),
-        layout = wibox.layout.fixed.horizontal,
+        widget = wibox.container.margin,
+        left = dpi(4),
+        right = dpi(4),
+        {
+          {
+            awful.titlebar.widget.closebutton(c),
+            awful.titlebar.widget.minimizebutton(c),
+            awful.titlebar.widget.maximizedbutton(c),
+            layout = wibox.layout.fixed.horizontal,
+          },
+          {
+            buttons = keys.title_buttons(c),
+            layout = wibox.layout.fixed.horizontal,
+          },
+          {
+            awful.titlebar.widget.floatingbutton(c),
+            awful.titlebar.widget.ontopbutton(c),
+            awful.titlebar.widget.stickybutton(c),
+            layout = wibox.layout.fixed.horizontal,
+          },
+          layout = wibox.layout.align.horizontal,
+        },
       },
-      {
-        buttons = keys.title_buttons(c),
-        layout = wibox.layout.fixed.horizontal,
-      },
-      {
-        awful.titlebar.widget.stickybutton(c),
-        awful.titlebar.widget.floatingbutton(c),
-        layout = wibox.layout.fixed.horizontal,
-      },
-      layout = wibox.layout.align.horizontal,
+      layout = wibox.layout.flex.horizontal,
     },
     layout = wibox.layout.stack,
   }

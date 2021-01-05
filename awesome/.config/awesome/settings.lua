@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 -- Fern Zapata
--- https://github.com/ferzapata/dotfiles
+-- https://github.com/fernzi/dotfiles
 -- Awesome Window Manager - User Settings
 -----------------------------------------------------------------------
 

@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 -- Fern Zapata
--- https://github.com/ferzapata/dotfiles
+-- https://github.com/fernzi/dotfiles
 -- Awesome Window Manager - Default Bar
 -----------------------------------------------------------------------
 
@@ -8,6 +8,10 @@ local awful = require('awful')
 local gears = require('gears')
 local wibox = require('wibox')
 local beautiful = require('beautiful')
+
+local weather = require('widget.weather')
+
+local dpi = beautiful.xresources.apply_dpi
 
 -- Buttons ------------------------------------------------------------
 
@@ -37,9 +41,6 @@ local layout_buttons = gears.table.join(
 
 -- Setup --------------------------------------------------------------
 
-local function taglist_filter(tl)
-end
-
 return function(s)
   s.panel = awful.wibar {
     screen = s,
@@ -58,11 +59,16 @@ return function(s)
   s.panel:setup {
     {
       {
-        widget = wibox.widget.textclock,
-        format = '%a %b %d  %R',
-        align = 'center',
+        {
+          widget = wibox.widget.textclock,
+          format = '<span color="' .. beautiful.fg_focus .. '">%a %b %d  %R</span>',
+          font = beautiful.font_bar,
+        },
+        weather(),
+        spacing = dpi(32),
+        layout = wibox.layout.fixed.horizontal,
       },
-      layout = wibox.layout.flex.horizontal,
+      layout = wibox.container.place,
     },
     {
       { -- Left widgets

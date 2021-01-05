@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 -- Fern Zapata
--- https://github.com/ferzapata/dotfiles
+-- https://github.com/fernzi/dotfiles
 -- Awesome Window Manager - Key Bindings
 -----------------------------------------------------------------------
 
@@ -101,8 +101,8 @@ keys.global = gears.table.join(
 
   -- Screen --
 
-  awful.key({mod.m, mod.c}, 'Down', awful.tag.viewnext),
-  awful.key({mod.m, mod.c}, 'Up', awful.tag.viewprev),
+  awful.key({mod.m, mod.c}, 'Right', awful.tag.viewnext),
+  awful.key({mod.m, mod.c}, 'Left', awful.tag.viewprev),
 
   awful.key({mod.m}, 'Tab', function()
     awful.layout.inc(1)

@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 -- Fern Zapata
--- https://github.com/ferzapata/dotfiles
+-- https://github.com/fernzi/dotfiles
 -- Awesome Window Manager
 -----------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ local setupbar = require('bars.default')
 local dpi = beautiful.xresources.apply_dpi
 
 awesome.connect_signal('debug::error', util.display_error)
-beautiful.init(util.theme('gtk'))
+beautiful.init(util.theme('fern'))
 
 -- Screens ------------------------------------------------------------
 
@@ -30,9 +30,8 @@ awful.layout.layouts = {
 awful.screen.connect_for_each_screen(function(scn)
   util.set_wallpaper(scn)
   awful.tag(settings.tags, scn, awful.layout.layouts[1])
+  setupbar(scn)
 end)
-
-beautiful.useless_gap = 32
 
 -- Rules --------------------------------------------------------------
 
