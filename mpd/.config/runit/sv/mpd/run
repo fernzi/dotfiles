@@ -1,5 +1,21 @@
 #!/bin/sh
+set -efu
 [ -r conf ] && . ./conf
-mkdir -p ${XDG_CACHE_HOME:-$HOME/.cache}/mpd \
-         ${XDG_DATA_HOME:-$HOME/.local/share}/mpd
-exec mpd --no-daemon --stderr
+
+MPD_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/mpd"
+MPD_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/mpd"
+MPD_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mpd"
+
+mkdir -p "${MPD_CACHE_DIR}" "${MPD_DATA_DIR}"
+
+sandbox() {
+  if command -v firejail >/dev/null 2>&1; then
+    exec firejail \
+      --ignore=private-cache \
+      -- "$@"
+  else
+    exec "$@"
+  fi
+}
+
+sandbox mpd --no-daemon --stderr
