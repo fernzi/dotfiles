@@ -1,0 +1,16 @@
+# Build (using 6 threads) with:
+#   npm install
+#   npm run build -- --jCmd 6 ttf::iosevka-fern
+
+[buildPlans.iosevka-fern]
+family = 'Iosevka Fern'
+spacing = 'fontconfig-mono'
+serifs = 'sans'
+
+[buildPlans.iosevka-fern.variants]
+inherits = 'ss09'
+
+[buildPlans.iosevka-fern.variants.design]
+k = 'curly'
+y = 'cursive-flat-hook'
+underscore = 'above-baseline'

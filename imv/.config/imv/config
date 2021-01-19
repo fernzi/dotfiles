@@ -4,8 +4,8 @@
 
 [options]
 
-background = 212121
+background = 202020
 width = 1024
 height = 1024
 
-overlay_font = Iosevka Term SS09:28
+overlay_font = monospace:28

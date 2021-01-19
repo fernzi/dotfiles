@@ -13,10 +13,6 @@ selection:
 
 live_config_reload: true
 
-# shell:
-#   program: /usr/bin/fish
-#   args:    []
-
 ## Appearance #########################################################
 
 window:
@@ -29,19 +25,11 @@ window:
   dynamic_padding: true
   decorations:     full
   startup_mode:    Windowed
-  # title: Alacritty
-  # class: Alacritty
-
-# tabspaces: 8
 
 font:
   normal:
-    family: Iosevka Term SS09
+    family: monospace
   size: 13
-  offset:
-    x: 0
-    y: 4
-  use_thin_strokes: true
 
 cursor:
   style: Underline
