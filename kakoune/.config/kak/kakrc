@@ -14,6 +14,7 @@ add-highlighter global/ regex (TODO|FIXME):? 0:rgb:F6CE88+brf
 set-option global ui_options ncurses_assistant=cat
 set-option global scrolloff 4,8
 set-option global grepcmd 'rg --column'
+set-option global liteline true
 
 hook global WinSetOption filetype=c %{
   add-highlighter window/ regex '[X_]{7}' 0:comment

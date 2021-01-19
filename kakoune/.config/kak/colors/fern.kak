@@ -45,10 +45,10 @@ face global MenuBackground      rgb:D4D4D4,rgb:525252
 face global MenuInfo            rgb:404040
 face global Information         rgb:D4D4D4,rgb:404040
 face global Error               rgb:202020,rgb:FFAED0+b
-face global StatusLine          rgb:C6C6C6,rgb:303030
-face global StatusLineMode      rgb:B0E0AD+b
-face global StatusLineInfo      rgb:D0BCFE
-face global StatusLineValue     rgb:FFAED0
+face global StatusLine          rgb:D4D4D4,rgb:202020
+face global StatusLineMode      rgb:B0E0AD,rgb:303030+b
+face global StatusLineInfo      rgb:D0BCFE,rgb:303030
+face global StatusLineValue     rgb:FFAED0,rgb:303030
 face global StatusCursor        rgb:202020,rgb:D4D4D4
 face global Prompt              rgb:9EDCFF,rgb:303030+b
 face global MatchingChar        rgb:E2E2E2,rgb:404040+b
@@ -60,6 +60,18 @@ face global Whitespace          rgb:525252+f
 face global DiagnosticError     rgb:FFAED0+u
 face global DiagnosticWarning   rgb:F6CE88+u
 face global LineFlagErrors      rgb:FFAED0+d
+
+### Liteline ###
+
+face global LitelineBase        rgb:C6C6C6,rgb:303030
+face global LitelineBaseSep     rgb:202020,rgb:303030
+face global LitelineBaseCap     rgb:303030,rgb:202020
+face global LitelineAlt         rgb:D4D4D4,rgb:404040
+face global LitelineAltSep      rgb:202020,rgb:404040
+face global LitelineAltCap      rgb:404040,rgb:202020
+face global LitelineHigh        rgb:303030,rgb:D0BCFE+b
+face global LitelineHighSep     rgb:303030,rgb:D0BCFE
+face global LitelineHighCap     rgb:D0BCFE,rgb:202020
 
 ### Custom ###
 

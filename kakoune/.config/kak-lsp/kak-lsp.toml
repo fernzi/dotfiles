@@ -1,0 +1,20 @@
+#######################################################################
+# Kakoune LSP Client
+#######################################################################
+
+[server]
+timeout = 1200
+
+# Languages ###########################################################
+
+[language.python]
+filetypes = ['python']
+roots = ['requirements.txt', 'setup.py', '.git']
+command = 'pyls'
+offset_encoding = 'utf-8'
+
+[language.c_cpp]
+filetypes = ['c', 'cpp']
+roots = ['.ccls-root', 'compile-commands.json', '.git']
+command = 'ccls'
+args = ['--init={"completion":{"detailedLabel":false}}']
