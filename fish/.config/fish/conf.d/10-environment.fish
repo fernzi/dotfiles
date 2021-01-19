@@ -2,6 +2,8 @@
 # Fish - Environment
 #######################################################################
 
+umask 027
+
 set -l paths \
   $HOME/.local/bin \
   ~/.local/share/xbps/usr/bin
@@ -58,6 +60,10 @@ if test "$XDG_SESSION_DESKTOP" != gnome
   set -x MOZ_ENABLE_WAYLAND 1
 else
   set -x WINIT_UNIX_BACKEND x11
+end
+
+if not string match -qr 'kde|gnome' "$XDG_SESSION_TYPE"
+  set -x QT_QPA_PLATFORMTHEME qt5ct
 end
 
 if test "$XDG_SESSION_TYPE" != wayland

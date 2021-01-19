@@ -1,9 +1,12 @@
 function fish_prompt
+  set_color red
+  printf '\n'
   set_color -r red
-  test (id -u) -eq 0 && set -l pchar '#' || set -l pchar '●'
-  printf '\n %s ' $pchar
+  printf '• '
   set_color -b black normal
-  printf ' %s ' $USER
+  printf ' %s' $USER
+  set_color black -b normal
+  printf ''
   set_color normal
   printf ' '
 end
