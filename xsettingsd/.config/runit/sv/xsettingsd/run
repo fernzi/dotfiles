@@ -1,6 +1,4 @@
 #!/bin/sh
 set -efu
 export DISPLAY=${DISPLAY:-:0}
-exec entr -nr xsettingsd -c /_ << EOF
-${XDG_CONFIG_HOME:-$HOME/.config}/xsettingsd/config
-EOF
+exec xsettingsd -c "${XDG_CONFIG_HOME:-$HOME/.config}/xsettingsd/config"
