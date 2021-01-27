@@ -1,120 +1,191 @@
-#!/bin/sh
-#######################################################################
-# LF - File Previewer
-#######################################################################
+#!/usr/bin/env perl
+# Copyright © 2021 Fern Zapata
+# This Source Code Form is subject to the terms of the ISC License.
+# If a copy of the license was not distributed with this file, you
+# can obtain one at https://opensource.org/licenses/ISC/.
 
-set -Cfu
+use v5.10.1;
+use warnings;
+no warnings 'experimental';
+use strict;
 
-readonly WIDTH=$(($(tput cols) / 2))
-readonly HEIGHT=$2
+use Digest::MD5 qw(md5_hex);
+use File::MimeInfo qw(mimetype_isa);
+use File::MimeInfo::Magic;
+use File::Path qw(make_path);
+use File::Which;
+use Image::ExifTool qw(ImageInfo);
+use List::Util qw(max);
+use Path::Tiny;
 
-readonly T_SEP=$(printf '\37')
 
-preview_txt() {
-  if command -v highlight >/dev/null; then
-    highlight --force \
-              --out-format=xterm256 \
-              --replace-tabs=2 \
-              --style=base16/ia-dark \
-              -- "$1"
-  elif command -v pygmentize >/dev/null; then
-    pygmentize -- "$1"
-  else
-    cat -- "$1"
-  fi
+my $CACHE = ($ENV{'XDG_CACHE_HOME'} || "$ENV{'HOME'}/.cache") . '/lf';
+
+
+sub print_exif {
+  my ($info, $fields) = @_;
+  my $pad = max(map(length, values %$fields));
+  foreach (sort keys %$fields) {
+    if (exists $$info{$_}) {
+      printf("%-*s : %s\n", $pad, $$fields{$_}, $$info{$_});
+    }
+  }
 }
 
-preview_pdf() {
-  if command -v pdftotext >/dev/null; then
-    pdfinfo "$1" \
-    | grep -E '^(Title|Author|CreationDate)' \
-    | sed "s/:\s*/$T_SEP/" \
-    | column -ts "$T_SEP" -o ' : '
-    echo
-    pdftotext -l 8 -nopgbrk -q -- "$1" -
-  else
-    echo '(document)'
-  fi
+
+sub preview_txt {
+  my ($name, $width, $lines) = @_;
+  if (which('highlight')) {
+    system(
+      'highlight',
+      '--force',
+      '--out-format=xterm256',
+      '--replace-tabs=2',
+      '--style=base16/ia-dark',
+      '--',
+      $name,
+    );
+  } elsif (which('pygmentize')) {
+    exec('pygmentize', '--', $name);
+  } else {
+    print(path($name)->slurp);
+  }
 }
 
-preview_img() {
-  if command -v chafa >/dev/null; then
-    chafa --colors 240 \
-          --size ${WIDTH}x${HEIGHT} \
-          --symbols ascii+vhalf+block+space \
-          --font-ratio 5/12 \
-          "$1"
-  elif command -v magick >/dev/null; then
-    magick identify -- "$1"
-  else
-    echo '(image)'
-  fi
+
+sub preview_img {
+  my ($name, $width, $height) = @_;
+  if (which('chafa')) {
+    exec(
+      'chafa',
+      '--colors', '240',
+      '--size', "${width}x${height}",
+      '--symbols', 'ascii+vhalf+block+space',
+      '--font-ratio', '5/12',
+      '--',
+      $name,
+    );
+  } else {
+    my $info = ImageInfo($name);
+    print_exif($info, {
+      'FileType'  => 'Format : ',
+      'ColorType' => 'Type   : ',
+      'ImageSize' => 'Size   : ',
+    });
+  }
 }
 
-preview_snd() {
-  if command -v ffmpeg >/dev/null; then
-    ffmpeg -hide_banner -v panic -i "$1" -f ffmetadata - \
-    | grep -i '^\(artist\|title\|album\|date\)=' \
-    | sed "s/=/$T_SEP/" \
-    | column -ts "$T_SEP" -o ' : '
-  else
-    echo '(audio)'
-  fi
+
+sub preview_vid {
+  my ($name) = @_;
+  my @info = (stat($name))[1, 2, 7, 9, 10];
+  my $hash = md5_hex(@info);
+  my $thumb = "$CACHE/$hash.jpg";
+  if (-r $thumb) {
+    preview_img($thumb, @_[1..$#_]);
+  } elsif (which('ffmpeg')) {
+    make_path($CACHE);
+    if (-d $CACHE) {
+      system(
+        'ffmpeg',
+        '-v', 'error',
+        '-i', $name,
+        '-frames:v', '1',
+        '-vf', 'scale=128:-2',
+        '--',
+        $thumb,
+      );
+      if (-r $thumb) {
+        preview_img($thumb, @_[1..$#_]);
+      }
+    }
+  } else {
+    my $info = ImageInfo($name);
+    print_exif($info, {
+      'FileType'  => 'Format   : ',
+      'Duration'  => 'Duration : ',
+      'ImageSize' => 'Size     : ',
+    });
+  }
 }
 
-preview_vid() {
-  if command -v ffmpeg >/dev/null; then
-    ffmpeg -hide_banner -v panic -i "$1" -f image2 - | preview_img -
-  else
-    echo '(video)'
-  fi
+
+sub preview_snd {
+  my $info = ImageInfo($_[0]);
+  print_exif($info, {
+    'Title'  => 'Title',
+    'Artist' => 'Artist',
+    'Album'  => 'Album',
+    'Date'   => 'Date',
+  });
 }
 
-preview_arc() {
-  if command -v atool >/dev/null; then
-    atool --list -- "$1"
-  elif command -v lsar >/dev/null; then
-    lsar -- "$1"
-  else
-    echo '(archive)'
-  fi
+
+sub preview_pdf {
+  my ($name) = @_;
+  my $info = ImageInfo($name);
+  print_exif($info, {
+    'Title'      => 'Title',
+    'Author'     => 'Author',
+    'CreateDate' => 'Date',
+  });
+  if (which 'pdftotext') {
+    say('');
+    exec('pdftotext',
+      '-l', '8',
+      '-nopgbrk',
+      '-q',
+      '--',
+      $name,
+      '-'
+    );
+  }
 }
 
-preview_sym() {
-  readonly nf=$(readlink "$1")
-  if [ $(file -b --mime-type -- "$nf") != 'inode/symlink' ]; then
-    exec "$0" "$nf" "$HEIGHT"
-  else
-    echo '(symlink)'
-  fi
+
+sub preview_arc {
+  my ($name) = @_;
+  if (which('atool')) {
+    exec('atool', '--list', '--', $name);
+  } elsif (which('lsar')) {
+    exec('lsar', '--', $name);
+  } else {
+    say('(archive)');
+  }
 }
 
-case $(file -b --mime-type -- "$1") in
-  text/*)
-    preview_txt "$1" ;;
-  image/gif|video/*)
-    preview_vid "$1" ;;
-  image/*)
-    preview_img "$1" ;;
-  audio/*)
-    preview_snd "$1" ;;
-  application/*pdf)
-    preview_pdf "$1" ;;
-  application/x-archive|\
-  application/x-cpio|\
-  application/x-tar|\
-  application/x-bzip2|\
-  application/gzip|\
-  application/x-lz*|\
-  application/x-xz|\
-  application/zstd|\
-  application/x-7z*|\
-  application/zip|\
-  application/x-rar*|\
-  application/x-gtar)
-    preview_arc "$1" ;;
-  inode/symlink)
-    preview_sym "$1" ;;
-  *)
-    echo '(binary)'
-esac
+
+sub preview_any {
+  my ($name) = @_;
+  if (-l $name) {
+    $name = readlink($name);
+  }
+  my $mime = mimetype($name);
+  given ($mime) {
+    when (mimetype_isa $_, 'text/plain') {
+      preview_txt(@_);
+    }
+    when (/^image/) {
+      preview_img(@_);
+    }
+    when (/^audio/) {
+      preview_snd(@_);
+    }
+    when (/^video/) {
+      preview_vid(@_);
+    }
+    when (m{application/.*pdf}) {
+      preview_pdf(@_);
+    }
+    when (/(x-(archive|cpio|(g|compressed-)?tar|bzip2|lz.*|xz|7z.*|rar)|g?zip|zstd)$/) {
+      # FIXME: Is there a less disgusting way to match these?
+      preview_arc(@_);
+    }
+    default {
+      say('(binary)');
+    }
+  }
+}
+
+
+preview_any(@ARGV);

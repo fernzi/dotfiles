@@ -120,6 +120,8 @@ cmd new-from %{{
 cmd guidrag %dragdrop -t 'Copy from…' $fx
 cmd guidrop %dragdrop -t 'Copy here…' | xargs -rI% cp % .
 
+cmd dl %echo $* | xargs -ri curl -JLO# '{}'
+
 # Mappings ############################################################
 
 # Navigation
