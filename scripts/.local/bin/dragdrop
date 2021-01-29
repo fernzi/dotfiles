@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
-# Copyright © 2020 Fern Zapata
+# Copyright © 2020-2021 Fern Zapata
 # This Source Code Form is subject to the terms of the ISC License.
 # If a copy of the license was not distributed with this file, you
 # can obtain one at https://opensource.org/licenses/ISC/.
 
-from PySide2 import QtCore as QtC, QtGui as QtG, QtWidgets as QtW
-from PySide2.QtCore import Qt
+try:
+  from PySide2 import QtCore as QtC, QtGui as QtG, QtWidgets as QtW
+  from PySide2.QtCore import Qt
+except ImportError:
+  from PyQt5 import QtCore as QtC, QtGui as QtG, QtWidgets as QtW
+  from PyQt5.QtCore import Qt
+  QtC.Signal = QtC.pyqtSignal
+  QtC.Slot = QtC.pyqtSlot
 
 
 class DragArea(QtW.QListWidget):
