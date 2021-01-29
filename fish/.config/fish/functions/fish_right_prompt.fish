@@ -35,7 +35,7 @@ function fish_right_prompt
   '
 
   set_color -b normal blue
-  set_color -r
+  set_color -ro
   printf ' %s' $hostname
   set_color -b normal blue
   printf ''

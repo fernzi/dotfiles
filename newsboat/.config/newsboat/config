@@ -69,7 +69,7 @@ search-highlight-colors   yellow  default bold reverse
 ### Highlighting ###
 
 # Separators
-highlight feedlist "^\\s*--- .+" default default bold dim underline
+highlight feedlist "--- .+" default default bold dim underline
 highlight feedlist "\\(0/0\\)" default default invis dim underline
 
 # Article

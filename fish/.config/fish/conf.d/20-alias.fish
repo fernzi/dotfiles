@@ -2,10 +2,11 @@
 # Fish - Aliases
 ###############################################################################
 
-if command -qs yay
-  alias p yay
-else if command -qs pacman
-  alias p pacman
+for pac in paru yay pacman
+  if command -qs $pac
+    alias p $pac
+    break
+  end
 end
 
 if command -qs xbps-install
