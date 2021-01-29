@@ -1,42 +1,44 @@
-#!/usr/bin/env lua
--- Copyright © 2020 Fern Zapata
--- This Source Code Form is subject to the terms of the ISC License.
--- If a copy of the license was not distributed with this file, you
--- can obtain one at https://opensource.org/licenses/ISC/.
+#!/usr/bin/env python3
+# Copyright © 2021 Fern Zapata
+# This Source Code Form is subject to the terms of the ISC License.
+# If a copy of the license was not distributed with this file, you
+# can obtain one at https://opensource.org/licenses/ISC/.
 
-local lgi = require('lgi')
-local GLib, Gio = lgi.GLib, lgi.Gio
-
-
-local opened = 0
-local code = 0
+from typing import Iterable
+import sys
+from gi.repository import GLib, GObject as GOb, Gio
 
 
-local function uri_cb(source, result)
-  local suc, err = Gio.AppInfo.launch_default_for_uri_finish(result)
-  if not suc then
-    code = code + 1
-    print('Error:', err.message)
-  end
-  opened = opened - 1
-end
+class OpenApplication:
+  opened: int
+  code: int
+  uris: Iterable[str]
+
+  def __init__(self, args: Iterable[str]) -> None:
+    self.opened = 0
+    self.code = 0
+    self.uris = args
+
+  def on_open(self, source: GOb.GObject, result: Gio.AsyncResult) -> None:
+    try:
+      Gio.AppInfo.launch_default_for_uri_finish(result)
+    except GLib.Error as error:
+      print(error.message, file=sys.stderr)
+      self.code += 1
+    self.opened -= 1
+
+  def run(self) -> int:
+    for uri in self.uris:
+      if not GLib.uri_parse_scheme(uri):
+        uri = Gio.File.new_for_commandline_arg(uri).get_uri()
+      Gio.AppInfo.launch_default_for_uri_async(uri, None, None, self.on_open)
+      self.opened += 1
+
+    while self.opened > 0:
+      GLib.MainContext.default().iteration()
+
+    return self.code
 
 
-function main(args)
-  for _, uri in pairs(args) do
-    if not GLib.uri_parse_scheme(uri) then
-      uri = Gio.File.new_for_commandline_arg(uri):get_uri()
-    end
-    Gio.AppInfo.launch_default_for_uri_async(uri, nil, nil, uri_cb)
-    opened = opened + 1
-  end
-
-  while opened > 0 do
-    GLib.MainContext.default():iteration()
-  end
-
-  return code
-end
-
-
-os.exit(main({...}))
+if __name__ == '__main__':
+  sys.exit(OpenApplication(sys.argv[1:]).run())
