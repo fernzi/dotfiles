@@ -30,6 +30,8 @@ cmd mkd %{{
   lf -remote "send $id select \"$new\""
 }}
 
+cmd edit $$EDITOR "$(echo $* | tr ' ' '\ ')"
+
 cmd trash %{{
   if command -v trash-put >/dev/null; then
     trash-put $fx
@@ -141,6 +143,7 @@ map O $mimeopen --ask $f
 # Files
 map a push :mkd<space>
 map A new-from-menu
+map <c-e> push :edit<space>
 map <delete> trash
 
 map .. guidrag

@@ -162,7 +162,7 @@ sub preview_any {
   }
   my $mime = mimetype($name);
   given ($mime) {
-    when (mimetype_isa $_, 'text/plain') {
+    when (/(json|javascript)$/ or mimetype_isa $_, 'text/plain') {
       preview_txt(@_);
     }
     when (/^image/) {

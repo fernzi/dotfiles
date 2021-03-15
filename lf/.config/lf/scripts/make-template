@@ -8,11 +8,17 @@ import pwd
 import os
 import sys
 import functools
+import configparser as cp
+from typing import Optional
 from enum import IntEnum, auto
 from pathlib import Path
 from datetime import date as Date
 from argparse import ArgumentParser
 import jinja2 as J2
+try:
+  import git  # type: ignore
+except ImportError:
+  pass
 
 
 printerr = functools.partial(print, file=sys.stderr)
@@ -25,10 +31,58 @@ class ExitCode(IntEnum):
   WRITE_ERROR = auto()
 
 
+class Author:
+  _name: str
+  _email: Optional[str]
+
+  def __init__(self, name=None, email=None) -> None:
+    if None in (name, email):
+      try:
+        git_config = git.GitConfigParser()
+      except NameError:
+        pass
+      pw = pwd.getpwuid(os.getuid())
+
+    if name is not None:
+      self._name = name
+    else:
+      try:
+        self._name = git_config.get_value('user', 'name')
+      except (NameError, cp.NoOptionError):
+        self._name = pw.pw_gecos.split(',')[0] or pw.pw_name
+
+    if email is not None:
+      self._email = email
+    else:
+      try:
+        self._email = git_config.get_value('user', 'email')
+      except (NameError, cp.NoOptionError):
+        try:
+          self._email = pw.pw_gecos.split(',')[3]
+        except IndexError:
+          self._email = None
+
+  @property
+  def name(self) -> str:
+    return self._name
+
+  @property
+  def email(self) -> Optional[str]:
+    return self._email
+
+  def __str__(self) -> str:
+    out = self.name
+    if self.email is not None:
+      out += f' <{self.email}>'
+    return out
+
+
 class Application:
   template: Path
-  out: Path
+  out: Optional[Path]
   name: str
+  email: Optional[str]
+  title: Optional[str]
   date: Date
 
   def __init__(self) -> None:
@@ -46,7 +100,12 @@ class Application:
     )
     p.add_argument('-n', '--name',
       help='author name (current user\'s name by default)',
-      default=self.default_name(),
+    )
+    p.add_argument('-e', '--email',
+      help="author's email (current user's by default, if available)"
+    )
+    p.add_argument('-t', '--title',
+      help='document title (output or template filename by default)'
     )
     p.add_argument('-d', '--date',
       help='ISO format date (today by default)',
@@ -56,16 +115,22 @@ class Application:
 
     p.parse_args(namespace=self)
 
-  def default_name(self) -> str:
-    data = pwd.getpwuid(os.getuid())
-    return data.pw_gecos.split(',')[0] or data.pw_name
+    if self.title is None:
+      if self.out is not None:
+        self.title = self.out.stem
+      else:
+        self.title = self.template.stem
 
   def render_template(self) -> str:
     env = J2.Environment(
       loader=J2.FileSystemLoader(searchpath='/'),
     )
     tmp = env.get_template(str(self.template.absolute()))
-    return tmp.render(author=self.name, date=self.date)
+    return tmp.render(
+      author=Author(self.name, self.email),
+      title=self.title,
+      date=self.date,
+    )
 
   def run(self) -> int:
     try:
