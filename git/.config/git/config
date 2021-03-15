@@ -8,9 +8,10 @@
 [alias]
 	co = checkout
 	cm = commit
-	st = status
+	st = status -s
 	br = branch
 	df = diff
+	dfs = diff --staged
 	curr = show --stat HEAD
 	killit = reset --hard
 
