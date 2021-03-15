@@ -29,7 +29,7 @@ window:
 font:
   normal:
     family: monospace
-  size: 13
+  size: 14
 
 cursor:
   style: Underline
@@ -122,3 +122,10 @@ key_bindings:
   - key:    Key0
     mods:   Control
     action: ResetFontSize
+
+  - key:    Return
+    mods:   Shift
+    chars:  "\x1b[13;2u"
+  - key:    Return
+    mods:   Control
+    chars:  "\x1b[13;5u"
