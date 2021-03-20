@@ -16,3 +16,5 @@ if command -qs xbps-install
   alias xp xbps-pkgdb
   alias xc xbps-reconfigure
 end
+
+alias e $EDITOR

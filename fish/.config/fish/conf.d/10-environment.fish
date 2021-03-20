@@ -2,18 +2,17 @@
 # Fish - Environment
 #######################################################################
 
-umask 027
-
-set -l paths \
-  $HOME/.local/bin \
-  ~/.local/share/xbps/usr/bin
-
-for path in $paths
-  test -d $path && set -a fish_user_paths $path
+if not status is-login
+  exit
 end
 
+umask 027
+
+fish_add_path ~/.local/bin
+fish_add_path ~/.local/share/xbps/usr/bin
+
 for editor in kak nvim vim vi micro nano
-  if type -q $editor
+  if command -q $editor
     set -x EDITOR $editor
     set -x VISUAL $editor
     break
@@ -24,7 +23,7 @@ if command -q open
   set -x OPENER open
 end
 
-if command -qs gpgconf
+if command -q gpgconf
   set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
 end
 
