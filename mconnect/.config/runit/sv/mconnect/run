@@ -1,5 +1,0 @@
-#!/bin/sh
-set -efu
-export DISPLAY=:0.0
-[ -r conf ] && ./conf
-exec mconnect ${OPTS:-}
