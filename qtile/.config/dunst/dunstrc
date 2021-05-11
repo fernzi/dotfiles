@@ -1,0 +1,18 @@
+# Fern Zapata
+# https://github.com/fernzi/dotfiles
+# Dunst Notification Daemon
+
+[global]
+
+monitor = 0
+follow = keyboard
+geometry = 800x120-48+112
+
+font = Roboto Condensed, 12
+
+format = <b>%s</b>\n%b
+word_wrap = yes
+
+icon_position = left
+
+corner_radius = 12
