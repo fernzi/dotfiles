@@ -1,4 +1,6 @@
 #######################################################################
+# Fern's Dotfiles
+# https://gitlab.com/fernzi/dotfiles
 # NCurses Music Player Client (Plus Plus)
 #######################################################################
 
@@ -34,19 +36,24 @@ active_window_border           = red
 
 ### Display ###
 
-message_delay_time = 5
+message_delay_time = 3
 autocenter_mode    = yes
 centered_cursor    = yes
+
+current_item_prefix = $(cyan_black)
+current_item_suffix = $(end)
+current_item_inactive_column_prefix = $(white_black)
+current_item_inactive_column_suffix = $(end)
 
 ### Progress Bar ###
 
 progressbar_look = ━━
 progressbar_color = black
-progressbar_elapsed_color = red
+progressbar_elapsed_color = magenta
 
 ### Status Bar ###
 
-song_status_format = {{$b%t$/b}{ // $b%a$/b{ // $b%b$/b}}}|{$b%f/$b}
+song_status_format = 🎝  {{$b%t$/b}{ - %a{ - %b}}}|{$b%f/$b}
 statusbar_visibility = yes
 statusbar_color = 9
 statusbar_time_color = 9
@@ -61,12 +68,10 @@ playlist_shorten_total_times = yes
 
 titles_visibility = no
 
-current_item_prefix = $(white_black)
-current_item_suffix = $(end)
-now_playing_prefix = $b$u
-now_playing_suffix = $/u$/b
+now_playing_prefix = "$b$(cyan)• "
+now_playing_suffix = $(end)$/b
 
-song_columns_list_format = (50)[]{t|fr} (20)[magenta]{a} (30)[blue]{b}
+song_columns_list_format = (40)[]{t|f}(25)[]{ar}(30)[]{br}(6f)[]{lr}
 
 ## Browser ############################################################
 
@@ -86,18 +91,10 @@ song_library_format = {%n - }{%t}|{%f}
 media_library_primary_tag = album_artist
 media_library_albums_split_by_date = no
 
-## Playlist Editor ####################################################
-
-
-
-## Tag Editor #########################################################
-
-
-
 ## Visualizer #########################################################
 
 visualizer_data_source = ~/.cache/mpd/fifo
-visualizer_output_name = visualizer
+visualizer_output_name = Visualizer
 visualizer_in_stereo = yes
 
 ### Appearance ###
@@ -105,3 +102,4 @@ visualizer_in_stereo = yes
 visualizer_type = wave_filled
 visualizer_look = ┃┃
 visualizer_color = cyan, blue, magenta, red, red
+visualizer_autoscale = yes
