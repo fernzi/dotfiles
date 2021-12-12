@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
--- Fern Zapata
--- https://github.com/fernzi/dotfiles
+-- Fern's Dotfiles
+-- https://gitlab.com/fernzi/dotfiles
 -- Awesome Window Manager - Utilities
 -----------------------------------------------------------------------
 
@@ -8,8 +8,6 @@ local gears = require('gears')
 local awful = require('awful')
 local beautiful = require('beautiful')
 local naughty = require('naughty')
-
-local settings = require('settings')
 
 local dpi = beautiful.xresources.apply_dpi
 
@@ -40,7 +38,7 @@ function util.theme(t)
 end
 
 function util.set_wallpaper(scn, wallpaper)
-  wallpaper = wallpaper or settings.wallpaper or beautiful.wallpaper
+  wallpaper = wallpaper or beautiful.wallpaper
   if wallpaper then
     if type(wallpaper) == 'function' then
       wallpaper = wallpaper()

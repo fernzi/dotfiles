@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
--- Fern Zapata
--- https://github.com/fernzi/dotfiles
+-- Fern's Dotfiles
+-- https://gitlab.com/fernzi/dotfiles
 -- Awesome Window Manager - Key Bindings
 -----------------------------------------------------------------------
 
@@ -29,21 +29,16 @@ keys.global = gears.table.join(
   -- Applications --
 
   awful.key({mod.m}, 'Return', function()
-    awful.spawn(settings.terminal)
+    awful.spawn(settings.applications.terminal)
   end),
   awful.key({mod.m, mod.s}, 'Return', function()
-    awful.spawn(settings.file_manager, {
-      floating = true,
-    })
+    awful.spawn(settings.applications.launcher)
   end),
-  awful.key({mod.m}, 'space', function()
-    awful.spawn(settings.launcher)
-  end),
-  awful.key({mod.m}, 'grave', function()
-    awful.spawn(settings.window_switcher)
+  awful.key({mod.m, mod.s}, 'grave', function()
+    awful.spawn(settings.applications.switcher)
   end),
   awful.key({mod.m}, '/', function()
-    awful.spawn(settings.file_manager)
+    awful.spawn(settings.applications.files)
   end),
 
   awful.key({}, 'Print', util.screenshot.full),
@@ -99,6 +94,21 @@ keys.global = gears.table.join(
     awful.client.swap.bydirection('right')
   end),
 
+  awful.key({mod.m, mod.s, mod.c}, 'Left', function()
+    if not client.focus then return end
+    local w = client.focus
+    local i = (w.first_tag.index - 2) % #w.screen.tags + 1
+    w:move_to_tag(w.screen.tags[i])
+    w.screen.tags[i]:view_only()
+  end),
+  awful.key({mod.m, mod.s, mod.c}, 'Right', function()
+    if not client.focus then return end
+    local w = client.focus
+    local i = w.first_tag.index % #w.screen.tags + 1
+    w:move_to_tag(w.screen.tags[i])
+    w.screen.tags[i]:view_only()
+  end),
+
   -- Screen --
 
   awful.key({mod.m, mod.c}, 'Right', awful.tag.viewnext),
@@ -120,16 +130,20 @@ keys.global = gears.table.join(
     tag.gap, tag.old_gap = tag.old_gap or 0, tag.gap
   end),
 
+  awful.key({mod.m}, 'grave', function()
+    awful.tag.history.restore()
+  end),
+
   -- Media --
 
   awful.key({}, 'XF86AudioMute', function()
     util.audio.set_volume(0)
   end),
   awful.key({}, 'XF86AudioLowerVolume', function()
-    util.audio.set_volume(-5)
+    util.audio.set_volume(-2)
   end),
   awful.key({}, 'XF86AudioRaiseVolume', function()
-    util.audio.set_volume(5)
+    util.audio.set_volume(2)
   end),
 
   awful.key({}, 'XF86AudioPlay', function()
@@ -219,6 +233,30 @@ function keys.title_buttons(c)
     end)
   )
 end
+
+keys.client = {}
+
+keys.client.starbound = {
+  mouse = gears.table.join(
+    awful.button({}, 8, function()
+      root.fake_input('key_press', 'p')
+      root.fake_input('key_release', 'p')
+    end),
+    awful.button({}, 9, function()
+      root.fake_input('key_press', 'g')
+      root.fake_input('key_release', 'g')
+    end)
+  ),
+}
+
+keys.client.terraria = {
+  mouse = gears.table.join(
+    awful.button({}, 8, function()
+      root.fake_input('key_press', 'period')
+      root.fake_input('key_release', 'period')
+    end)
+  )
+}
 
 -----------------------------------------------------------------------
 

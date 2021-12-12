@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
--- Fern Zapata
--- https://github.com/fernzi/dotfiles
+-- Fern's Dotfiles
+-- https://gitlab.com/fernzi/dotfiles
 -- Awesome Window Manager - Screenshot/cast Utilities
 -----------------------------------------------------------------------
 
@@ -36,7 +36,7 @@ local function _run(command, file)
       icon_size = dpi(64),
       actions = {
         Open = function()
-          awful.spawn{settings.file_manager, file}
+          awful.spawn{settings.applications.files, file}
         end
       }
     }

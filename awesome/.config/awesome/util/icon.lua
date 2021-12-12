@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
--- Fern Zapata
--- https://github.com/fernzi/dotfiles
+-- Fern's Dotfiles
+-- https://gitlab.com/fernzi/dotfiles
 -- Awesome Window Manager - Icon finder
 -----------------------------------------------------------------------
 

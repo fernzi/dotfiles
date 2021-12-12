@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
--- Fern Zapata
--- https://github.com/fernzi/dotfiles
+-- Fern's Dotfiles
+-- https://gitlab.com/fernzi/dotfiles
 -- Awesome Window Manager
 -----------------------------------------------------------------------
 
@@ -28,7 +28,7 @@ awful.layout.layouts = {
 }
 
 awful.screen.connect_for_each_screen(function(scn)
-  util.set_wallpaper(scn)
+  util.set_wallpaper(scn, settings.appearance.wallpaper)
   awful.tag(settings.tags, scn, awful.layout.layouts[1])
   setupbar(scn)
 end)
@@ -137,6 +137,38 @@ awful.rules.rules = {
       floating = true,
       placement = awful.placement.next_to_mouse,
     },
+  },
+
+  -- Application specific bindings
+
+  {
+    rule = {
+      class = 'starbound',
+    },
+    properties = {
+      buttons = gears.table.join(
+        keys.client_buttons,
+        keys.client.starbound.mouse
+      ),
+    },
+  },
+
+  {
+    rule_any = {
+      class = {
+        'Terraria.bin.x86_64',
+      },
+      instance = {
+        'alactest',
+        'Terraria.bin.x86_64',
+      },
+    },
+    properties = {
+      buttons = gears.table.join(
+        keys.client_buttons,
+        keys.client.terraria.mouse
+      ),
+    }
   },
 }
 
