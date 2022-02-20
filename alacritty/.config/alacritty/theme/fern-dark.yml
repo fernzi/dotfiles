@@ -1,0 +1,43 @@
+#######################################################################
+# Fern's Dotfiles
+# https://gitlab.com/fernzi/dotfiles
+# Alacritty - Fern Dark colour scheme
+#######################################################################
+
+colors:
+  primary:
+    background: '#202020'
+    foreground: '#D4D4D4'
+  cursor:
+    cursor:     '#E2E2E2'
+    text:       '#303030'
+  selection:
+    background: '#404040'
+    text:       '#E2E2E2'
+  normal:
+    black:      '#404040'
+    red:        '#FFAED0'
+    green:      '#B0E0AD'
+    yellow:     '#F6CE88'
+    blue:       '#9EDCFF'
+    magenta:    '#D0BCFE'
+    cyan:       '#94D1CE'
+    white:      '#E2E2E2'
+  bright:
+    black:      '#525252'
+    red:        '#FFCDE3'
+    green:      '#D3FAD3'
+    yellow:     '#FFEEAC'
+    blue:       '#CFF5FF'
+    magenta:    '#E8DAFF'
+    cyan:       '#C1EAE1'
+    white:      '#F0F0F0'
+  dim:
+    black:      '#303030'
+    red:        '#C7789A'
+    green:      '#7BA979'
+    yellow:     '#BC9855'
+    blue:       '#66A5C9'
+    magenta:    '#9986C5'
+    cyan:       '#5E9A98'
+    white:      '#C6C6C6'
