@@ -1,6 +1,0 @@
-#!/bin/sh
-if [ "$(uname)" = Darwin ]; then
-  exec osascript -e "display notification \"$@\" with title \"Newsboat\""
-else
-  exec notify-send -a Newsboat -i feedreader Newsboat "$@"
-fi

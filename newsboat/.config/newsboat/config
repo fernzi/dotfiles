@@ -1,4 +1,6 @@
 #######################################################################
+# Fern's Dotfiles
+# https://gitlab.com/fernzi/dotfiles
 # Newsboat Feed Reader
 #######################################################################
 
@@ -9,13 +11,6 @@ reload-time               300
 suppress-first-reload     yes
 max-items                 100
 save-path                 ~/Documents/Articles
-
-### Notifications ###
-
-notify-format   "%f unread feeds, %n unread articles total"
-notify-program  ~/.config/newsboat/scripts/notify
-notify-screen   yes
-notify-xterm    yes
 
 ### Bookmarks ###
 
@@ -30,7 +25,11 @@ browser ~/.config/newsboat/scripts/browser
 # html-renderer internal
 # pager internal
 
+### Key Bindings ###
+
 include ~/.config/newsboat/binds
+
+confirm-mark-feed-read no
 
 ## Display ############################################################
 
@@ -39,37 +38,37 @@ swap-title-and-hints yes
 
 ### Formatting ###
 
-articlelist-format        " %?T?%-17T▕ ?%t%> %f %D "
-feedlist-format           " %t%> %T %11u "
+articlelist-format        "%?T?%-17T▕ ?%t%> %f %D"
+feedlist-format           "%t%> %T %11u"
 datetime-format           "%b %d %Y"
 
-articlelist-title-format  " %T%> %u unread, %t total "
-dialogs-title-format      " %N %V%> dialogs "
-feedlist-title-format     " %N %V%> %u unread, %t total "
-filebrowser-title-format  " %N %V%> %?O?open&save? - %f "
-help-title-format         " %N %V%> help "
-itemview-title-format     " %F - %T%> %u unread, %t total "
-searchresult-title-format " %N %V%> search results - %t found "
-selectfilter-title-format " %N %V%> filters "
-selecttag-title-format    " %N %V%> filters "
-urlview-title-format      " %N %V%> urls "
+articlelist-title-format  "%T%> %u unread, %t total"
+dialogs-title-format      "%N %V%> Dialogs"
+feedlist-title-format     "%N %V%> %u unread, %t total"
+filebrowser-title-format  "%N %V%> %?O?Open&Save? - %f"
+help-title-format         "%N %V%> Help"
+itemview-title-format     "%F - %T%> %u unread, %t total"
+searchresult-title-format "%N %V%> Search results - %t found"
+selectfilter-title-format "%N %V%> Filters"
+selecttag-title-format    "%N %V%> Filters"
+urlview-title-format      "%N %V%> URLs"
 
 ### Colors ###
 
 color background          default default
 color listnormal          default default
 color listfocus           default black
-color listnormal_unread   red     default bold
-color listfocus_unread    red     black   bold
-color info                default black   dim
+color listnormal_unread   magenta default bold
+color listfocus_unread    magenta black bold
+color info                black   white reverse dim
 color article             default default
-color end-of-text-marker  color8  default
+color end-of-text-marker  black   default
 search-highlight-colors   yellow  default bold reverse
 
 ### Highlighting ###
 
 # Separators
-highlight feedlist "--- .+" default default bold dim underline
+highlight feedlist "--- .+" default default dim underline
 highlight feedlist "\\(0/0\\)" default default invis dim underline
 
 # Article

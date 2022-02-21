@@ -1,16 +1,17 @@
-#!/bin/sh
+#!/bin/sh -efu
 #######################################################################
+# Fern's Dotfiles
+# https://gitlab.com/fernzi/dotfiles
 # Newsboat - URL opener
 #######################################################################
 
-set -Cf
+exec >/dev/null 2>&1
 
-if [ -n "$OPENER" ]; then
-  cmd="$OPENER"
-elif command -v open >/dev/null 2>&1; then
-  cmd='open'
-elif command -v xdg-open >/dev/null 2>&1; then
-  cmd='xdg-open'
-fi
+for c in "${OPENER:-}" open xdg-open; do
+	if command -v "${c}"; then
+		cmd="${c}"
+		break
+	fi
+done
 
-setsid "$cmd" "$@" >/dev/null 2>&1 &
+setsid "${cmd}" "$@" &
