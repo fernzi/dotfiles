@@ -1,0 +1,33 @@
+#!/bin/sh -efu
+# Copyright © 2022 Fern Zapata
+# This program is subject to the terms of the GNU GPL, either
+# version 3 of the License or (at your option) any later version.
+# You should have received a copy of the License along with this
+# file. If not, see <https://www.gnu.org/licenses/>.
+
+export LF_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}/$USER}/lf"
+export LF_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/lf"
+export LF_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/lf"
+
+ueberzug_stop() {
+	exec 3>&-
+	rm "${LF_UEBERZUG}"
+}
+
+ueberzug_start() {
+	mkfifo "$1"
+	ueberzug layer -p json -s <"$1" &
+	exec 3>"$1"
+}
+
+test -d "${LF_RUNTIME_DIR}" || mkdir -pm700 "${LF_RUNTIME_DIR}"
+test -d "${LF_CACHE_DIR}" ||  mkdir -p "${LF_CACHE_DIR}"
+
+if test -n "$DISPLAY" && command -v ueberzug >/dev/null 2>&1; then
+	export LF_UEBERZUG="${LF_RUNTIME_DIR}/ueberzug-$$"
+	ueberzug_start ${LF_UEBERZUG}
+	trap ueberzug_stop HUP INT QUIT TERM PWR EXIT
+fi
+
+# TODO: Actually find in the PATH.
+/usr/bin/lf "$@" 3>&-

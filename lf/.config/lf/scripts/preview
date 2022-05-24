@@ -1,191 +1,157 @@
-#!/usr/bin/env perl
-# Copyright © 2021 Fern Zapata
-# This Source Code Form is subject to the terms of the ISC License.
-# If a copy of the license was not distributed with this file, you
-# can obtain one at https://opensource.org/licenses/ISC/.
+#!/bin/sh -efu
+# Copyright © 2022 Fern Zapata
+# This program is subject to the terms of the GNU GPL, either
+# version 3 of the License or (at your option) any later version.
+# You should have received a copy of the License along with this
+# file. If not, see <https://www.gnu.org/licenses/>.
 
-use v5.10.1;
-use warnings;
-no warnings 'experimental';
-use strict;
-
-use Digest::MD5 qw(md5_hex);
-use File::MimeInfo qw(mimetype_isa);
-use File::MimeInfo::Magic;
-use File::Path qw(make_path);
-use File::Which;
-use Image::ExifTool qw(ImageInfo);
-use List::Util qw(max);
-use Path::Tiny;
-
-
-my $CACHE = ($ENV{'XDG_CACHE_HOME'} || "$ENV{'HOME'}/.cache") . '/lf';
-
-
-sub print_exif {
-  my ($info, $fields) = @_;
-  my $pad = max(map(length, values %$fields));
-  foreach (sort keys %$fields) {
-    if (exists $$info{$_}) {
-      printf("%-*s : %s\n", $pad, $$fields{$_}, $$info{$_});
-    }
-  }
+command_exists() {
+	command -v -- $1 >/dev/null 2>&1
 }
 
-
-sub preview_txt {
-  my ($name, $width, $lines) = @_;
-  if (which('highlight')) {
-    system(
-      'highlight',
-      '--force',
-      '--out-format=xterm256',
-      '--replace-tabs=2',
-      '--style=base16/ia-dark',
-      '--',
-      $name,
-    );
-  } elsif (which('pygmentize')) {
-    exec('pygmentize', '--', $name);
-  } else {
-    print(path($name)->slurp);
-  }
+prev_img() {
+	if test -p "${LF_UEBERZUG:-}"; then
+		# FIXME: Accounting for padding is purdy hacky.
+		# Also, it'd be nice to remove the `jq` dependency.
+		jq -cn \
+			'{action:"add", identifier:"lf", scaler:"fit_contain",
+			  scaling_position_x: 0.5, scaling_position_y: 0.5,
+			  x: $x, y: $y, width: $w, height: $h, path: $p}' \
+			--arg p "$1" \
+			--argjson w "$(( $2 - 3 ))" --argjson h "$(( $3 - 2 ))" \
+			--argjson x "$(( $4 + 1 ))" --argjson y "$(( $5 + 1 ))" \
+			>"${LF_UEBERZUG}"
+		exit 1
+	elif command_exists chafa; then
+		chafa \
+			--colors 240 \
+			--size "${2}x${3}" \
+			--symbols 'ascii+vhalf+block+space' \
+			--font-ratio 1/2 \
+			-- "$1"
+	elif command_exists img2txt; then
+		img2txt -W "$2" -x 1 -y 2 -f utf8 -- "$1"
+	elif command_exists magick; then
+		magick \
+			-read "$1" \
+			-format '%m %z-bin %[colorspace]\n%g\n' \
+			info:-
+	else
+		return 1
+	fi
 }
 
-
-sub preview_img {
-  my ($name, $width, $height) = @_;
-  if (which('chafa')) {
-    exec(
-      'chafa',
-      '--colors', '240',
-      '--size', "${width}x${height}",
-      '--symbols', 'ascii+vhalf+block+space',
-      '--font-ratio', '5/12',
-      '--',
-      $name,
-    );
-  } else {
-    my $info = ImageInfo($name);
-    print_exif($info, {
-      'FileType'  => 'Format : ',
-      'ColorType' => 'Type   : ',
-      'ImageSize' => 'Size   : ',
-    });
-  }
+prev_pdf() {
+	if command_exists pdftotext; then
+		pdftotext -layout -l 8 -nopgbrk -q -- "$1" -
+	else
+		return 1
+	fi
 }
 
-
-sub preview_vid {
-  my ($name) = @_;
-  my @info = (stat($name))[1, 2, 7, 9, 10];
-  my $hash = md5_hex(@info);
-  my $thumb = "$CACHE/$hash.jpg";
-  if (-r $thumb) {
-    preview_img($thumb, @_[1..$#_]);
-  } elsif (which('ffmpeg')) {
-    make_path($CACHE);
-    if (-d $CACHE) {
-      system(
-        'ffmpeg',
-        '-v', 'error',
-        '-i', $name,
-        '-frames:v', '1',
-        '-vf', 'scale=128:-2',
-        '--',
-        $thumb,
-      );
-      if (-r $thumb) {
-        preview_img($thumb, @_[1..$#_]);
-      }
-    }
-  } else {
-    my $info = ImageInfo($name);
-    print_exif($info, {
-      'FileType'  => 'Format   : ',
-      'Duration'  => 'Duration : ',
-      'ImageSize' => 'Size     : ',
-    });
-  }
+prev_snd() {
+	if command_exists ffprobe; then
+		ffprobe \
+			-v error \
+			-show_entries format_tags=title,artist,album,date \
+			-of default=noprint_wrappers=1 \
+			-- "$1" |
+			awk -F'[:=]' '{printf "%-7s: %s\n", toupper($2), $3}'
+	else
+		return 1
+	fi
 }
 
-
-sub preview_snd {
-  my $info = ImageInfo($_[0]);
-  print_exif($info, {
-    'Title'  => 'Title',
-    'Artist' => 'Artist',
-    'Album'  => 'Album',
-    'Date'   => 'Date',
-  });
+prev_svg() {
+	local thumb="${LF_CACHE_DIR}/$(stat -c '%i%s%Y%Z' "$1").webp"
+	if test ! -r "${thumb}" && command_exists magick; then
+		magick "$1" -resize 256x256\> "${thumb}"
+	fi
+	if test -r "${thumb}"; then
+		shift
+		prev_img "${thumb}" "$@"
+	else
+		return 1
+	fi
 }
 
-
-sub preview_pdf {
-  my ($name) = @_;
-  my $info = ImageInfo($name);
-  print_exif($info, {
-    'Title'      => 'Title',
-    'Author'     => 'Author',
-    'CreateDate' => 'Date',
-  });
-  if (which 'pdftotext') {
-    say('');
-    exec('pdftotext',
-      '-l', '8',
-      '-nopgbrk',
-      '-q',
-      '--',
-      $name,
-      '-'
-    );
-  }
+prev_tor() {
+	if command_exists transmission-show; then
+		transmission-show -- "$1" | tail +4
+	else
+		return 1
+	fi
 }
 
-
-sub preview_arc {
-  my ($name) = @_;
-  if (which('atool')) {
-    exec('atool', '--list', '--', $name);
-  } elsif (which('lsar')) {
-    exec('lsar', '--', $name);
-  } else {
-    say('(archive)');
-  }
+prev_txt() {
+	if command_exists highlight; then
+		highlight \
+			--force \
+			--out-format=xterm256 \
+			--replace-tabs=2 \
+			--style=base16/monokai \
+			-- "$1"
+	elif command_exists bat; then
+		bat \
+			--color always \
+			--style plain \
+			--paging never \
+			--terminal-width "$2" \
+			--wrap character \
+			-- "$1"
+	else
+		cat "$1"
+	fi
 }
 
-
-sub preview_any {
-  my ($name) = @_;
-  if (-l $name) {
-    $name = readlink($name);
-  }
-  my $mime = mimetype($name);
-  given ($mime) {
-    when (/(json|javascript)$/ or mimetype_isa $_, 'text/plain') {
-      preview_txt(@_);
-    }
-    when (/^image/) {
-      preview_img(@_);
-    }
-    when (/^audio/) {
-      preview_snd(@_);
-    }
-    when (/^video/) {
-      preview_vid(@_);
-    }
-    when (m{application/.*pdf}) {
-      preview_pdf(@_);
-    }
-    when (/(x-(archive|cpio|(g|compressed-)?tar|bzip2|lz.*|xz|7z.*|rar)|g?zip|zstd)$/) {
-      # FIXME: Is there a less disgusting way to match these?
-      preview_arc(@_);
-    }
-    default {
-      say('(binary)');
-    }
-  }
+prev_vid() {
+	local thumb="${LF_CACHE_DIR}/$(stat -c '%i%s%Y%Z' "$1").webp"
+	if test ! -r "${thumb}" && command_exists ffmpeg; then
+		ffmpeg \
+			-v quiet -y \
+			-ss 3 \
+			-i "$1" \
+			-frames:v 1 \
+			-vf scale=192:-2 \
+			-- "${thumb}"
+	fi
+	if test -r "${thumb}"; then
+		shift
+		prev_img "${thumb}" "$@"
+	else
+		return 1
+	fi
 }
 
+prev_any() {
+	case "$(file -Lb --mime-type "$1")" in
+		image/svg*)
+			prev_svg "$@" || echo '(image)' ;;
+		image/*)
+			prev_img "$@" || echo '(image)' ;;
+		text/*|*/xml|*/json|*/javascript)
+			prev_txt "$@" || echo '(text)' ;;
+		application/*pdf)
+			prev_pdf "$@" || echo '(document)' ;;
+		audio/*)
+			prev_snd "$@" || echo '(audio)' ;;
+		video/*)
+			prev_vid "$@" || echo '(video)' ;;
+		*bittorrent)
+			prev_tor "$@" || echo '(torrent)' ;;
+		*)
+			echo '(binary)' ;;
+	esac
+}
 
-preview_any(@ARGV);
+prev_clean() {
+	if test -p "${LF_UEBERZUG:-}"; then
+		echo '{"action":"remove","identifier":"lf"}' >"${LF_UEBERZUG}"
+	fi
+}
+
+if test $# -gt 1; then
+	prev_any "$@"
+else
+	prev_clean "$@"
+fi

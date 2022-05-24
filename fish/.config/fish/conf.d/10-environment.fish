@@ -49,12 +49,6 @@ end
 # `less`, please respect my colours.
 set -x LESS -R
 
-# `lf` doesn't have a proper config file for icons,
-# so take that good stuff and shove it in an env var.
-if test -f ~/.config/lf/icons
-	set -x LF_ICONS (awk 'NF&&!/^#/{printf"%s :",$0}' ~/.config/lf/icons)
-end
-
 # Make `exa` extra good looking.
 # Not that it's any bad by default.
 set -x EXA_GRID_ROWS 6

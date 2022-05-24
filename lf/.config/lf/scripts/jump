@@ -1,0 +1,26 @@
+#!/bin/sh -efu
+# Copyright © 2022 Fern Zapata
+# This program is subject to the terms of the GNU GPL, either
+# version 3 of the License or (at your option) any later version.
+# You should have received a copy of the License along with this
+# file. If not, see <https://www.gnu.org/licenses/>.
+
+export FZF_DEFAULT_COMMAND='find * -type d,f'
+
+if command -v fd >/dev/null 2>&1; then
+	FZF_DEFAULT_COMMAND='fd -td -tf'
+elif command -v rg >/dev/null 2>&1; then
+	FZF_DEFAULT_COMMAND='rg --files'
+fi
+
+readonly target="$(fzf-tmux -d 8 || true)"
+
+if test -d "${target}"; then
+	command='cd'
+elif test -f "${target}"; then
+	command='select'
+fi
+
+if test -n "${command:-}"; then
+	lf -remote "send ${id} ${command} \"${target}\""
+fi

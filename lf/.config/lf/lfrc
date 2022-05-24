@@ -1,14 +1,17 @@
 #######################################################################
+# Fern's Dotfiles
+# https://gitlab.com/fernzi/dotfiles
 # LF File Manager
 #######################################################################
 
-set color256  on
 set icons     on
 set shell     'sh'
 set shellopts '-eu'
 set ifs       "\n"
+set ratios    1:2:3
 set previewer ~/.config/lf/scripts/preview
-set scrolloff 4
+set cleaner   ~/.config/lf/scripts/preview
+set scrolloff 3
 
 # Commands ############################################################
 
@@ -73,10 +76,9 @@ cmd tgz %tar -czf "$1.tgz" "$fx"
 cmd zip %zip -r "$1.zip" "$fx"
 
 cmd bulk-rename ${{
-  LFDIR="${XDG_RUNTIME_DIR:-/tmp/$USER}/lf"
-  OF=$(mktemp -p "$LFDIR" rename.ori.XXXX)
-  RF=$(mktemp -p "$LFDIR" rename.new.XXXX)
-  EF=$(mktemp -p "$LFDIR" rename.exe.XXXX.sh)
+  OF=$(mktemp -p "$LF_RUNTIME_DIR" rename.ori.XXXX)
+  RF=$(mktemp -p "$LF_RUNTIME_DIR" rename.new.XXXX)
+  EF=$(mktemp -p "$LF_RUNTIME_DIR" rename.exe.XXXX.sh)
   realpath --relative-to "$PWD" $fx | tee "$OF" > "$RF"
   $EDITOR "$RF"
   paste -d '\n' "$OF" "$RF" \
@@ -87,21 +89,7 @@ cmd bulk-rename ${{
   rm "$OF" "$RF" "$EF"
 }}
 
-cmd jump ${{
-  [ "$lf_hidden" = true ] && hidden='--hidden'
-  lf -remote "send $id select \"$(rg --files ${hidden:-} | fzy)\""
-}}
-
-cmd recol %{{
-  readonly width=$(tput cols)
-  ratios='1:2:3:6'
-  if [ $width -le 80 ]; then
-    ratios='1:2'
-  elif [ $width -le 160 ]; then
-    ratios='1:2:3'
-  fi
-  lf -remote "send $id set ratios $ratios"
-}}
+cmd jump $"${LF_CONFIG_DIR}/scripts/jump"
 
 cmd new-from-menu ${{
   cd "${XDG_TEMPLATES_DIR:-$HOME/Templates}"
@@ -148,9 +136,3 @@ map <delete> trash
 
 map .. guidrag
 map ., guidrop
-
-# Startup #############################################################
-
-%mkdir -pm 700 ${XDG_RUNTIME_DIR:-/tmp/$USER}/lf
-
-recol

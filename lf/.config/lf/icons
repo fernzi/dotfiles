@@ -1,245 +1,418 @@
 #######################################################################
+# Fern's Dotfiles
+# https://gitlab.com/fernzi/dotfiles
 # LF - File Icons
 #######################################################################
 
-bd=
-di=
-ex=
-fi=
-ln=
-or=
+bd 󰋊
+cd 󰈚
+di 󰉋
+ex 󱁻
+fi 󰈔
+ln 󱅷
+mi 󱀷
+or 󱅸
+ow 󰉋
+pi 󰈝
+sg 󰩋
+so 󰈝
+st 󰉋
+su 󰩋
+tw 󰉋
+
+~           󱂵
+~/Desktop   󰻎
+~/Documents 󰲂
+~/Downloads 󰉍
+~/Music     󱍙
+~/Pictures  󰉏
+~/Public    󰉌
+~/Templates 󰴉
+~/Videos    󰎁
 
 ## Text ###############################################################
 
-*.asciidoc=
-*.markdown=
-*.md=
-*.rst=
-*.txt=
+*.adoc 󰈙
+*.md   󰈙
+*.org  󰈙
+*.rst  󰈙
+*.txt  󰈙
+
+### (La)TeX ###
+*.bib 󰈙
+*.tex 󰈙
+
+COPYING.*      󱆆
+LICENSE.*      󱆆
+README.*       󰈙
+HACKING.*      󰈙
+CONTRIBUTING.* 󰈙
+AUTHORS.*      󰜻
+CONTRIBUTORS.* 󰜻
+NEWS.*         󱀺
+CHANGELOG.*    󱀺
+
+## Code ###############################################################
+
+### C ###
+*.c 󰈮
+*.h 󰈮
+
+### C++ ###
+*.cc  󰈮
+*.hh  󰈮
+*.cpp 󰈮
+*.hpp 󰈮
+*.cxx 󰈮
+*.hxx 󰈮
+*.c++ 󰈮
+*.h++ 󰈮
+
+### Diff ###
+*.diff  󰢪
+*.patch 󰢪
+
+### Go ###
+*.go 󰈮
+
+### JavaScript ###
+*.js  󰈮
+*.jsx 󰈮
+*.ts  󰈮
+*.tsx 󰈮
+
+### Lisp ###
+*.cl  󰈮
+*.el  󰈮
+*.elc 󰈮
+*.lsp 󰈮
+*.scm 󰈮
+
+### Python ###
+*.py  󰈮
+*.pyc 󰈮
+*.pyd 󰈮
+*.pyi 󰈮
+*.pyo 󰈮
+*.pyw 󰈮
+*.pyz 󰈮
+
+### Ruby ###
+*.rb      󰈮
+*Gemfile  󰈮
+*Rakefile 󰈮
+
+## Data ###############################################################
+
+*.csv  󰈘
+*.tsv  󰈘
+*.json 󰈘
+*.yml  󰈘
+*.yaml 󰈘
+*.toml 󰈘
+
+### GPG ###
+*.gpg  󰈡
+*.kbx  󱆄
+*.key  󱆄
+*.asc  󱆄
+*.pub  󱆄
+*.rev  󱆄
+
+### HDF ###
+*.h4   󰱾
+*.h5   󰱾
+*.hdf  󰱾
+*.hdf4 󰱾
+*.hdf5 󰱾
+*.he4  󰱾
+*.he5  󰱾
+
+### SQLite ###
+*.db      󰱾
+*.sqlite  󰱾
+*.sqlite3 󰱾
 
 ## Image ##############################################################
 
-*.apng=
-*.azv=
-*.bmp=
-*.btf=
-*.btif=
-*.cgm=
-*.dib=
-*.djv=
-*.djvu=
-*.drle=
-*.dwg=
-*.dxf=
-*.emf=
-*.fbs=
-*.fit=
-*.fits=
-*.fpx=
-*.fst=
-*.fts=
-*.gif=
-*.hdr=
-*.ico=
-*.ief=
-*.jfif=
-*.jls=
-*.jp2=
-*.jpe=
-*.jpeg=
-*.jpf=
-*.jpg=
-*.jpg2=
-*.jpgm=
-*.jpm=
-*.jpx=
-*.ktx=
-*.mdi=
-*.mmr=
-*.pbm=
-*.pcx=
-*.pgb=
-*.pgm=
-*.png=
-*.pnm=
-*.ppm=
-*.psd=
-*.pti=
-*.ras=
-*.rgb=
-*.rgbe=
-*.rlc=
-*.s1g=
-*.s1j=
-*.s1n=
-*.sgi=
-*.sgif=
-*.sjp=
-*.sjpg=
-*.spn=
-*.spng=
-*.svg=
-*.svgz=
-*.t38=
-*.tap=
-*.tfx=
-*.tga=
-*.tif=
-*.tiff=
-*.uvg=
-*.uvi=
-*.uvvg=
-*.uvvi=
-*.vtf=
-*.wbmp=
-*.webp=
-*.wmf=
-*.xbm=
-*.xif=
-*.xpm=
-*.xwd=
-*.xyze=
+### Adobe ###
+*.ai   󰈟
+*.psd  󰈟
+
+### Autodesk ###
+*.dwg  󰈟
+*.dxf  󰈟
+
+### JPEG ####
+*.jfif 󰈟
+*.jls  󰈟
+*.jp2  󰈟
+*.jpe  󰈟
+*.jpeg 󰈟
+*.jpf  󰈟
+*.jpg  󰈟
+*.jpg2 󰈟
+*.jpgm 󰈟
+*.jpm  󰈟
+*.jpx  󰈟
+
+### Netpbm ###
+*.pbm  󰈟
+*.pgm  󰈟
+*.pnm  󰈟
+*.ppm  󰈟
+
+### SVG ###
+*.svg  󰈟
+*.svgz 󰈟
+
+### TIFF ###
+*.btif 󰈟
+*.tif  󰈟
+*.tiff 󰈟
+
+### X ###
+*.xbm  󰈟
+*.xpm  󰈟
+*.xwd  󰈟
+
+*.apng 󰈟
+*.azv  󰈟
+*.bmp  󰈟
+*.btf  󰈟
+*.cgm  󰈟
+*.dib  󰈟
+*.djv  󰈟
+*.djvu 󰈟
+*.drle 󰈟
+*.emf  󰈟
+*.fbs  󰈟
+*.fit  󰈟
+*.fits 󰈟
+*.fpx  󰈟
+*.fst  󰈟
+*.fts  󰈟
+*.gif  󰈟
+*.hdr  󰈟
+*.ico  󰈟
+*.ief  󰈟
+*.kra  󰈟
+*.ktx  󰈟
+*.mdi  󰈟
+*.mmr  󰈟
+*.pcx  󰈟
+*.pgb  󰈟
+*.png  󰈟
+*.pti  󰈟
+*.ras  󰈟
+*.rgb  󰈟
+*.rgbe 󰈟
+*.rlc  󰈟
+*.s1g  󰈟
+*.s1j  󰈟
+*.s1n  󰈟
+*.sgi  󰈟
+*.sgif 󰈟
+*.sjp  󰈟
+*.sjpg 󰈟
+*.spn  󰈟
+*.spng 󰈟
+*.t38  󰈟
+*.tap  󰈟
+*.tfx  󰈟
+*.tga  󰈟
+*.uvg  󰈟
+*.uvi  󰈟
+*.uvvg 󰈟
+*.uvvi 󰈟
+*.vtf  󰈟
+*.wbmp 󰈟
+*.webp 󰈟
+*.wmf  󰈟
+*.xif  󰈟
+*.xyze 󰈟
 
 ## Audio ##############################################################
 
-*.669=
-*.726=
-*.aa3=
-*.aal=
-*.ac3=
-*.acn=
-*.aif=
-*.aifc=
-*.aiff=
-*.amr=
-*.at3=
-*.atx=
-*.au=
-*.awb=
-*.axa=
-*.dls=
-*.dts=
-*.dtshd=
-*.ecelp4800=
-*.ecelp7470=
-*.ecelp9600=
-*.enw=
-*.eol=
-*.evb=
-*.evc=
-*.evw=
-*.flac=
-*.kar=
-*.koz=
-*.l16=
-*.lbc=
-*.lvp=
-*.m15=
-*.m3u=
-*.m4a=
-*.med=
-*.mid=
-*.midi=
-*.mka=
-*.mlp=
-*.mod=
-*.mp1=
-*.mp2=
-*.mp3=
-*.mpga=
-*.mtm=
-*.multitrack=
-*.mxmf=
-*.oga=
-*.ogg=
-*.omg=
-*.opus=
-*.plj=
-*.psid=
-*.pya=
-*.qcp=
-*.ra=
-*.ram=
-*.rip=
-*.rm=
-*.s1m=
-*.s3m=
-*.sid=
-*.smp=
-*.smp3=
-*.smv=
-*.snd=
-*.spx=
-*.stm=
-*.ult=
-*.uni=
-*.uva=
-*.uvva=
-*.vbk=
-*.wav=
-*.wax=
-*.wma=
+### Adobe ###
+*.f4a  󰈣
+*.f4b  󰈣
+*.f4p  󰈣
+
+### Apple ###
+*.aif  󰈣
+*.aifc 󰈣
+*.aiff 󰈣
+*.alac 󰈣
+*.caf  󰈣
+*.m4a  󰈣
+*.m4b  󰈣
+*.m4p  󰈣
+*.m4r  󰈣
+
+### Matroska ###
+*.mka  󰈣
+
+### Microsoft ###
+*.wav  󰈣
+*.wave 󰈣
+*.wax  󰈣
+*.wma  󰈣
+
+### MPEG ###
+*.aac  󰈣
+*.m2a  󰈣
+*.m3a  󰈣
+*.m3a  󰈣
+*.m3u  󰈣
+*.mp1  󰈣
+*.mp2  󰈣
+*.mp3  󰈣
+*.mpa  󰈣
+*.mpga 󰈣
+
+### Xiph ###
+*.flac 󰈣
+*.mogg 󰈣
+*.oga  󰈣
+*.ogg  󰈣
+*.opus 󰈣
+*.spx  󰈣
+
+*.669  󰈣
+*.726  󰈣
+*.aa3  󰈣
+*.aal  󰈣
+*.ac3  󰈣
+*.acn  󰈣
+*.amr  󰈣
+*.at3  󰈣
+*.atx  󰈣
+*.au   󰈣
+*.awb  󰈣
+*.axa  󰈣
+*.dls  󰈣
+*.dts  󰈣
+*.enw  󰈣
+*.eol  󰈣
+*.evb  󰈣
+*.evc  󰈣
+*.evw  󰈣
+*.kar  󰈣
+*.koz  󰈣
+*.l16  󰈣
+*.lbc  󰈣
+*.lvp  󰈣
+*.m15  󰈣
+*.med  󰈣
+*.mid  󰈣
+*.midi 󰈣
+*.mlp  󰈣
+*.mod  󰈣
+*.mtm  󰈣
+*.mxmf 󰈣
+*.omg  󰈣
+*.plj  󰈣
+*.psid 󰈣
+*.pya  󰈣
+*.qcp  󰈣
+*.ra   󰈣
+*.ram  󰈣
+*.rip  󰈣
+*.rm   󰈣
+*.s1m  󰈣
+*.s3m  󰈣
+*.sid  󰈣
+*.smp  󰈣
+*.smp3 󰈣
+*.smv  󰈣
+*.snd  󰈣
+*.stm  󰈣
+*.ult  󰈣
+*.uni  󰈣
+*.uva  󰈣
+*.uvva 󰈣
+*.vbk  󰈣
 
 ## Video ##############################################################
 
-*.3g2=
-*.3gp=
-*.3gpp=
-*.3gpp2=
-*.asx=
-*.avi=
-*.axv=
-*.bik=
-*.bk2=
-*.dvb=
-*.flv=
-*.fvt=
-*.fxm=
-*.m1v=
-*.m2v=
-*.m4s=
-*.m4u=
-*.m4v=
-*.mj2=
-*.mjp2=
-*.mk3d=
-*.mkv=
-*.mov=
-*.movie=
-*.mp4=
-*.mpe=
-*.mpeg=
-*.mpg=
-*.mpg4=
-*.mxu=
-*.nim=
-*.ogv=
-*.pyv=
-*.qt=
-*.s11=
-*.s14=
-*.s1q=
-*.smk=
-*.smo=
-*.smov=
-*.smpg=
-*.ssw=
-*.sswf=
-*.uvh=
-*.uvm=
-*.uvp=
-*.uvs=
-*.uvu=
-*.uvv=
-*.uvvh=
-*.uvvm=
-*.uvvp=
-*.uvvs=
-*.uvvu=
-*.uvvv=
-*.viv=
-*.webm=
-*.wm=
-*.wmv=
-*.wmx=
-*.wvx=
+### Adobe ###
+*.f4v  󰈫
+*.flv  󰈫
+*.ssw  󰈫
+*.sswf 󰈫
+*.swf  󰈫
+
+### Apple ###
+*.mov  󰈫
+*.qt   󰈫
+*.smo  󰈫
+*.smov 󰈫
+
+### Bink ###
+*.bik  󰈫
+*.bk2  󰈫
+*.smk  󰈫
+
+### JPEG ###
+*.mj2  󰈫
+*.mjp2 󰈫
+
+### Matroska ###
+*.mk3d 󰈫
+*.mkv  󰈫
+*.mks  󰈫
+
+### Microsoft ###
+*.asf  󰈫
+*.asx  󰈫
+*.avi  󰈫
+*.wm   󰈫
+*.wmv  󰈫
+*.wmx  󰈫
+*.wvx  󰈫
+
+### MPEG ###
+*.3g2  󰈫
+*.3gp* 󰈫
+*.m1v  󰈫
+*.m2v  󰈫
+*.m4s  󰈫
+*.m4u  󰈫
+*.m4v  󰈫
+*.mp4  󰈫
+*.mpe  󰈫
+*.mpeg 󰈫
+*.mpg  󰈫
+*.mpg4 󰈫
+*.smpg 󰈫
+
+### UltraViolet ###
+*.uvu  󰈫
+*.uvv  󰈫
+*.uvvh 󰈫
+*.uvvm 󰈫
+*.uvvp 󰈫
+*.uvvs 󰈫
+*.uvvu 󰈫
+*.uvvv 󰈫
+
+### Xiph ###
+*.ogv  󰈫
+
+*.axv  󰈫
+*.dvb  󰈫
+*.fvt  󰈫
+*.fxm  󰈫
+*.mxu  󰈫
+*.nim  󰈫
+*.pyv  󰈫
+*.s11  󰈫
+*.s14  󰈫
+*.s1q  󰈫
+*.uvh  󰈫
+*.uvm  󰈫
+*.uvp  󰈫
+*.uvs  󰈫
+*.viv  󰈫
+*.webm 󰈫
