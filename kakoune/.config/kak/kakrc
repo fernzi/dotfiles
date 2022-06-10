@@ -1,4 +1,6 @@
 #######################################################################
+# Fern's Dotfiles
+# https://gitlab.com/fernzi/dotfiles
 # Kakoune User Configuration
 #######################################################################
 
@@ -21,25 +23,23 @@ hook global WinSetOption filetype=c %{
 }
 
 hook global InsertCompletionShow .* %{
-  map window insert <tab> <c-n>
-  map window insert <s-tab> <c-p>
-}
-
-hook global InsertCompletionHide .* %{
-  unmap window insert <tab> <c-n>
-  unmap window insert <s-tab> <c-p>
+	try %{
+		execute-keys -draft 'h<a-K>\h<ret>'
+		map window insert <tab> <c-n>
+		map window insert <s-tab> <c-p>
+		hook -once -always window InsertCompletionHide .* %{
+			unmap window insert <tab> <c-n>
+			unmap window insert <s-tab> <c-p>
+		}
+	}
 }
 
 ## Editor #############################################################
 
 set-option global tabstop           2
-set-option global indentwidth       2
+set-option global indentwidth       0
 set-option global autoclose         true
 set-option global autosave_interval 3
-
-hook global InsertChar \t %{
-  execute-keys -draft h@
-}
 
 hook global BufNewFile  .* editorconfig-load
 hook global BufOpenFile .* editorconfig-load
@@ -56,17 +56,8 @@ hook global WinCreate .*/lfrc %{
   set-option buffer filetype 'sh'
 }
 
-hook global WinCreate .*waybar/config %{
-  set-option buffer filetype 'json'
-}
-
 hook global WinSetOption filetype=markdown %{
   set-option -add window autoclose_pairs * *
-}
-
-hook global WinSetOption filetype=c(pp)? %{
-  clang-enable-autocomplete
-  clang-enable-diagnostics
 }
 
 hook global WinSetOption filetype=(git-commit|mail|troff) %{
@@ -92,6 +83,9 @@ map global normal '#'   ':comment-line<ret>'
 map global normal <c-w> ':delete-buffer<ret>'
 map global normal <c-q> ':quit<ret>'
 
+map global insert <tab> '<a-;><a-gt>'
+map global insert <s-tab> '<a-;><a-lt>'
+
 map global user   y     ':clipboard-yank<ret>'
 map global user   p     ':clipboard-paste<ret>'
 map global user   P     ':clipboard-paste-before<ret>'
@@ -112,4 +106,4 @@ define-command mkd %{
   }
 }
 
-colorscheme fern
+colorscheme termcolors

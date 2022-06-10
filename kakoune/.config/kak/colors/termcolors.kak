@@ -26,10 +26,10 @@ face global bullet             red
 face global list               red
 
 face global Default            default,default
-face global PrimarySelection   white,black+fg
-face global SecondarySelection white,black+fg
-face global PrimaryCursor      default,default+rfg
-face global SecondaryCursor    black,white+fg
+face global PrimarySelection   white,default+rfg
+face global SecondarySelection default,default+rfg
+face global PrimaryCursor      blue,default+rfg
+face global SecondaryCursor    bright-blue,default+rfg
 face global PrimaryCursorEol   default,bright-white+rfg
 face global SecondaryCursorEol default,white+rfg
 face global LineNumbers        black
@@ -38,7 +38,7 @@ face global LineNumbersWrapped black+i
 face global MenuForeground     black,blue
 face global MenuBackground     default,bright-black
 face global MenuInfo           black
-face global Information        black,default+r
+face global Information        default,black+dr
 face global Error              red,default+r
 face global StatusLine         default,black
 face global StatusLineMode     green+b
@@ -49,3 +49,6 @@ face global Prompt             blue,black
 face global MatchingChar       white,black+b
 face global BufferPadding      black
 face global Whitespace         bright-black+f
+
+face global LineCursor         default,black
+face global WrapColumn         default,black
