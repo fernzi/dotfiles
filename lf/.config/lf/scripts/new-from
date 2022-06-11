@@ -1,0 +1,30 @@
+#!/bin/sh -efu
+# Copyright © 2022 Fern Zapata
+# This program is subject to the terms of the GNU GPL, either
+# version 3 of the License or (at your option) any later version.
+# You should have received a copy of the License along with this
+# file. If not, see <https://www.gnu.org/licenses/>.
+
+readonly TEMPLATE_DIR="${XDG_TEMPLATES_DIR:-$HOME/Templates}"
+
+if test $# -gt 1; then
+	template="${TEMPLATE_DIR}/$1"
+	if test ! -r "${template}"; then
+		printf 'template `%s` does not exist\n' "${template}"
+		exit 1
+	fi
+	if test -f "$2"; then
+		printf 'file `%s` already exists\n' "$2"
+		exit 1
+	fi
+	"${LF_CONFIG_DIR}/scripts/make-template" "${template}" -o "$2"
+	lf -remote "send $id select \"$2\""
+	printf 'created file `%s` from template `%s`\n' "$2" "$1"
+else
+	cd "${TEMPLATE_DIR}"
+	template="$(find -type f,l ! -path '*/.*' | sed s:^./:: | fzf || true)"
+	if test -r "${template}"; then
+		file="new.${template##*.}"
+		lf -remote "send $id push :new-from<space>$template<space>$file"
+	fi
+fi

@@ -65,7 +65,7 @@ prev_snd() {
 prev_svg() {
 	local thumb="${LF_CACHE_DIR}/$(stat -c '%i%s%Y%Z' "$1").webp"
 	if test ! -r "${thumb}" && command_exists magick; then
-		magick "$1" -resize 256x256\> "${thumb}"
+		magick "$1" -resize 512x512\> "${thumb}"
 	fi
 	if test -r "${thumb}"; then
 		shift
@@ -112,7 +112,7 @@ prev_vid() {
 			-ss 3 \
 			-i "$1" \
 			-frames:v 1 \
-			-vf scale=192:-2 \
+			-vf scale=256:-2 \
 			-- "${thumb}"
 	fi
 	if test -r "${thumb}"; then

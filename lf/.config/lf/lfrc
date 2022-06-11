@@ -91,21 +91,8 @@ cmd bulk-rename ${{
 
 cmd jump $"${LF_CONFIG_DIR}/scripts/jump"
 
-cmd new-from-menu ${{
-  cd "${XDG_TEMPLATES_DIR:-$HOME/Templates}"
-  readonly tmp=$(find -type f,l ! -path '*/.*' | sed s:^./:: | fzy)
-  if [ -r "$tmp" ]; then
-    new="new.${tmp##*.}"
-    lf -remote "send $id push :new-from<space>$tmp<space>$new"
-  fi
-}}
-
-cmd new-from %{{
-  tdir="${XDG_TEMPLATES_DIR:-$HOME/Templates}"
-  ~/.config/lf/scripts/make-template "$tdir/$1" -o "$2"
-  lf -remote "send $id select \"$2\""
-  printf 'created `%s` from template `%s`' "$2" "$1"
-}}
+cmd new-from-menu $"${LF_CONFIG_DIR}/scripts/new-from"
+cmd new-from %"${LF_CONFIG_DIR}/scripts/new-from" "$@"
 
 cmd guidrag %dragdrop -t 'Copy from…' $fx
 cmd guidrop %dragdrop -t 'Copy here…' | xargs -rI% cp % .
