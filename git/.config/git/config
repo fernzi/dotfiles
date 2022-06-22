@@ -8,6 +8,9 @@
 [init]
 	defaultBranch = master
 
+[diff]
+	algorithm = histogram
+
 [alias]
 	co = checkout
 	cm = commit
