@@ -1,12 +1,11 @@
+# Fern's Dotfiles
+# https://github.com/fernzi/dotfiles
+# fish_prompt - Prompt for the Fish shell
+
 function fish_prompt
-  set_color red
-  printf '\n'
-  set_color -ro red
-  printf '%s ' $USER
+  printf '\n%s %s ' $(set_color -ro red) $USER
   set_color -b black normal
-  printf ' %s' (date +%T)
-  set_color black -b normal
-  printf ''
+  printf ' %s ' (date +%T)
   set_color normal
   printf ' '
 end

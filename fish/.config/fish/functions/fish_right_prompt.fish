@@ -1,8 +1,10 @@
+# Fern's Dotfiles
+# https://github.com/fernzi/dotfiles
+# fish_right_prompt - Prompt for the Fish shell
+
 function fish_right_prompt
-  set_color black
-  printf ''
   set_color -b black normal
-  printf '%s ' (basename (string replace -r \^$HOME \~ $PWD))
+  printf ' %s ' (basename (string replace -r \^$HOME \~ $PWD))
 
   # Git status
   set_color -b brblack normal
@@ -36,8 +38,6 @@ function fish_right_prompt
 
   set_color -b normal blue
   set_color -ro
-  printf ' %s' $hostname
-  set_color -b normal blue
-  printf ''
+  printf ' %s ' $hostname
   set_color normal
 end
