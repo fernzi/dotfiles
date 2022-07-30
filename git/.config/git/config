@@ -12,14 +12,15 @@
 	algorithm = histogram
 
 [alias]
-	co = checkout
-	cm = commit
-	st = status -s
 	br = branch
-	df = diff
-	dfs = diff --staged
+	cm = commit
+	co = checkout
 	curr = show --stat HEAD
+	df = diff
+	dfh = diff @~ @
+	dfs = diff --staged
 	killit = reset --hard
+	st = status -s
 
 [url "git@github.com:"]
 	insteadOf = gh:
