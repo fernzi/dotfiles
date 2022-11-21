@@ -1,6 +1,6 @@
 #######################################################################
 # Fern's Dotfiles
-# https://gitlab.com/fernzi/dotfiles
+# https://github.com/fernzi/dotfiles
 # LF File Manager
 #######################################################################
 
@@ -94,8 +94,8 @@ cmd jump $"${LF_CONFIG_DIR}/scripts/jump"
 cmd new-from-menu $"${LF_CONFIG_DIR}/scripts/new-from"
 cmd new-from %"${LF_CONFIG_DIR}/scripts/new-from" "$@"
 
-cmd guidrag %dragdrop -t 'Copy from…' $fx
-cmd guidrop %dragdrop -t 'Copy here…' | xargs -rI% cp % .
+cmd guidrag %dragdrop $fx
+cmd guidrop %dragdrop | xargs -rI% cp % .
 
 cmd dl %echo $* | xargs -ri curl -JLO# '{}'
 
