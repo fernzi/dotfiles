@@ -5,12 +5,14 @@
 # You should have received a copy of the License along with this
 # file. If not, see <https://www.gnu.org/licenses/>.
 
+readonly LF_UEBERZUG="${LF_RUNTIME_DIR}/ueberzug.${id}"
+
 command_exists() {
 	command -v -- $1 >/dev/null 2>&1
 }
 
 prev_img() {
-	if test -p "${LF_UEBERZUG:-}"; then
+	if test -p "${LF_UEBERZUG}"; then
 		# FIXME: Accounting for padding is purdy hacky.
 		# Also, it'd be nice to remove the `jq` dependency.
 		jq -cn \
@@ -145,7 +147,7 @@ prev_any() {
 }
 
 prev_clean() {
-	if test -p "${LF_UEBERZUG:-}"; then
+	if test -p "${LF_UEBERZUG}"; then
 		echo '{"action":"remove","identifier":"lf"}' >"${LF_UEBERZUG}"
 	fi
 }

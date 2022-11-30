@@ -121,5 +121,13 @@ map A new-from-menu
 map <c-e> push :edit<space>
 map <delete> trash
 
+map YY &printf '%s\n' $fx | head -c -1 | xclip -sel clip
+
 map .. guidrag
 map ., guidrop
+
+## Startup and Shutdown ###############################################
+
+&"${LF_CONFIG_DIR}/scripts/ueberzug" start $id
+
+cmd on-quit $"${LF_CONFIG_DIR}/scripts/ueberzug" stop $id
