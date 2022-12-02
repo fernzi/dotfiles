@@ -1,6 +1,6 @@
 #######################################################################
 # Fern's Dotfiles
-# https://gitlab.com/fernzi/dotfiles
+# https://github.com/fernzi/dotfiles
 # NCurses Music Player Client (Plus Plus)
 #######################################################################
 
@@ -53,7 +53,7 @@ progressbar_elapsed_color = magenta
 
 ### Status Bar ###
 
-song_status_format = 🎝  {{$b%t$/b}{ - %a{ - %b}}}|{$b%f/$b}
+song_status_format = 󰝚  {{$b%t$/b}{ - %a{ - %b}}}|{$b%f/$b}
 statusbar_visibility = yes
 statusbar_color = 9
 statusbar_time_color = 9
