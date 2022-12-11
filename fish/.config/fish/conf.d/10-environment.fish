@@ -30,7 +30,7 @@ end
 # Set a default file opener.
 # It's fascinating how `xdg-open` is not XDG compliant
 # unless you also install `mimeopen` anyway.
-for opener in open mimeopen mimeo handlr xdg-open
+for opener in open mimeopen xdg-open
 	if command -q $opener
 		set -x OPENER $opener
 		set -x BROWSER $opener
