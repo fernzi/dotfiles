@@ -1,0 +1,93 @@
+#!/bin/sh -efu
+# Copyright © 2022 Fern Zapata
+# This program is subject to the terms of the GNU GPL, either
+# version 3 of the License or (at your option) any later version.
+# You should have received a copy of the License along with this
+# file. If not, see <https://www.gnu.org/licenses/>.
+
+archive_pack() {
+	local archive="$1"
+	shift
+
+	if command -v atool >/dev/null; then
+		atool --add -- "${archive}" "$@"
+	else
+		case "${archive}" in
+			*.tar*|*.tb2|*.tbz|*.tbz2|*.tgz|*.tlz|*.txz|*.tZ|*.tzst)
+				tar -caf "${archive}" -- "$@" ;;
+			*.bz2)
+				bzip2 -c -- "$@" > "${archive}" ;;
+			*.gz)
+				gzip -c -- "$@" > "${archive}" ;;
+			*.xz)
+				xz -c -- "$@" > "${archive}" ;;
+			*.zstd)
+				zstd -o "${archive}" -- "$@" ;;
+			*.7z)
+				7z a -- "${archive}" "$@" ;;
+			*.zip)
+				zip -r "${archive}" -- "$@" ;;
+			*)
+				printf 'Archive `%s` has an unknown format.\n' "${archive}"
+				exec 1
+		esac
+	fi
+
+	printf 'Archive `%s` created.' "${archive}"
+}
+
+archive_unpack() {
+	readonly BASE="$(basename "$1")"
+
+	if test -f "$1"; then
+		if command -v atool >/dev/null; then
+			atool --extract -- "$1"
+		else
+			case "$1" in
+				*.tar*|*.tb2|*.tbz|*.tbz2|*.tgz|*.tlz|*.txz|*.tZ|*.tzst)
+					tar -xf "$1" ;;
+				*.bz2)
+					bunzip2 "$1" ;;
+				*.gz)
+					gunzip "$1" ;;
+				*.lzma)
+					unlzma "$1" ;;
+				*.xz)
+					unxz "$1" ;;
+				*.zstd)
+					unzstd "$1" ;;
+				*.z|*.Z)
+					uncompress "$1" ;;
+				*.7z)
+					7z x "$1" ;;
+				*.exe)
+					cabextract "$1" ;;
+				*.rar)
+					unrar "$1" ;;
+				*.zip)
+					unzip "$1" ;;
+				*)
+					printf 'Archive `%s` has an unknown format.\n' "${BASE}"
+					exit 1 ;;
+			esac
+		fi
+
+		printf 'Archive `%s` extracted.\n' "${BASE}"
+	else
+		printf 'Archive `%s` not found.\n' "${BASE}"
+		exit 1
+	fi
+}
+
+readonly command="$1"
+shift
+
+case "${command}" in
+	a|pack)
+		archive_pack "$@" ;;
+	x|unpack)
+		archive_unpack "$@" ;;
+	*)
+		echo 'Unknown command.' >&2
+		exit 1
+esac

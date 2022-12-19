@@ -7,9 +7,13 @@
 
 export FZF_DEFAULT_COMMAND='find * -type d,f'
 
-if command -v fd >/dev/null 2>&1; then
+iscmd() {
+	command -v -- "$1" >/dev/null 2>&1
+}
+
+if iscmd fd; then
 	FZF_DEFAULT_COMMAND='fd -td -tf'
-elif command -v rg >/dev/null 2>&1; then
+elif iscmd rg; then
 	FZF_DEFAULT_COMMAND='rg --files'
 fi
 

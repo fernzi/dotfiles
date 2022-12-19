@@ -6,28 +6,28 @@
 # file. If not, see <https://www.gnu.org/licenses/>.
 
 readonly LF_DIR="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}/$USER}/lf"
+readonly U_FIFO="${LF_DIR}/ueberzug.$2"
 
 ueberzug_start() {
 	if test -n "${DISPLAY}" && command -v ueberzug >/dev/null; then
-		readonly ufifo="${LF_DIR}/ueberzug.$1"
-		mkfifo "${ufifo}"
-		exec ueberzug layer -p json -s <>"${ufifo}"
+		mkfifo "$1"
+		exec ueberzug layer -p json -s <>"$1"
 	fi
 }
 
 ueberzug_stop() {
-	readonly ufifo="${LF_DIR}/ueberzug.$1"
-	if test -p "${ufifo}"; then
-		fuser -k -TERM "${ufifo}"
-		rm "${ufifo}"
+	if test -p "$1"; then
+		fuser -sk -TERM "$1"
+		rm "$1"
 	fi
 }
 
 case "$1" in
 	start)
-		ueberzug_start "$2"
-		;;
+		ueberzug_start "${U_FIFO}" ;;
 	stop)
-		ueberzug_stop "$2"
-		;;
+		ueberzug_stop "${U_FIFO}" ;;
+	*)
+		echo 'Unknown command.' >&2
+		exit 1
 esac

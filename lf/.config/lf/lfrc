@@ -5,27 +5,15 @@
 #######################################################################
 
 set icons     on
+set ifs       "\n"
+set scrolloff 3
 set shell     'sh'
 set shellopts '-eu'
-set ifs       "\n"
-set ratios    1:2:3
+
 set previewer ~/.config/lf/scripts/preview
 set cleaner   ~/.config/lf/scripts/preview
-set scrolloff 3
 
-# Commands ############################################################
-
-cmd open ${{
-  case $(file -b --mime-type -- $f) in
-    text/*)
-      $EDITOR $fx ;;
-    *)
-      for f in $fx; do
-        setsid $OPENER $f >/dev/null 2>&1 &
-      done
-      ;;
-  esac
-}}
+## Commands ###########################################################
 
 cmd mkd %{{
   new=$(echo $* | tr ' ' '\ ')
@@ -35,71 +23,23 @@ cmd mkd %{{
 
 cmd edit $$EDITOR "$(echo $* | tr ' ' '\ ')"
 
-cmd trash %{{
-  if command -v trash-put >/dev/null; then
-    trash-put $fx
-  elif command -v gio >/dev/null; then
-    gio trash $fx
-  elif command -v osascript >/dev/null; then
-    for fl in $fx; do
-      osascript -e "tell app \"Finder\" delete POSIX file \"$fl\""
-    done
-  else
-    mkdir -p ~/.trash
-    mv $fx ~/.trash
-  fi
-}}
+cmd trash %"${LF_CONFIG_DIR}/scripts/trash" $fx
 
-cmd extract %{{
-  set -f
-  if command -v atool >/dev/null; then
-    atool --extract -- "$f"
-  else
-    case "$f" in
-      *.tar*|*.tb2|*.tbz|*.tbz2|*.tgz|*.tlz|*.txz|*.tZ|*.tzst)
-        tar -xvf "$f" ;;
-      *.zip)
-        unzip "$f" ;;
-      *.rar)
-        unar "$f" ;;
-      *.7z)
-        7z x "$f" ;;
-      *.exe)
-        cabextract "$f" ;;
-      *)
-        printf "Unknown archive format: '%s'\\n" "$f" ;;
-    esac
-  fi
-}}
+cmd pack %"${LF_CONFIG_DIR}/scripts/archive" a $1 $fx
+cmd unpack %"${LF_CONFIG_DIR}/scripts/archive" x $f
 
-cmd tgz %tar -czf "$1.tgz" "$fx"
-cmd zip %zip -r "$1.zip" "$fx"
-
-cmd bulk-rename ${{
-  OF=$(mktemp -p "$LF_RUNTIME_DIR" rename.ori.XXXX)
-  RF=$(mktemp -p "$LF_RUNTIME_DIR" rename.new.XXXX)
-  EF=$(mktemp -p "$LF_RUNTIME_DIR" rename.exe.XXXX.sh)
-  realpath --relative-to "$PWD" $fx | tee "$OF" > "$RF"
-  $EDITOR "$RF"
-  paste -d '\n' "$OF" "$RF" \
-  | xargs -d '\n' printf 'mv -- %q %q\n' \
-  | cat ~/.config/lf/templates/bulk-rename.sh - > "$EF"
-  $EDITOR "$EF"
-  $lf_shell "$EF"
-  rm "$OF" "$RF" "$EF"
-}}
+cmd bulk-rename $"${LF_CONFIG_DIR}/scripts/bulk-rename" $fx
 
 cmd jump $"${LF_CONFIG_DIR}/scripts/jump"
 
 cmd new-from-menu $"${LF_CONFIG_DIR}/scripts/new-from"
 cmd new-from %"${LF_CONFIG_DIR}/scripts/new-from" "$@"
 
-cmd guidrag %dragdrop $fx
-cmd guidrop %dragdrop | xargs -rI% cp % .
+cmd guidrag %dragdrop -o $fx
+cmd guidrop %dragdrop -0 | xargs -0rI% lf -remote "send $id select \"%\""
+cmd guidown %dragdrop -0u | xargs -0rI% curl -JLO# %
 
-cmd dl %echo $* | xargs -ri curl -JLO# '{}'
-
-# Mappings ############################################################
+## Mappings ###########################################################
 
 # Navigation
 map gg top
@@ -108,12 +48,14 @@ map ga push ''
 map gh cd ~
 map gf jump
 
+# Renaming
+map RR push r<c-u>
+map Rb bulk-rename
+
+# Executables
 map <enter> shell
 map x $$f
 map X !$f
-
-map o &mimeopen $f
-map O $mimeopen --ask $f
 
 # Files
 map a push :mkd<space>
@@ -121,13 +63,17 @@ map A new-from-menu
 map <c-e> push :edit<space>
 map <delete> trash
 
+# Clipboard
 map YY &printf '%s\n' $fx | head -c -1 | xclip -sel clip
+map Yd &printf '%s' "${PWD}" | xclip -sel clip
 
+# Drag & drop
 map .. guidrag
 map ., guidrop
+map .d guidown
 
 ## Startup and Shutdown ###############################################
 
 &"${LF_CONFIG_DIR}/scripts/ueberzug" start $id
 
-cmd on-quit $"${LF_CONFIG_DIR}/scripts/ueberzug" stop $id
+cmd on-quit %"${LF_CONFIG_DIR}/scripts/ueberzug" stop $id
