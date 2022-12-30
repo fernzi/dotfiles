@@ -10,8 +10,8 @@ set scrolloff 3
 set shell     'sh'
 set shellopts '-eu'
 
-set previewer ~/.config/lf/scripts/preview
-set cleaner   ~/.config/lf/scripts/preview
+set previewer ~/.config/lf/scripts/preview-show
+set cleaner   ~/.config/lf/scripts/preview-hide
 
 ## Commands ###########################################################
 

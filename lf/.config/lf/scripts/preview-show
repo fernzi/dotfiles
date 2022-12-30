@@ -146,14 +146,4 @@ prev_any() {
 	esac
 }
 
-prev_clean() {
-	if test -p "${LF_UEBERZUG}"; then
-		echo '{"action":"remove","identifier":"lf"}' >"${LF_UEBERZUG}"
-	fi
-}
-
-if test $# -gt 1; then
-	prev_any "$@"
-else
-	prev_clean "$@"
-fi
+prev_any "$@"
