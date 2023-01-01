@@ -5,26 +5,67 @@
 # You should have received a copy of the License along with this
 # file. If not, see <https://www.gnu.org/licenses/>.
 
-export FZF_DEFAULT_COMMAND='find * -type d,f'
-
 iscmd() {
 	command -v -- "$1" >/dev/null 2>&1
 }
 
-if iscmd fd; then
-	FZF_DEFAULT_COMMAND='fd -td -tf'
-elif iscmd rg; then
-	FZF_DEFAULT_COMMAND='rg --files'
-fi
+search() {
+	local opt_hidden=
 
-readonly target="$(fzf-tmux -d 8 || true)"
+	if iscmd fd; then
+		if test "${lf_hidden}" = 'true'; then
+			opt_hidden='--hidden'
+		fi
+
+		fd --follow ${opt_hidden} \
+			--no-ignore-vcs --exclude '.git' \
+			--exclude '*.py[co]' --exclude '__pycache__' \
+			--color=always
+	else
+		if test "${lf_hidden}" = 'true'; then
+			opt_hidden='-false'
+		else
+			opt_hidden='-path */\.* -prune'
+		fi
+
+		# Increasingly convinced that `find` was expressly designed
+		# to be the most obnoxious of all the Unix commands.
+		# So let's use it as a fallback.
+		find -L . -mindepth 1 ${opt_hidden} -o \
+			\( -name '\.git' -o \
+				-iname '\.*py[co]' -o \
+				-name '__pycache__' \) -prune -o \
+			-print | cut -b3-
+	fi
+}
+
+picker() {
+	local prompt='󰍉  '
+	local fzf="$(command -v sk || command -v fzf || :)"
+
+	if test -n "${fzf}"; then
+		"${fzf}" --prompt="${prompt}" \
+			--no-multi --layout=reverse --ansi
+	elif iscmd fzy; then
+		fzy --prompt "${prompt}" --lines $(tput lines) |
+			sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g'
+	else
+		return 1
+	fi
+}
+
+readonly target="$(search | picker || :)"
 
 if test -d "${target}"; then
 	command='cd'
 elif test -f "${target}"; then
 	command='select'
+else
+	lf -remote "send ${id} echo 'jump: search cancelled'"
+	exit 0
 fi
 
-if test -n "${command:-}"; then
-	lf -remote "send ${id} ${command} \"${target}\""
-fi
+# This probably fails when a filename has a `"` on it,
+# but `lf` doesn't escape in the same way the shell does
+# and I can't be bothered to figure it out.
+lf -remote "send ${id} ${command} \"${target}\""
