@@ -1,16 +1,20 @@
 #######################################################################
 # Fern's Dotfiles
-# https://gitlab.com/fernzi/dotfiles
+# https://github.com/fernzi/dotfiles
 # Newsboat Feed Reader
 #######################################################################
 
 auto-reload               yes
-refresh-on-startup        yes
+refresh-on-startup no
 reload-threads            "`echo $(($(nproc || sysctl -n hw.ncpu)/4+1))`"
 reload-time               300
 suppress-first-reload     yes
 max-items                 100
 save-path                 ~/Documents/Articles
+
+### Queries ###
+
+prepopulate-query-feeds yes
 
 ### Bookmarks ###
 
@@ -68,8 +72,7 @@ search-highlight-colors   yellow  default bold reverse
 ### Highlighting ###
 
 # Separators
-highlight feedlist "--- .+" default default dim underline
-highlight feedlist "\\(0/0\\)" default default invis dim underline
+highlight feedlist "== .+" default default dim underline
 
 # Article
 highlight article "^(Feed|Title|Author|Date):.*" blue default bold

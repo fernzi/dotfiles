@@ -1,12 +1,18 @@
-###############################################################################
+#######################################################################
+# Fern's Dotfiles
+# https://github.com/fernzi/dotfiles
 # Newsboat - URLs
-###############################################################################
+#######################################################################
 
-https://github.com/ferzapata.atom tech git
-https://gitlab.com/fzapata.atom tech git
-https://fern.zapata.cc/rss misc blog
+"query:== All About Me!:tags # \"fern\"" query
+
+https://github.com/fernzi.atom fern git
+https://gitlab.com/fernzi.atom fern git
+https://fern.zapata.cc/rss fern blog
+https://nitter.net/fernzikins/rss fern twitter
+
+"query:== Techonolgy:tags # \"tech\"" query
 
 https://www.archlinux.org/feeds/news/ tech news linux
 https://voidlinux.org/atom.xml tech news linux
-
-###############################################################################
+https://guix.gnu.org/feeds/blog.atom tech news linux
