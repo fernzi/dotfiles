@@ -34,6 +34,7 @@ for opener in open mimeopen xdg-open
 	if command -q $opener
 		set -x OPENER $opener
 		set -x BROWSER $opener
+		break
 	end
 end
 
