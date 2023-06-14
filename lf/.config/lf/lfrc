@@ -4,7 +4,7 @@
 # LF File Manager
 #######################################################################
 
-set icons     on
+set icons true
 set ifs       "\n"
 set scrolloff 3
 set shell     'sh'
@@ -71,9 +71,3 @@ map Yd &printf '%s' "${PWD}" | xclip -sel clip
 map .. guidrag
 map ., guidrop
 map .d guidown
-
-## Startup and Shutdown ###############################################
-
-&"${LF_CONFIG_DIR}/scripts/ueberzug" start $id
-
-cmd on-quit %"${LF_CONFIG_DIR}/scripts/ueberzug" stop $id

@@ -1,7 +1,0 @@
-#!/bin/sh -efu
-
-readonly UEBERZUG_PIPE="${LF_RUNTIME_DIR}/ueberzug.${id}"
-
-if test -p "${UEBERZUG_PIPE}"; then
-	echo '{"action":"remove","identifier":"lf"}' >"${UEBERZUG_PIPE}"
-fi

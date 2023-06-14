@@ -12,19 +12,7 @@ command_exists() {
 }
 
 prev_img() {
-	if test -p "${LF_UEBERZUG}"; then
-		# FIXME: Accounting for padding is purdy hacky.
-		# Also, it'd be nice to remove the `jq` dependency.
-		jq -cn \
-			'{action:"add", identifier:"lf", scaler:"fit_contain",
-			  scaling_position_x: 0.5, scaling_position_y: 0.5,
-			  x: $x, y: $y, width: $w, height: $h, path: $p}' \
-			--arg p "$1" \
-			--argjson w "$(( $2 - 3 ))" --argjson h "$(( $3 - 2 ))" \
-			--argjson x "$(( $4 + 1 ))" --argjson y "$(( $5 + 1 ))" \
-			>"${LF_UEBERZUG}"
-		exit 1
-	elif command_exists chafa; then
+	if command_exists chafa; then
 		chafa \
 			--colors 240 \
 			--size "${2}x${3}" \
