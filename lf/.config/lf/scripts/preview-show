@@ -1,9 +1,8 @@
 #!/bin/sh -efu
-# Copyright © 2022 Fern Zapata
-# This program is subject to the terms of the GNU GPL, either
-# version 3 of the License or (at your option) any later version.
-# You should have received a copy of the License along with this
-# file. If not, see <https://www.gnu.org/licenses/>.
+# Copyright © 2022-2023 Fern Zapata
+# This program is subject to the terms of the GNU GPL, v. 3, or
+# (at your option) any later version. If a copy of the GPL was not
+# distributed with this file, see <https://www.gnu.org/licenses/>.
 
 readonly LF_UEBERZUG="${LF_RUNTIME_DIR}/ueberzug.${id}"
 
@@ -12,7 +11,14 @@ command_exists() {
 }
 
 prev_img() {
-	if command_exists chafa; then
+	if test -n "$KITTY_PID"; then
+		kitty +kitten icat \
+			--transfer-mode memory \
+			--stdin=no \
+			--place "${2}x${3}@${4}x${5}" \
+			-- "$1" </dev/null >/dev/tty
+		exit 1
+	elif command_exists chafa; then
 		chafa \
 			--colors 240 \
 			--size "${2}x${3}" \
@@ -77,10 +83,10 @@ prev_txt() {
 	if command_exists highlight; then
 		highlight \
 			--force \
-			--out-format=xterm256 \
+			--out-format=truecolor \
 			--replace-tabs=2 \
 			--style=base16/monokai \
-			-- "$1"
+			-- "$1" || true
 	elif command_exists bat; then
 		bat \
 			--color always \

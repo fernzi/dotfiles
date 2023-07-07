@@ -1,0 +1,12 @@
+#!/bin/sh -efu
+# Copyright © 2023 Fern Zapata
+# This program is subject to the terms of the GNU GPL, v. 3, or
+# (at your option) any later version. If a copy of the GPL was not
+# distributed with this file, see <https://www.gnu.org/licenses/>.
+
+if test -n "${KITTY_PID}"; then
+	kitty +kitten icat \
+		--transfer-mode memory \
+		--stdin=no \
+		--clear </dev/null >/dev/tty
+fi
