@@ -1,9 +1,8 @@
 #!/bin/sh -efu
-# Copyright © 2022 Fern Zapata
-# This program is subject to the terms of the GNU GPL, either
-# version 3 of the License or (at your option) any later version.
-# You should have received a copy of the License along with this
-# file. If not, see <https://www.gnu.org/licenses/>.
+# Copyright © 2022-2023 Fern Zapata
+# This program is subject to the terms of the GNU GPL, v. 3, or
+# (at your option) any later version. If a copy of the GPL was not
+# distributed with this file, see <https://www.gnu.org/licenses/>.
 
 readonly RENAME_OLD="$(mktemp -p "${LF_RUNTIME_DIR}" rename.old.XXXX)"
 readonly RENAME_NEW="$(mktemp -p "${LF_RUNTIME_DIR}" rename.new.XXXX)"
@@ -15,7 +14,7 @@ rename_clean() {
 
 trap rename_clean HUP INT QUIT TERM PWR EXIT
 
-realpath --relative-to "${PWD}" "$@" |
+realpath -s --relative-to "${PWD}" "$@" |
 	tee "${RENAME_OLD}" > "${RENAME_NEW}"
 
 command "${EDITOR:-vi}" "${RENAME_NEW}"
@@ -26,7 +25,8 @@ cat << WARN > "${RENAME_EXE}"
 
 WARN
 paste -d '\n' "${RENAME_OLD}" "${RENAME_NEW}" |
-	xargs -d '\n' printf 'mv -- %q %q\n' >> "${RENAME_EXE}"
+	awk 'NR % 2 { x = $0; next } x != $0 { print x; print $0 }' |
+	xargs -rd '\n' printf 'mv -- \\\n %q \\\n %q\n' >> "${RENAME_EXE}"
 
 command "${EDITOR:-vi}" "${RENAME_EXE}"
 
