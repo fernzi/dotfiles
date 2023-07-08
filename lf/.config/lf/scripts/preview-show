@@ -86,6 +86,16 @@ name_for() {
 		"${LF_CACHE_DIR}" "$(stat -c '%i%s%Y%Z' "$1")" "${2:-jpg}"
 }
 
+thumb_kra() {
+	local thumb="$(name_for "$1" png)"
+
+	if test ! -r "${thumb}" && iscmd unzip; then
+		unzip -p "$1" mergedimage.png > "${thumb}"
+	fi
+
+	test -r "${thumb}" && printf "%s\n" "${thumb}"
+}
+
 thumb_pdf() {
 	local thumb="$(name_for "$1")"
 
@@ -121,6 +131,22 @@ thumb_vid() {
 
 prev_any() {
 	local prev
+	local cont=0
+
+	case "$1" in
+		*.kra | *.ora)
+			if test -r "${prev:=$(thumb_kra "$1")}"; then
+				shift
+				prev_img "${prev}" "$@"
+			fi
+			;;
+		*)
+			cont=1
+			;;
+	esac
+
+	test $cont -eq 0 && return 1
+
 	local mime="$(file -Lb --mime-type "$1")"
 
 	case "${mime}" in
