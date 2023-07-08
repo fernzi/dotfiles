@@ -59,21 +59,23 @@ prev_tor() {
 }
 
 prev_txt() {
-	if iscmd highlight; then
+	if iscmd bat; then
+		bat \
+			--color always \
+			--style plain \
+			--paging never \
+			--tabs 2 \
+			--terminal-width "$(( $2 - 2 ))" \
+			--line-range ":$3" \
+			--theme 'Monokai Extended' \
+			-- "$1"
+	elif iscmd highlight; then
 		highlight \
 			--force \
 			--out-format=truecolor \
 			--replace-tabs=2 \
 			--style=base16/monokai \
 			-- "$1" || true
-	elif iscmd bat; then
-		bat \
-			--color always \
-			--style plain \
-			--paging never \
-			--terminal-width "$2" \
-			--wrap character \
-			-- "$1"
 	else
 		cat "$1"
 	fi
