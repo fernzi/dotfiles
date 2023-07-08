@@ -86,6 +86,16 @@ name_for() {
 		"${LF_CACHE_DIR}" "$(stat -c '%i%s%Y%Z' "$1")" "${2:-jpg}"
 }
 
+thumb_bln() {
+	local thumb="$(name_for "$1" png)"
+
+	if test ! -r "${thumb}" && iscmd blender-thumbnailer; then
+		blender-thumbnailer "$1" "${thumb}"
+	fi
+
+	test -r "${thumb}" && printf "%s\n" "${thumb}"
+}
+
 thumb_kra() {
 	local thumb="$(name_for "$1" png)"
 
@@ -135,7 +145,7 @@ prev_any() {
 
 	case "$1" in
 		*.kra | *.ora)
-			if test -r "${prev:=$(thumb_kra "$1")}"; then
+			if test -n "${prev:=$(thumb_kra "$1")}"; then
 				shift
 				prev_img "${prev}" "$@"
 			fi
@@ -155,6 +165,10 @@ prev_any() {
 				shift
 				prev_img "${prev}" "$@"
 			fi
+			;;
+		application/x-blender)
+			test -n "${prev:=$(thumb_bln "$1")}" &&
+				shift && prev_img "${prev}" "$@"
 			;;
 		image/*)
 			prev_img "$@"
