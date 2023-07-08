@@ -4,11 +4,11 @@
 # (at your option) any later version. If a copy of the GPL was not
 # distributed with this file, see <https://www.gnu.org/licenses/>.
 
-readonly LF_UEBERZUG="${LF_RUNTIME_DIR}/ueberzug.${id}"
-
-command_exists() {
+iscmd() {
 	command -v -- $1 >/dev/null 2>&1
 }
+
+## Previewers #########################################################
 
 prev_img() {
 	if test -n "$KITTY_PID"; then
@@ -17,17 +17,17 @@ prev_img() {
 			--stdin=no \
 			--place "${2}x${3}@${4}x${5}" \
 			-- "$1" </dev/null >/dev/tty
-		exit 1
-	elif command_exists chafa; then
+		return 1
+	elif iscmd chafa; then
 		chafa \
 			--colors 240 \
 			--size "${2}x${3}" \
 			--symbols 'ascii+vhalf+block+space' \
 			--font-ratio 1/2 \
 			-- "$1"
-	elif command_exists img2txt; then
+	elif iscmd img2txt; then
 		img2txt -W "$2" -x 1 -y 2 -f utf8 -- "$1"
-	elif command_exists magick; then
+	elif iscmd magick; then
 		magick \
 			-read "$1" \
 			-format '%m %z-bin %[colorspace]\n%g\n' \
@@ -37,16 +37,8 @@ prev_img() {
 	fi
 }
 
-prev_pdf() {
-	if command_exists pdftotext; then
-		pdftotext -layout -l 8 -nopgbrk -q -- "$1" -
-	else
-		return 1
-	fi
-}
-
 prev_snd() {
-	if command_exists ffprobe; then
+	if iscmd ffprobe; then
 		ffprobe \
 			-v error \
 			-show_entries format_tags=title,artist,album,date \
@@ -58,21 +50,8 @@ prev_snd() {
 	fi
 }
 
-prev_svg() {
-	local thumb="${LF_CACHE_DIR}/$(stat -c '%i%s%Y%Z' "$1").webp"
-	if test ! -r "${thumb}" && command_exists magick; then
-		magick "$1" -resize 512x512\> "${thumb}"
-	fi
-	if test -r "${thumb}"; then
-		shift
-		prev_img "${thumb}" "$@"
-	else
-		return 1
-	fi
-}
-
 prev_tor() {
-	if command_exists transmission-show; then
+	if iscmd transmission-show; then
 		transmission-show -- "$1" | tail +4
 	else
 		return 1
@@ -80,14 +59,14 @@ prev_tor() {
 }
 
 prev_txt() {
-	if command_exists highlight; then
+	if iscmd highlight; then
 		highlight \
 			--force \
 			--out-format=truecolor \
 			--replace-tabs=2 \
 			--style=base16/monokai \
 			-- "$1" || true
-	elif command_exists bat; then
+	elif iscmd bat; then
 		bat \
 			--color always \
 			--style plain \
@@ -100,9 +79,32 @@ prev_txt() {
 	fi
 }
 
-prev_vid() {
-	local thumb="${LF_CACHE_DIR}/$(stat -c '%i%s%Y%Z' "$1").webp"
-	if test ! -r "${thumb}" && command_exists ffmpeg; then
+## Thumbnail Generators ###############################################
+
+name_for() {
+	printf '%s/%s.%s' \
+		"${LF_CACHE_DIR}" "$(stat -c '%i%s%Y%Z' "$1")" "${2:-jpg}"
+}
+
+thumb_pdf() {
+	local thumb="$(name_for "$1")"
+
+	if test ! -r "{thumb}"; then
+		if iscmd vips; then
+			vips thumbnail --size down \
+				"$1" "${thumb}[optimize_coding,strip]" 512
+		elif iscmd magick; then
+			magick "${1}[0]" -thumbnail '512^>' "${thumb}"
+		fi
+	fi
+
+	test -r "${thumb}" && printf "%s\n" "${thumb}"
+}
+
+thumb_vid() {
+	local thumb="$(name_for "$1")"
+
+	if test ! -r "${thumb}" && iscmd ffmpeg; then
 		ffmpeg \
 			-v quiet -y \
 			-ss 3 \
@@ -111,32 +113,45 @@ prev_vid() {
 			-vf scale=256:-2 \
 			-- "${thumb}"
 	fi
-	if test -r "${thumb}"; then
-		shift
-		prev_img "${thumb}" "$@"
-	else
-		return 1
-	fi
+
+	test -r "${thumb}" && printf "%s\n" "${thumb}"
 }
 
+## File Type Handlers #################################################
+
 prev_any() {
-	case "$(file -Lb --mime-type "$1")" in
-		image/svg*)
-			prev_svg "$@" || echo '(image)' ;;
+	local prev
+	local mime="$(file -Lb --mime-type "$1")"
+
+	case "${mime}" in
+		image/svg* | application/*pdf)
+			if test -n "${prev:=$(thumb_pdf "$1")}"; then
+				shift
+				prev_img "${prev}" "$@"
+			fi
+			;;
 		image/*)
-			prev_img "$@" || echo '(image)' ;;
-		text/*|*/xml|*/json|*/javascript)
-			prev_txt "$@" || echo '(text)' ;;
-		application/*pdf)
-			prev_pdf "$@" || echo '(document)' ;;
+			prev_img "$@"
+			;;
+		text/* | */xml | */json | */javascript)
+			prev_txt "$@"
+			;;
 		audio/*)
-			prev_snd "$@" || echo '(audio)' ;;
+			prev_snd "$@"
+			;;
 		video/*)
-			prev_vid "$@" || echo '(video)' ;;
+			if test -n "${prev:=$(thumb_vid "$1")}"; then
+				shift
+				prev_img "${prev}" "$@"
+			fi
+			;;
 		*bittorrent)
-			prev_tor "$@" || echo '(torrent)' ;;
+			prev_tor "$@"
+			;;
 		*)
-			echo '(binary)' ;;
+			printf "(%s)\n" "${mime}"
+			return 1
+			;;
 	esac
 }
 
