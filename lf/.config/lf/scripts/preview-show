@@ -37,6 +37,16 @@ prev_img() {
 	fi
 }
 
+prev_sql() {
+	if iscmd sqlite3; then
+		sqlite3 --readonly -- "$1" \
+			"SELECT name, sql FROM sqlite_master WHERE type='table';" |
+			column -ts '|'
+	else
+		return 1
+	fi
+}
+
 prev_snd() {
 	if iscmd ffprobe; then
 		ffprobe \
@@ -189,6 +199,9 @@ prev_any() {
 			;;
 		*bittorrent)
 			prev_tor "$@"
+			;;
+		application/*sqlite3)
+			prev_sql "$@"
 			;;
 		*)
 			printf "(%s)\n" "${mime}"
