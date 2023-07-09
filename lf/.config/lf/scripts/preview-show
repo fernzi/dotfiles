@@ -93,6 +93,8 @@ prev_txt() {
 
 ## Thumbnail Generators ###############################################
 
+readonly THUMB_SIZE=1024
+
 name_for() {
 	printf '%s/%s.%s' \
 		"${LF_CACHE_DIR}" "$(stat -c '%i%s%Y%Z' "$1")" "${2:-jpg}"
@@ -124,9 +126,9 @@ thumb_pdf() {
 	if test ! -r "{thumb}"; then
 		if iscmd vips; then
 			vips thumbnail --size down \
-				"$1" "${thumb}[optimize_coding,strip]" 512
+				"$1" "${thumb}[optimize_coding,strip]" $THUMB_SIZE
 		elif iscmd magick; then
-			magick "${1}[0]" -thumbnail '512^>' "${thumb}"
+			magick "${1}[0]" -thumbnail "${THUMB_SIZE}^>" "${thumb}"
 		fi
 	fi
 
@@ -139,10 +141,11 @@ thumb_vid() {
 	if test ! -r "${thumb}" && iscmd ffmpeg; then
 		ffmpeg \
 			-v quiet -y \
-			-ss 3 \
 			-i "$1" \
 			-frames:v 1 \
-			-vf scale=256:-2 \
+			-vf "thumbnail, \
+				scale='min(${THUMB_SIZE},iw)':'min(${THUMB_SIZE},ih)': \
+				force_original_aspect_ratio=decrease" \
 			-- "${thumb}"
 	fi
 
