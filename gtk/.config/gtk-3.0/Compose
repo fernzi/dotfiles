@@ -1,9 +1,10 @@
 include "%L"
 
 <Multi_key> <3> <3> : "Ɛ"
-<Multi_key> <w> <w> : "ω"
-<Multi_key> <w> <period> : "ᆺ"
 <Multi_key> <O> <asterisk> : "◕"
-<Multi_key> <asterisk> <asterisk> : "★"
 <Multi_key> <asterisk> <O> : "✪"
+<Multi_key> <asterisk> <asterisk> : "★"
 <Multi_key> <parenleft> <underscore> : "⏝"
+<Multi_key> <v> <v> : "⌄"
+<Multi_key> <w> <period> : "ᆺ"
+<Multi_key> <w> <w> : "ω"
