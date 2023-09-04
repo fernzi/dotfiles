@@ -1,5 +1,6 @@
 #######################################################################
-# Git Version Control
+# Fern's Dotfiles -- Git Version Control
+# https://github.com/fernzi/dotfiles
 #######################################################################
 
 [core]
@@ -21,6 +22,7 @@
 	dfs = diff --staged
 	killit = reset --hard
 	st = status -s
+	us = restore --staged
 
 [url "git@github.com:"]
 	insteadOf = gh:
