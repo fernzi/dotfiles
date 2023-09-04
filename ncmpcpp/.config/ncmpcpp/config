@@ -1,7 +1,6 @@
 #######################################################################
-# Fern's Dotfiles
+# Fern's Dotfiles -- NCurses Music Player Client (Plus Plus)
 # https://github.com/fernzi/dotfiles
-# NCurses Music Player Client (Plus Plus)
 #######################################################################
 
 ncmpcpp_directory = ~/.local/share/ncmpcpp
@@ -68,10 +67,10 @@ playlist_shorten_total_times = yes
 
 titles_visibility = no
 
-now_playing_prefix = "$b$(cyan)• "
-now_playing_suffix = $(end)$/b
+now_playing_prefix = $b$u$(cyan)
+now_playing_suffix = $(end)$/u$/b
 
-song_columns_list_format = (40)[]{t|f}(25)[]{ar}(30)[]{br}(6f)[]{lr}
+song_columns_list_format = (40)[]{t|f}(20)[]{a}(35)[]{b}(6f)[]{lr}
 
 ## Browser ############################################################
 
@@ -89,7 +88,8 @@ ignore_diacritics = yes
 
 song_library_format = {%n - }{%t}|{%f}
 media_library_primary_tag = album_artist
-media_library_albums_split_by_date = no
+media_library_albums_split_by_date = yes
+media_library_hide_album_dates = yes
 
 ## Visualizer #########################################################
 
