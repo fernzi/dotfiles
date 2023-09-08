@@ -53,3 +53,5 @@ if (( ${#es[@]} )); then
 			"\t%b${fs[4]}"
 	done
 fi
+
+return 127
