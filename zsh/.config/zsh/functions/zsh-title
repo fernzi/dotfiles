@@ -1,0 +1,31 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Terminal title
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+# EMacs' Term mode is the only terminal I know
+# that can't handle the title change sequence.
+if [[ -v INSIDE_EMACS && "$INSIDE_EMACS" == *,term:* ]]; then
+	return
+fi
+
+print '\e]0;'
+
+# Show the user and host only when running on SSH.
+# Don't really care to know them when it's local.
+if [[ -v SSH_CLIENT || -v SSH_TTY ]]; then
+	printf '%s@%s : ' ${USER} ${HOST%%.*}
+fi
+
+# Add the current command's name when something is running.
+# The `preexec` hook passes the command line as arguments,
+# and the `precmd` hook then clears it.
+if [[ $# -gt 0 ]]; then
+	printf '%s : ' ${1%% *}
+fi
+
+# Print the base name of the current directory,
+# substituting the home for a `~` when necessary.
+# Parameter expansions are horrible and I love 'em.
+printf '%s — ZSH\a' ${${PWD/#$HOME/\~}##*/}

@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- ZLE Widget - Prepend `sudo` to current command
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+if [[ -z $BUFFER ]]; then
+	LBUFFER="$(fc -ln -1)"
+fi
+
+# Save whitespace preceding the command.
+local WSPACE=${BUFFER%%[^[:space:]]*}
+BUFFER="${BUFFER:${#WSPACE}}"
+CURSOR=$(( $CURSOR - ${#WSPACE} ))
+
+if [[ $BUFFER != 'sudo '* ]]; then
+	LBUFFER="sudo ${LBUFFER}"
+fi
+
+LBUFFER="${WSPACE}${LBUFFER}"
+zle && zle redisplay

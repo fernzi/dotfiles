@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Generate `.gitignore` files
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+local flag_list
+zparseopts -D -E -F -K -- \
+	{l,-list}=flag_list
+
+readonly API='https://gitignore.io/api'
+
+if (( ${#flag_list} )); then
+	curl -Lfsw '\n' "${API}/list" | tr ',' '\n'
+	return
+fi
+
+local langs="${(j:,:)@}"
+if [[ -n $langs ]]; then
+	curl -Ls "${API}/${langs}"
+fi

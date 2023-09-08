@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Close Firejail sandboxes from a menu
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+firejail --list | fzf | cut -d: -f1 |
+	xargs -ri firejail --shutdown={}

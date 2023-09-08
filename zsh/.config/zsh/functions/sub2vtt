@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Convert subtitle files to WebVTT
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+# I don't do this often, but when I do...
+ffmpeg -v error -i "$1" -c webvtt "$2"

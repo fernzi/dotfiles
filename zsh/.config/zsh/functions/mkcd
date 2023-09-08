@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Create and switch into directory
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+# Not sure if `cd`ing into the first one
+# is more correct than `cd`ing into the last one.
+
+mkdir -pv -- "$@" && cd -- "$1"

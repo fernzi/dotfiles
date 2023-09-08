@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- ZLE Widget - Pipe current command into a pager
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+if [[ -z $BUFFER ]]; then
+	LBUFFER="$(fc -ln -1)"
+fi
+
+if [[ $BUFFER != *' |& less' ]]; then
+	RBUFFER+=' |& less'
+fi
+
+zle && zle redisplay

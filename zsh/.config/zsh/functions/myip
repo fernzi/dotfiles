@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Get current public IP address
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+local srv='https://icanhazip.com'
+local cmd=(wget -qO-)
+
+if [[ -v commands[curl] ]]; then
+	# Good ol' cURL never fails, except when it does.
+	cmd=(curl -sf4)
+elif [[ -v commands[fetch] ]]; then
+	# FreeBSD includes `fetch` by default.
+	cmd=(fetch -qo -)
+elif [[ -v commands[ftp] ]]; then
+	# The `ftp` program in OpenBSD does more than FTP,
+	# and fairly sure NetBSD includes it as well.
+	# So what's your excuse, Linux?
+	cmd=(ftp -o -)
+fi
+
+command $cmd $srv

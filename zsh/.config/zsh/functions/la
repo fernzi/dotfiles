@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - List directories in long format
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+# Once again, `exa` and `ls` behave
+# just slightly different, so they have to be given
+# just slightly different options.
+
+# Like the `ls` wrapper, this should only run
+# the first time this function is called.
+
+if [[ ! -v __zsh_la_opt ]]; then
+	typeset -ga __zsh_la_opt
+
+	# The `-a` option makes both `exa` and `ls`
+	# show hidden files, but `ls` will list
+	# the `..` and `.` entries as well, unless
+	# given the `-A` option instead.
+	if [[ -v commands[exa] ]]; then
+		__zsh_la_opt+=-a
+	else
+		__zsh_la_opt+=-A
+	fi
+fi
+
+ll $__zsh_la_opt "$@"

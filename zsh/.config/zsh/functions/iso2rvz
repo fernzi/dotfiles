@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Compress Gamecube/Wii ROMs
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+dolphin-tool convert \
+	-f rvz -b 131072 -c zstd -l 19 \
+	-i $1 -o $2

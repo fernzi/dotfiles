@@ -1,0 +1,53 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Open files with the right program
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+# In an ideal world, using `xdg-open` would be the right option,
+# but somewhat ironically, `xdg-open` is not XDG compliant unless
+# you already have something more useful installed.
+
+if [[ ! -v __zsh_open_cmd ]]; then
+	typeset -g  __zsh_open_cmd=xdg-open
+	typeset -ga __zsh_open_opt
+
+	if [[ -v commands[handlr] ]]; then
+		# The most featureful, desktop-agnostic opener I know,
+		# and my personal choice. At least for the time being.
+		__zsh_open_cmd=handlr
+		__zsh_open_opt=(open)
+	elif [[ -v commands[kde-open] ]]; then
+		# Anyone who has this installed is probably using KDE,
+		# So we prefer it over the more generic ones below.
+		__zsh_open_cmd=kde-open
+	elif [[ -v commands[gio] ]]; then
+		# One'd imagine this only comes with Gnome, but it's
+		# there as long as there's even one Gtk app installed,
+		# which, I mean, it's pretty hard to avoid.
+		__zsh_open_cmd=gio
+		__zsh_open_opt=(open)
+	elif [[ -v commands[mimeopen] ]]; then
+		# This comes with the Perl package that `xdg-open`
+		# requires to actually be XDG compliant. And it's
+		# already a better option to begin with.
+		__zsh_open_cmd=mimeopen
+		__zsh_open_opt=(-n)
+	fi
+
+	# TODO: Support MacOS's `open`, but I don't have a Mac to test it.
+	# Maybe just passing thru all the arguments would be the best way.
+
+	if [[ __zsh_open_cmd != xdg-open ]]; then
+		# Of all the alternatives, only `xdg-open` can't handle
+		# a double dash to mark the end of the options.
+		__zsh_open_opt+=--
+	fi
+fi
+
+# Several of the file openers already fork on their own,
+# but `xdg-open` and `mimeopen`, the most likely fallbacks,
+# do not, and don't think doing it manually does any harm
+# for the ones that do.
+setopt local_options no_notify no_monitor
+setsid $__zsh_open_cmd $__zsh_open_opt "$@" &|

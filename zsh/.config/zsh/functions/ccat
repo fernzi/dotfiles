@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Syntax-highlight input
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+if [[ ! -v __zsh_ccat_cmd ]]; then
+	typeset -ga __zsh_ccat_cmd=(cat)
+
+	if [[ -v commands[highlight] ]]; then
+		__zsh_ccat_cmd=(highlight --force -O ansi --stdout)
+	elif [[ -v commands[pygmentize] ]]; then
+		__zsh_ccat_cmd=(pygmentize -g)
+	fi
+fi
+
+command $__zsh_ccat_cmd "$@"

@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Convert hex colour to RGB triplet
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+local HEX
+if (( # )); then
+	HEX="$1"
+else
+	read HEX
+fi
+
+HEX=${HEX#\#}
+
+printf '%3d %3d %3d\n' "0x${HEX:0:2}" "0x${HEX:2:2}" "0x${HEX:4:2}"

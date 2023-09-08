@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Switch to parent directories
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+# Is there a less asinine way of repeating a string?
+cd $(printf '../%.0s' {1..${1:-1}})

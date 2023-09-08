@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Create directories and their parents
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+mkdir -pv "$@"

@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - List directories in long format
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+# Got some more detection to do,
+# cause `exa` doesn't always take
+# the same options as `ls`.
+
+# Like the `ls` wrapper, this should only run
+# the first time this function is called.
+
+if [[ ! -v __zsh_ll_opt ]]; then
+	typeset -ga __zsh_ll_opt=(-l)
+
+	# The `-b` option makes `exa` show file sizes
+	# with human readable units (Ki, Mi, Gi),
+	# while `-h`, the equivalent `ls` option,
+	# makes it display column headers.
+	if [[ -v commands[exa] ]]; then
+		__zsh_ll_opt+=-b
+	else
+		__zsh_ll_opt+=-h
+	fi
+fi
+
+ls $__zsh_ll_opt "$@"

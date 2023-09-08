@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - My Very Own Prompt Theme
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+prompt_fernzi_setup() {
+	local nl=$'\n'
+	PS1="${nl}%F{green}%B%S%n %s%b%f%K{black} %D{%R} %k%f "
+	RPS1="%K{black} %1~ %k%f%F{cyan}%B%S %m%s%b%k"
+}
+
+prompt_fernzi_setup "$@"

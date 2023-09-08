@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Download file from URL
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+for url in "$@"; do
+	printf 'Downloading file from `%s`...\n' "${url}"
+	curl -JLO\# "${url}"
+done

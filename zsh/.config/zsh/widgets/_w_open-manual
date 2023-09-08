@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- ZLE Widget - Show `man` page for current command
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+local line=(${=BUFFER})
+man -w "${line[1]}" &>/dev/null && man ${line[1]}

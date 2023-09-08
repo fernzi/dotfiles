@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Create a datestamped directory
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+# Kinda surprised this wasn't one of the first functions I made.
+# I like my artsy stuff projects to be ordered by date.
+
+local date=$(date +%Y%m%d)
+local cdto
+
+for d in "$@"; do
+	cdto="${d:h}/${date}-${d:t}"
+	mkdir -pv -- "${cdto}"
+done
+
+# Change current dir to the last one created.
+cd -- "${cdto}"

@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Switch to LF's last visited directory
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+# What do you mean this is not an `ls` wrapper?
+# The `lf` file manager can write the last directory
+# it visited into a file, so I use it to `cd` the shell
+# into it once `lf` exits.
+
+local lfcd="$(mktemp)"
+local cdto
+
+command lf -last-dir-path="${lfcd}" "$@"
+
+if [[ -s "${lfcd}" ]]; then
+	read -r cdto < "${lfcd}"
+	rm "${lfcd}"
+	if [[ "${cdto}" != "${PWD}" && -d "${cdto}" ]]; then
+		cd "${cdto}"
+	fi
+fi

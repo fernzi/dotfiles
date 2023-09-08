@@ -1,0 +1,68 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - List files in a directory, but better
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+# Want `ls` to use colours and show file type indicators,
+# but gotta figure out which `ls` in particular we've got,
+# cause every Unix has to use a different option for the
+# exact same feature, right?
+
+# The option detection should only run the first time
+# this `ls` function wrapper is called.
+
+if [[ ! -v __zsh_ls_cmd ]]; then
+	typeset -g  __zsh_ls_cmd=ls
+	typeset -ga __zsh_ls_opt
+
+	if [[ -v commands[exa] ]]; then
+		# Use the more featureful `exa` if available.
+		# Shows colours by default, plus many other things,
+		# but the options don't always mean the same thing
+		# they do in classic `ls`.
+		# Here we make it show Git status and icons by default.
+		__zsh_ls_cmd=exa
+		__zsh_ls_opt=(--git --icons)
+	elif [[ -v commands[lsd] ]]; then
+		# This one works largely the same as `exa`,
+		# but fairly sure it's option-compatible with GNU `ls`.
+		__zsh_ls_cmd=lsd
+	elif [[ -v commands[colorls] ]]; then
+		# OpenBSD and NetBSD support displaying colours
+		# with a port of FreeBSD's `ls` as `colorls`.
+		__zsh_ls_cmd=colorls
+		__zsh_ls_opt=(-G)
+	else
+		# GNU and FreeBSD `ls` can take `--color=auto`;
+		# BSD, macOS, and probably others use `-G`;
+		# and Solaris' `ls` takes `--color`.
+		for opt in --color=auto -G --color; do
+			if command ls $opt / &>/dev/null; then
+				__zsh_ls_opt=($opt)
+				break
+			fi
+		done
+	fi
+
+	# Show file type indicators when `stdout` is a TTY.
+	if [[ -t 1 ]]; then
+		__zsh_ls_opt+=-F
+	fi
+
+	# List directories before other files if our `ls` supports it.
+	local dirs_opt=--group-directories-first
+	if command $__zsh_ls_cmd $dirs_opt / &>/dev/null; then
+		__zsh_ls_opt+=$dirs_opt
+	fi
+
+	# Make the filenames into hyperlinks, if supported.
+	# So far, I believe only GNU `ls` and `lsd` can do this,
+	# but `exa` might be able to at some point.
+	local link_opt=--hyperlink
+	if command $__zsh_ls_cmd $link_opt / &>/dev/null; then
+		__zsh_ls_opt+=$link_opt
+	fi
+fi
+
+command $__zsh_ls_cmd $__zsh_ls_opt "$@"

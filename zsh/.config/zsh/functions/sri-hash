@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Calculate subresource integrity hash
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+curl -sfL $1 |
+	openssl dgst -sha384 -binary |
+	base64 |
+	sed 's/^/sha384-/'

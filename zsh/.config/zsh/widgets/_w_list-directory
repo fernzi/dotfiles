@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- ZLE Widget - List current directory
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+echo
+ls
+echo
+
+zle && zle reset-prompt

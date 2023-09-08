@@ -1,0 +1,55 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Suggest packages for missing commands
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+local -a fs
+local -a es
+
+# Search for the binary and put the result in an array.
+# Wish there was a standard output format for this.
+# The array contains groups of four in the shape:
+# ($REPOSITORY $PACKAGE_NAME $VERSION $COMMAND_PATH)
+
+if [[ -v commands[pkgfile] ]]; then
+	# Having `pkgfile` means we're in Arch.
+	# Technically, `pacman` can already search for files,
+	# but `pkgfile` is faster for whatever reason.
+	pkgfile -b -v -- "$1" | while read -rA fs; do
+		es+=("${fs[1]%/*}" "${fs[1]#*/}" "${fs[2]}" "${fs[3]}")
+	done
+elif [[ -v commands[pacman] ]]; then
+	# The fallback for Arch. `pacman` is always available,
+	# and has the most convenient output format.
+	es=(${(0)"$(pacman -F --machinereadable -- "/usr/bin/$1" | tr \\n \\0)"})
+elif [[ -v commands[xlocate] ]]; then
+	# Having `xlocate` means we're in Void.
+	# We can also search files with `xbps-query`,
+	# but Void's docs say that's "strongly discouraged."
+	xlocate -- "/usr/bin/$1" | while read -rA fs; do
+		es+=('' "${fs[1]%-*}" "${fs[1]##*-}" "${fs[2]}")
+	done
+elif [[ -v commands[xbps-query] ]]; then
+	# Fall back on `xbps-query`, though, as mentioned,
+	# the Void docs don't like it, and it doesn't work offline.
+	xbps-query -Ro "/usr/bin/$1" | while read -ra fs; do
+		es+=('' "${fs[1]%-*}" "${${test[2]##*-}:0:-1}" "${fs[2]}")
+	done
+fi
+
+# This should look like the default error message.
+# And we only print the fancy formatted package list
+# if we actually found any.
+printf 'zsh: command not found: %s\n' "$1"
+
+if (( ${#es[@]} )); then
+	print 'it may be found in the following packages:'
+	for (( i=0; i < ${#es[@]}; i+=4 )); do
+		fs=("${(@)es:$i:4}")
+		print -P \
+			"  %B%F{magenta}${fs[1]}${fs[1]:+/}%f${fs[2]}" \
+			"\t%F{green}${fs[3]}%f" \
+			"\t%b${fs[4]}"
+	done
+fi

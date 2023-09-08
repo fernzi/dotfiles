@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Change directory with some convenience
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+local git_top="$(git rev-parse --show-toplevel 2>/dev/null)"
+if [[ -n "${git_top}" && "${git_top}" != "$PWD" && $# -eq 0 ]]; then
+	# Go to the top of the current Git repo
+	# if we're inside one and `cd` didn't get any arguments.
+	builtin cd "${git_top}"
+else
+	# Otherwise just do what `cd` does best.
+	builtin cd "$@"
+fi

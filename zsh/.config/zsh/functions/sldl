@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Download assets
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+readonly DEC='aHR0cDovL2Fzc2V0LWNkbi5nbGIuYWduaS5saW5kZW5sYWIuY29tCg=='
+readonly URL="$(base64 -d <<< "$DEC")"
+
+readonly id=${2%%.*}
+local code
+local ext
+
+case $1 in
+	t*)
+		code='texture_id' ext='j2c' ;;
+	s*)
+		code='sound_id' ext='ogg' ;;
+	m*)
+		code='mesh_id' ext='bin' ;;
+esac
+
+if [[ -n "$code" ]]; then
+	printf 'Downloading %s.%s...\n' ${id} ${ext}
+	curl -L\#C- -o "${id}.${ext}" "${URL}?texture_id=${id}"
+fi

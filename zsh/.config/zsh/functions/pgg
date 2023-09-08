@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Search processes by name and arguments
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+# Weirdly, I'm not actually sure what `pgg` stands for.
+# First found it in someone's `.bashrc`, as the alias
+#
+#   alias pgg='ps aux | grep -v grep | grep'
+#
+# so it might just be a mnemonic for the commands?
+# But that was kinda fragile, so it didn't stay like that
+# for too long after I started using Fish (and now ZSH).
+
+pgrep -fi -- "$@" | xargs -r ps -o pid,user,args --no-headers

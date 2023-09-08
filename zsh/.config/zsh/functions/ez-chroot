@@ -1,0 +1,69 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Easily switch into a Linux `chroot`
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+# This mostly exists for me to install random Linuxen
+# or whatever into USB sticks or BTRFS subvolumes.
+
+# We re-run this as `root` if it's started as a normal user.
+# And also prefer using `doas` to do it, if it's installed.
+if [[ $EUID -ne 0 ]]; then
+	local SUDO='sudo'
+	if [[ -v commands[doas] && -f /etc/doas.conf ]]; then
+		SUDO='doas'
+	fi
+
+	# Love how Zsh's autoload functions
+	# also work as standalone scripts.
+	$SUDO zsh $ZSH_CONFIG/functions/ez-chroot "$@"
+	return $?
+fi
+
+set -eu
+
+readonly CHROOT="$1"
+shift
+
+if [[ ! -d $CHROOT ]]; then
+	printf 'Path `%s` is not a directory!' $CHROOT
+	exit 1
+fi
+
+local binds=(dev sys proc)
+
+for b in ${binds[@]}; do
+	if [[ ! -a $CHROOT/$b ]]; then
+		printf 'No `/%s` path in `%s` chroot!' $b $CHROOT
+		exit 1
+	fi
+	mount --bind /$b $CHROOT/$b --make-rslave
+done
+
+# Why copy when you can bind?
+touch $CHROOT/etc/resolv.conf
+mount --bind /etc/resolv.conf $CHROOT/etc/resolv.conf
+
+umountbinds() {
+	umount $CHROOT/${^binds} $CHROOT/etc/resolv.conf
+}
+
+trap umountbinds HUP INT QUIT TERM PWR EXIT
+
+local ch_shell='/bin/sh'
+local ch_shell_opts=(
+	$SHELL
+	/usr/bin/zsh
+	/usr/bin/fish
+	/bin/bash
+)
+
+for s in ${ch_shell_opts[@]}; do
+	if [[ -x $CHROOT/$s ]]; then
+		ch_shell=$s
+		break
+	fi
+done
+
+PS1="[chr $CHROOT] $PS1" chroot $CHROOT ${@:-$ch_shell}
