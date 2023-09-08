@@ -1,0 +1,33 @@
+[metadata]
+name = 'Feri Dark'
+origin_url = 'https://github.com/fernzi/dotfiles'
+
+[colors]
+background = '#181818'
+foreground = '#D4D4D4'
+cursor_bg = '#E2E2E2'
+cursor_border = '#E2E2E2'
+selection_bg = '#404040'
+selection_fg = '#E2E2E2'
+
+ansi = [
+	'#404040',
+	'#ffade2',
+	'#daff7c',
+	'#ffe67c',
+	'#80e3ff',
+	'#AF89FF',
+	'#50FFE7',
+	'#E2E2E2',
+]
+
+brights = [
+	'#303030',
+	'#C7789A',
+	'#7BA979',
+	'#BC9855',
+	'#66A5C9',
+	'#9986C5',
+	'#5E9A98',
+	'#C6C6C6',
+]
