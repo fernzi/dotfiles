@@ -4,6 +4,20 @@
 # https://github.com/fernzi/dotfiles
 #######################################################################
 
+# I constantly forget that I've got this widget,
+# and end up pressing home and typing it by hand.
+
+if [[ ! -v __zsh_sudo_cmd ]]; then
+	typeset -g __zsh_sudo_cmd=sudo
+
+	if [[ -v commands[doas] ]] && doas -C /etc/doas.conf 2>&-; then
+		# Use `doas` when it's available and correctly configured,
+		# For OpenBSD and the weirdos who use it on Linux. Like me.
+		__zsh_sudo_cmd=doas
+	fi
+fi
+
+# Use the last command if the current line is empty.
 if [[ -z $BUFFER ]]; then
 	LBUFFER="$(fc -ln -1)"
 fi
@@ -13,8 +27,8 @@ local WSPACE=${BUFFER%%[^[:space:]]*}
 BUFFER="${BUFFER:${#WSPACE}}"
 CURSOR=$(( $CURSOR - ${#WSPACE} ))
 
-if [[ $BUFFER != 'sudo '* ]]; then
-	LBUFFER="sudo ${LBUFFER}"
+if [[ $BUFFER != "${__zsh_sudo_cmd} "* ]]; then
+	LBUFFER="${__zsh_sudo_cmd} ${LBUFFER}"
 fi
 
 LBUFFER="${WSPACE}${LBUFFER}"
