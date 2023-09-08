@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Show terminal colours in a table
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+for bg in {0..7}; do
+	printf ' e[%02dm ' $(( bg + 40 ))
+	for fg in {0..7}; do
+		print -Pf ' %s e[%02dm %s' \
+			"%F{$fg}%K{$bg}" $(( fg + 30 )) '%k%f'
+	done
+	printf '\n       '
+	for fg in {8..15}; do
+		print -Pf ' %s e[%02dm %s' \
+			"%B%F{$fg}%K{$bg}" $(( fg + 82 )) '%k%f%b'
+	done
+	echo
+done
