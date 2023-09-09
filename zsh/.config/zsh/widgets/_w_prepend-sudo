@@ -25,7 +25,7 @@ fi
 # Save whitespace preceding the command.
 local WSPACE=${BUFFER%%[^[:space:]]*}
 BUFFER="${BUFFER:${#WSPACE}}"
-CURSOR=$(( $CURSOR - ${#WSPACE} ))
+(( CURSOR -= ${#WSPACE} ))
 
 if [[ $BUFFER != "${__zsh_sudo_cmd} "* ]]; then
 	LBUFFER="${__zsh_sudo_cmd} ${LBUFFER}"
