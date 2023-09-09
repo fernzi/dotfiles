@@ -6,8 +6,10 @@
 # This is completely pointless and I love it.
 # You'll take my text cat out of my cold, dead hands.
 
-# Choose a random art file.
-readonly artfile=(${ZSH_CONFIG}/art/*(-.oe[REPLY=\$RANDOM][1]))
+# Choose a random art file, or just skip this if there's none.
+readonly artfile=(${ZSH_CONFIG}/art/*(-.Noe[REPLY=\$RANDOM][1]))
+[[ -z $artfile ]] && return
+
 readonly artlist=(${(@f)"$(<$artfile)"})
 readonly maxline=$(wc -L <<< ${(F)artlist})
 readonly colors=(red magenta blue green)
