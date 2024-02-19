@@ -5,4 +5,10 @@
 #######################################################################
 
 local line=(${=BUFFER})
-man -w "${line[1]}" &>/dev/null && man ${line[1]}
+local mode=$(( ${+terminfo[smkx]} && ${+terminfo[rmkx]} ))
+
+if man -w ${line[1]} &>/dev/null; then
+	(( $mode )) && echoti rmkx
+	man ${line[1]}
+	(( $mode )) && echoti smkx
+fi
