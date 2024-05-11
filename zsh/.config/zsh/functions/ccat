@@ -7,7 +7,15 @@
 if [[ ! -v __zsh_ccat_cmd ]]; then
 	typeset -ga __zsh_ccat_cmd=(cat)
 
-	if [[ -v commands[highlight] ]]; then
+	if [[ -v commands[bat] ]]; then
+		__zsh_ccat_cmd=(bat
+			--color always
+			--style plain
+			--paging never
+			--tabs 2
+			--theme base16
+		)
+	elif [[ -v commands[highlight] ]]; then
 		__zsh_ccat_cmd=(highlight --force -O ansi --stdout)
 	elif [[ -v commands[pygmentize] ]]; then
 		__zsh_ccat_cmd=(pygmentize -g)
