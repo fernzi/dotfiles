@@ -31,22 +31,27 @@ if [[ ! -d $CHROOT ]]; then
 	exit 1
 fi
 
-local binds=(dev sys proc)
+local binds=(dev sys run)
 
 for b in ${binds[@]}; do
 	if [[ ! -a $CHROOT/$b ]]; then
 		printf 'No `/%s` path in `%s` chroot!' $b $CHROOT
 		exit 1
 	fi
-	mount --bind /$b $CHROOT/$b --make-rslave
+	mount --rbind "/${b}" "${CHROOT}/${b}" --make-rslave
 done
 
+mount --types proc '/proc' "/${CHROOT}/proc"
+
 # Why copy when you can bind?
-touch $CHROOT/etc/resolv.conf
+touch "${CHROOT}/etc/resolv.conf" 2>/dev/null || :
 mount --bind /etc/resolv.conf $CHROOT/etc/resolv.conf
 
 umountbinds() {
-	umount $CHROOT/${^binds} $CHROOT/etc/resolv.conf
+	umount -R \
+		${CHROOT}/${^binds} \
+		"${CHROOT}/proc" \
+		"${CHROOT}/etc/resolv.conf"
 }
 
 trap umountbinds HUP INT QUIT TERM PWR EXIT
@@ -66,4 +71,8 @@ for s in ${ch_shell_opts[@]}; do
 	fi
 done
 
-PS1="[chr $CHROOT] $PS1" chroot $CHROOT ${@:-$ch_shell}
+env -i \
+	HOME="${HOME}" \
+	TERM="${TERM}" \
+	PS1="[chr ${CHROOT}] ${PS1}" \
+	chroot $CHROOT ${@:-$ch_shell}
