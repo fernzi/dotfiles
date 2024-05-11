@@ -7,11 +7,11 @@
 readonly DEC='aHR0cDovL2Fzc2V0LWNkbi5nbGIuYWduaS5saW5kZW5sYWIuY29tCg=='
 readonly URL="$(base64 -d <<< "$DEC")"
 
-readonly id=${2%%.*}
+readonly mode="$1"; shift
 local code
 local ext
 
-case $1 in
+case "${mode}" in
 	t*)
 		code='texture_id' ext='j2c' ;;
 	s*)
@@ -21,6 +21,8 @@ case $1 in
 esac
 
 if [[ -n "$code" ]]; then
-	printf 'Downloading %s.%s...\n' ${id} ${ext}
-	curl -L\#C- -o "${id}.${ext}" "${URL}?texture_id=${id}"
+	for id in "${@%%.*}"; do
+		printf 'Downloading %s.%s...\n' ${id} ${ext}
+		curl -L\#C- -o "${id}.${ext}" "${URL}?${code}=${id}"
+	done
 fi
