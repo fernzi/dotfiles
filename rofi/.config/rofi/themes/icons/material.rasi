@@ -1,0 +1,14 @@
+/**********************************************************************
+ * Fern's Dotfiles -- Rofi Icon Font - Material
+ * https://github.com/fernzi/dotfiles
+ *********************************************************************/
+
+configuration {
+	display-combi: "󰁙";
+	display-filebrowser: "󰥨";
+	display-drun: "󰍜";
+	display-run: "󰆍";
+	display-ssh: "󰢩";
+	display-window: "󱂬";
+	display-windowcd: "󱂬";
+}

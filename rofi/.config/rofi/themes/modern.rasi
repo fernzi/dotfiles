@@ -1,75 +1,104 @@
 /**********************************************************************
- * Rofi - Personal theme
+ * Fern's Dotfiles -- Rofi Theme - Modern
+ * https://github.com/fernzi/dotfiles
  *********************************************************************/
 
-@import "colors-dark"
+@import "icons/material"
 
 * {
-  background-color: #0000;
-  font: inherit;
-  text-color: inherit;
+	/* Base Colours */
+	c00: #202020; c01: #303030; c02: #404040; c03: #525252;
+	c04: #C6C6C6; c05: #D4D4D4; c06: #E2E2E2; c07: #F0F0F0;
+	c08: #FFAED0; c09: #FFB099; c10: #F6CE88; c11: #B0E0AD;
+	c12: #94D1CE; c13: #9EDCFF; c14: #D0BCFE; c15: #909090;
+	c16: #FFCDE3; c17: #FFD0BD; c18: #FFEEAC; c19: #D3FAD3;
+	c20: #C1EAE1; c21: #CFF5FF; c22: #E8DAFF; c23: #ABABAB;
+	c24: #C7789A; c25: #CD7A66; c26: #BC9855; c27: #7BA979;
+	c28: #5E9A98; c29: #66A5C9; c30: #9986C5; c31: #5E5E5E;
+
+	/* Base Styles */
+	background-color: #0000;
+	text-color: inherit;
+	spacing: 12;
+	padding: 0;
+	margin: 0;
+	cursor: inherit;
 }
 
 window {
-  location: north;
-  anchor: north;
-  width: 50%;
-  border-radius: 0 0 0.5em 0.5em;
-  background-color: @c00;
-  text-color: @c05;
-  transparency: "real";
-  font: "RobotoCondensed 12";
+	/* Position */
+	anchor: north;
+	location: north;
+	y-offset: 2.5em;
+	width: 45%;
+
+	/* Appearance */
+	background-color: @c07;
+	text-color: @c01;
 }
 
-mainbox {
-  spacing: 0;
-}
+/** Search Bar *******************************************************/
 
 inputbar {
-  padding: 1em;
-  background-color: @c01;
-  text-color: @c04;
-  font: "RobotoCondensed 14";
+	margin: 0.75em;
+	padding: 0.5em;
+	border-radius: 50%;
+	background-color: @c06;
 }
 
 prompt {
-  text-color: @c03;
-  margin: 0.125em 1em 0 0.125em;
+	font: "Material Design Icons, 16";
+	text-color: @c04;
+	vertical-align: 0.5;
+	margin: -0.5em 0.25em -0.5em 0;
 }
 
-textbox {
-  padding: 1em;
+entry {
+	cursor: text;
 }
+
+/** Option List ******************************************************/
 
 listview {
-  padding: 1em;
+	columns: 2;
+	lines: 6;
+	padding: 0 0.75em 0.75em;
 }
 
+/** Option Entry *****************************************************/
+
 element {
-  padding: 0.5em;
-  border-radius: 0.25em;
+	padding: 0.5em;
+	border-radius: 0.25em;
+	cursor: pointer;
 }
 
 element.normal.active {
-  border: 0 0 0.125em 0;
-  border-color: @c08;
+	background-color: @c21;
 }
 
 element.normal.urgent {
-  border: 0 0 0.125em 0;
-  border-color: @c14;
+	background-color: @c16;
 }
 
 element.selected.normal {
-  background-color: @c02;
+	background-color: @c06;
 }
 
 element.selected.active {
-  background-color: @c08;
-  text-color: @c00;
+	background-color: @c13;
 }
 
 element.selected.urgent {
-  background-color: @c14;
-  text-color: @c00;
+	background-color: @c08;
+}
+
+element-icon {
+	size: 1.75em;
+}
+
+element-text {
+	highlight: bold;
+	vertical-align: 0.5;
+	margin: 0 0.5em;
 }

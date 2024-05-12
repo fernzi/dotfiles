@@ -1,18 +1,20 @@
-/******************************************************************************
- * Rofi Launcher
- *****************************************************************************/
+/**********************************************************************
+ * Fern's Dotfiles -- Rofi Launcher
+ * https://github.com/fernzi/dotfiles
+ *********************************************************************/
 
 configuration {
-  modi: "drun,run,window";
-  dpi: 0;
-  lines: 8;
-  columns: 2;
-  display-window: "";
-  display-windowcd: "";
-  display-run: "";
-  display-ssh: "";
-  display-drun: "";
-  display-combi: "";
+	modi: "drun,run,filebrowser,window";
+
+	/* Appearance */
+	dpi: 0;
+	font: "HarmonyOS Sans, 11";
+	show-icons: true;
+	icon-theme: "Papirus";
+
+	run, drun {
+		fallback-icon: "application-x-executable";
+	}
 }
 
 @theme "themes/modern"
