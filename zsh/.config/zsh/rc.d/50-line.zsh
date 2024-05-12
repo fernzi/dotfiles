@@ -20,3 +20,5 @@ unsetopt beep
 WORDCHARS='-_'
 
 setopt autocd
+
+setopt autocontinue

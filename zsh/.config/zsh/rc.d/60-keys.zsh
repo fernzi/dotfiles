@@ -56,6 +56,7 @@ zle -N edit-command-line
 
 readonly plugdirs=(
 	/usr/share/zsh/plugins
+	/usr/share/zsh/site-functions
 	$ZSH_CONFIG/plugins
 	$ZSH_DATA/plugins
 )
@@ -67,12 +68,10 @@ readonly plugins=(
 )
 
 for plug in $plugins; do
-	for dir in $plugdirs; do
-		local plugfile="$dir/zsh-$plug/zsh-$plug.zsh"
-		if [[ -r $plugfile ]]; then
-			source $plugfile
-			break
-		fi
+	for pdir in $plugdirs; do
+		for pfile in ${pdir}/zsh-${plug}{,zsh-${plug}}.zsh; do
+			source $pfile 2>/dev/null && break 2
+		done
 	done
 done
 
@@ -86,7 +85,7 @@ for kcode kfunc in ${(kv)key}; do
 	bindkey -- ${terminfo[$kcode]:-$kcode} $kfunc
 done
 
-# Make sure the terminal is in application mode ...whatever that is.
+# Make sure the terminal is in application mode — whatever that is.
 # Otherwise the `terminfo` codes don't work.
 if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
 	autoload -Uz add-zle-hook-widget
