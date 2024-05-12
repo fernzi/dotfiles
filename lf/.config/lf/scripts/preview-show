@@ -1,8 +1,8 @@
 #!/bin/sh -efu
-# Copyright © 2022-2023 Fern Zapata
-# This program is subject to the terms of the GNU GPL, v. 3, or
-# (at your option) any later version. If a copy of the GPL was not
-# distributed with this file, see <https://www.gnu.org/licenses/>.
+# Copyright © 2022-2024 Fern Zapata
+# This program is subject to the terms of the GNU GPL, version 3
+# or, at your option, any later version. If a copy of it was not
+# included with this file, see https://www.gnu.org/licenses/.
 
 iscmd() {
 	command -v -- $1 >/dev/null 2>&1
@@ -123,7 +123,7 @@ thumb_kra() {
 thumb_pdf() {
 	local thumb="$(name_for "$1")"
 
-	if test ! -r "{thumb}"; then
+	if test ! -r "${thumb}"; then
 		if iscmd vips; then
 			vips thumbnail --size down \
 				"$1" "${thumb}[optimize_coding,strip]" $THUMB_SIZE
@@ -188,7 +188,7 @@ prev_any() {
 		image/*)
 			prev_img "$@"
 			;;
-		text/* | */xml | */json | */javascript)
+		text/* | */xml | */json | */javascript | application/vnd.gentoo*)
 			prev_txt "$@"
 			;;
 		audio/*)
