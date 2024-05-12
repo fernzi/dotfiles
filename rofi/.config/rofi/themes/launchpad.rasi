@@ -1,0 +1,152 @@
+/**********************************************************************
+ * Fern's Dotfiles -- Rofi Theme - Dashboard
+ * https://github.com/fernzi/dotfiles
+ *********************************************************************/
+
+@import "icons/material"
+
+configuration {
+	drun-display-format: "{name}";
+}
+
+* {
+	font-icon: "Material Design Icons, 14";
+
+	background-color: transparent;
+	cursor: inherit;
+	font: inherit;
+	margin: 0;
+	padding: 0;
+	spacing: 0;
+	text-color: inherit;
+}
+
+window {
+	anchor: center;
+	location: center;
+	fullscreen: true;
+
+	background-color: black / 40%;
+	text-color: #FAFAFA;
+	transparency: "real";
+}
+
+mainbox {
+	children: ["headerbox", "message", "listview"];
+	padding: 10% 20%;
+	spacing: 144px;
+}
+
+/** Search Bar *******************************************************/
+
+headerbox {
+	children: ["inputbar", "mode-switcher"];
+	expand: false;
+	margin: 0 15%;
+	orientation: horizontal;
+	spacing: 18px;
+	vertical-align: 0.5;
+}
+
+inputbar {
+	background-color: white / 10%;
+	border-color: white / 40%;
+	border-radius: 12px;
+	border: 2px solid;
+	expand: true;
+	padding: 18px;
+}
+
+prompt {
+	font: @font-icon;
+	margin: -18px 18px -18px 0;
+	text-color: white / 40%;
+	vertical-align: 0.5;
+}
+
+entry {
+	cursor: text;
+	placeholder-color: white / 20%;
+	placeholder: "Search…";
+	vertical-align: 0.5;
+}
+
+/** Mode Swicher *****************************************************/
+
+mode-switcher {
+	font: @font-icon;
+	text-color: white / 40%;
+	spacing: 18px;
+}
+
+button {
+	border: 2px solid;
+	border-color: white / 40%;
+	border-radius: 12px;
+	padding: 18px 20px;
+}
+
+button.selected {
+	background-color: white / 10%;
+	text-color: white / 80%;
+}
+
+/** Option List ******************************************************/
+
+listview {
+	lines: 4;
+	columns: 6;
+	flow: horizontal;
+	spacing: 60px;
+}
+
+scrollbar {
+	border: 2px solid;
+	border-color: white / 20%;
+	border-radius: 50%;
+	handle-width: 12px;
+	handle-color: white / 10%;
+	padding: 4px;
+}
+
+scrollbar handle {
+	border-radius: 50%;
+}
+
+/** Option Entry *****************************************************/
+
+element {
+	border-radius: 12px;
+	orientation: vertical;
+	cursor: pointer;
+	padding: 24px;
+	spacing: 30px;
+}
+
+element active, element selected.active {
+	border: 2px solid;
+	border-color: white / 40%;
+}
+
+element selected {
+	background-color: white / 10%;
+}
+
+element-icon {
+	size: 128px;
+}
+
+element-text {
+	horizontal-align: 0.5;
+}
+
+/** Message Boxes ****************************************************/
+
+error-message {
+	margin: 20%;
+	height: 1280px;
+	width: 720px;
+	padding: 24px;
+	background-color: white / 10%;
+	border-radius: 12px;
+}
