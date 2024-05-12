@@ -57,4 +57,6 @@ if [[ -f $tabtab ]]; then
 fi
 
 # AUR helper wrapper/shorthand `pacman`.
-compdef p=pacman
+if [[ -v commands[pacman] ]]; then
+	compdef p=pacman
+fi
