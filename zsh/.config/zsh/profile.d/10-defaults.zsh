@@ -3,11 +3,6 @@
 # https://github.com/fernzi/dotfiles
 #######################################################################
 
-# Full perms for the owner, read for the group,
-# and absolutely nothing for everyone else.
-# Best balance of security and convenience, if you ask me.
-umask 027
-
 # Add my personal scripts to the path.
 # Though most of my scripts are just functions instead.
 path=(~/.local/bin{,/**/*(N/)} $path)
