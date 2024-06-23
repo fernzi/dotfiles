@@ -11,21 +11,25 @@
 if [[ ! -v __zsh_open_cmd ]]; then
 	typeset -g  __zsh_open_cmd=xdg-open
 	typeset -ga __zsh_open_opt
+	local desktop=(${(s/:/)${XDG_CURRENT_DESKTOP:-$DESKTOP_SESSION}:l})
 
-	if [[ -v commands[handlr] ]]; then
-		# The most featureful, desktop-agnostic opener I know,
-		# and my personal choice. At least for the time being.
-		__zsh_open_cmd=handlr
-		__zsh_open_opt=(open)
-	elif [[ -v commands[kde-open] ]]; then
+	if (( ${desktop[(I)kde]} )); then
 		# Anyone who has this installed is probably using KDE,
 		# So we prefer it over the more generic ones below.
 		__zsh_open_cmd=kde-open
-	elif [[ -v commands[gio] ]]; then
+	elif (( ${desktop[(I)gnome*]} )); then
 		# One'd imagine this only comes with Gnome, but it's
 		# there as long as there's even one Gtk app installed,
 		# which, I mean, it's pretty hard to avoid.
 		__zsh_open_cmd=gio
+		__zsh_open_opt=(open)
+	elif (( ${desktop[(I)xfce]} )); then
+		# XFCE has its own default apps system that isn't GIO.
+		__zsh_open_cmd=exo-open
+	elif [[ -v commands[handlr] ]]; then
+		# The most featureful, desktop-agnostic opener I know,
+		# and my personal choice (if it was packaged on Gentoo).
+		__zsh_open_cmd=handlr
 		__zsh_open_opt=(open)
 	elif [[ -v commands[mimeopen] ]]; then
 		# This comes with the Perl package that `xdg-open`
@@ -38,7 +42,7 @@ if [[ ! -v __zsh_open_cmd ]]; then
 	# TODO: Support MacOS's `open`, but I don't have a Mac to test it.
 	# Maybe just passing thru all the arguments would be the best way.
 
-	if [[ __zsh_open_cmd != xdg-open ]]; then
+	if [[ $__zsh_open_cmd != xdg-open ]]; then
 		# Of all the alternatives, only `xdg-open` can't handle
 		# a double dash to mark the end of the options.
 		__zsh_open_opt+=--
