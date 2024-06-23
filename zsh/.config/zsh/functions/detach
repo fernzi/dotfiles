@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Start a detached command
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+# This only really exists so Kitty stops annoying me.
+# It goes "are you REALLY sure you wanna close this window?"
+# when a process still has FDs attached to the terminal,
+# even if it's in the background and disowned.
+
+setsid "$@" </dev/null &>/dev/null &|
