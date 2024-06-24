@@ -23,13 +23,8 @@ done
 # Set a default file opener.
 # It's fascinating how `xdg-open` is not XDG compliant
 # unless you also install `mimeopen` anyway.
-for opener in open mimeopen xdg-open; do
-	if [[ -v commands[$opener] ]]; then
-		export OPENER="$opener"
-		export BROWSER="$opener"
-		break
-	fi
-done
+export BROWSER="${ZSH_CONFIG}/functions/open"
+export OPENER="${BROWSER}"
 
 ## Default Options ####################################################
 
