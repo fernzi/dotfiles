@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Color Picker (Pipette)
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+# Got this in Fish, and thought I didn't use it that much,
+# but I find myself running `fish -c screenpick` pretty often.
+# Just gave it an easier name cause I always forget it.
+
+case $XDG_SESSION_TYPE in
+	wayland)
+		slurp -p | grim -g - - ;;
+	*)
+		maim -u -s -b 0 -t 0 ;;
+esac |
+	magick - -alpha off -format '#%[hex:u]\n' info: 2>/dev/null
