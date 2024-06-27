@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Generate Gentoo manifest entry
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+local -a data
+
+for file in "$@"; do
+	data+=${file##*/}
+	data+=${=$(du -b $file)[1]}
+	data+=${=$(b2sum $file)[1]}
+	data+=${=$(sha512sum $file)[1]}
+done
+
+printf 'DIST %s %d BLAKE2B %s SHA512 %s\n' ${data[@]}
