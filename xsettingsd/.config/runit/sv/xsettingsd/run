@@ -1,4 +1,0 @@
-#!/bin/sh
-set -efu
-export DISPLAY=${DISPLAY:-:0}
-exec xsettingsd -c "${XDG_CONFIG_HOME:-$HOME/.config}/xsettingsd/config"
