@@ -1,0 +1,60 @@
+#!/usr/bin/env perl
+# Copyright © 2024  Fern Zapata
+# This file is subject to the terms of the GNU GPL, version 3
+# or, at your option, any later version. If a copy of the GPL
+# was not included, see <https://www.gnu.org/licenses/>.
+
+use utf8;
+use v5.36;
+use open qw(:std :encoding(utf-8));
+
+use IPC::System::Simple qw(capturex systemx);
+use JSON::PP;
+
+my $OPT_KEY = "\0";
+my $OPT_SEP = "\x1F";
+
+sub get_sinks
+{
+	decode_json capturex qw(pactl -fjson list sinks);
+}
+
+sub set_sink($sink)
+{
+	systemx qw(pactl set-default-sink), $sink;
+}
+
+sub print_options(%args)
+{
+	while (my ($k, $v) = each %args) {
+		say $OPT_KEY, $k =~ s/_/-/gr, $OPT_SEP, $v;
+	}
+}
+
+sub print_entry($name, %args)
+{
+	say $name, $OPT_KEY,
+		join $OPT_SEP, map { s/_/-/gr => $args{$_} } keys %args;
+}
+
+sub main
+{
+	if (@_) {
+		set_sink $ENV{ROFI_INFO};
+		return 0;
+	}
+
+	print_options
+		no_custom => 'true',
+		prompt => "\x{F0D38}";
+
+	my $sinks = get_sinks;
+	foreach (@$sinks) {
+		print_entry $_->{description},
+			# icon => $_->{properties}{'device.icon_name'},
+			icon => 'audio-card',
+			info => $_->{name};
+	}
+}
+
+exit(main @ARGV) unless caller;
