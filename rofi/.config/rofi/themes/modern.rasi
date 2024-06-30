@@ -26,13 +26,7 @@
 }
 
 window {
-	/* Position */
-	anchor: north;
-	location: north;
-	y-offset: 2.5em;
-	width: 45%;
-
-	/* Appearance */
+	width: 40%;
 	background-color: @c07;
 	text-color: @c01;
 }
@@ -73,23 +67,23 @@ element {
 	cursor: pointer;
 }
 
-element.normal.active {
+element active {
 	background-color: @c21;
 }
 
-element.normal.urgent {
+element urgent {
 	background-color: @c16;
 }
 
-element.selected.normal {
+element selected {
 	background-color: @c06;
 }
 
-element.selected.active {
+element selected.active {
 	background-color: @c13;
 }
 
-element.selected.urgent {
+element selected.urgent {
 	background-color: @c08;
 }
 
