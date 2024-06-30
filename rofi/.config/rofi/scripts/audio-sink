@@ -24,14 +24,19 @@ sub set_sink($sink)
 	systemx qw(pactl set-default-sink), $sink;
 }
 
-sub print_options(%args)
+sub get_default_sink
+{
+	capturex(qw(pactl get-default-sink)) =~ s/^\s++|\s++$//gr;
+}
+
+sub options(%args)
 {
 	while (my ($k, $v) = each %args) {
 		say $OPT_KEY, $k =~ s/_/-/gr, $OPT_SEP, $v;
 	}
 }
 
-sub print_entry($name, %args)
+sub entry($name, %args)
 {
 	say $name, $OPT_KEY,
 		join $OPT_SEP, map { s/_/-/gr => $args{$_} } keys %args;
@@ -44,16 +49,19 @@ sub main
 		return 0;
 	}
 
-	print_options
+	options
 		no_custom => 'true',
 		prompt => "\x{F0D38}";
 
 	my $sinks = get_sinks;
-	foreach (@$sinks) {
-		print_entry $_->{description},
-			# icon => $_->{properties}{'device.icon_name'},
+	my $dsink = get_default_sink;
+	while (my ($i, $v) = each @$sinks) {
+		if ($v->{name} eq $dsink) {
+			options active => $i;
+		}
+		entry $v->{description},
 			icon => 'audio-card',
-			info => $_->{name};
+			info => $v->{name};
 	}
 }
 
