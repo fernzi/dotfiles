@@ -43,10 +43,8 @@ zstyle ':completion:*:*:kill:*:processes' \
 	list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
 
 # Use the completion cache.
-zstyle ':completion::complete:*' cache-path $ZSH_CACHE/completions
-zstyle ':completion::complete:*' use-cache true
-autoload -Uz compinit
-compinit -i -C -d $ZSH_CACHE/completions
+zstyle ':completion:*' cache-path ${ZSH_CACHE}/completion
+zstyle ':completion:*' use-cache true
 
 ## Custom Comlpletions ################################################
 
@@ -60,3 +58,11 @@ fi
 if [[ -v commands[pacman] ]]; then
 	compdef p=pacman
 fi
+
+## Initialization #####################################################
+
+# This makes loaded widgets use the 'new' completion system,
+# so it needs to be at the very end so it catches them all.
+
+autoload -Uz compinit
+compinit -d ${ZSH_CACHE}/completion.dump
