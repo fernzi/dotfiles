@@ -1,0 +1,97 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Convert textures to small TIFFs
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+# Did you know PNG images are pretty slow to read?
+# Even when using the same compression (i.e. Deflate),
+# TIFF files load significantly faster.
+#
+# My 3D work depends a lot on loading textures,
+# or encoding long image sequences into video,
+# so I use this to ensure a good balance between
+# disk usage and read speed.
+#
+# PNG is dead. Long live PNG.
+
+local alph cols comp keep rows
+zparseopts -D -E -F -K -- \
+	{a,-alpha-map}:=alph \
+	{c,-colorspace}:=cols \
+	{k,-keep-alpha}=keep \
+	{r,-rows-per-strip}:=rows \
+	{z,-compression}:=comp \
+
+local ifile="$1"
+local ofile="${2:-${1%.*}.tif}"
+local -a magick_opt
+
+# Disgusting shell trickery to get metadata about the image
+# without reading it more than once (or twice, with the conversion).
+local -A minfo=(
+	colorspace ''
+	depth ''
+)
+minfo=(
+	$(magick \
+		-read $ifile \
+		-format $(printf '%s\\n%%[%1$s]\\n' ${(k)minfo}) \
+		info:)
+)
+
+# PBR material packs sometimes include an opacity map.
+# Think it's easier to just pack it with the base colour.
+if (( ${#alph} )); then
+	magick_opt+=(-read ${alph[-1]} -compose copyopacity -composite)
+elif (( ! ${#keep} )); then
+	magick_opt+=(-alpha off)
+fi
+
+# ImageMagick omits writing gamma information on the TIFF
+# if the input image's colourspace is set as linear.
+if (( ${#cols} )); then
+	magick_opt+=(-set colorspace ${cols[-1]})
+else
+	case $minfo[colorspace] in
+		*RGB)
+			magick_opt+=(-set colorspace rgb) ;;
+		*Gray)
+			magick_opt+=(-set colorspace lineargray) ;;
+	esac
+fi
+
+# In my experience, LZW often does better than Deflate
+# on 8-bit depth images. It's also faster to decompress,
+# but they're both very close, really.
+#
+# TIFF also supports Zstandard, but it's pretty new,
+# so not everything works with it, and whether it truly
+# compresses better than these two feels kinda random
+# (though it often does, to be honest).
+if (( ${#comp} )); then
+	magick_opt+=(-compress ${comp[-1]})
+else
+	case $minfo[depth] in
+		8)
+			magick_opt+=(-compress lzw) ;;
+		*)
+			magick_opt+=(-compress zip) ;;
+	esac
+fi
+
+# ImageMagick seems capable of choosing good values for this
+# on its own. Doesn't always pick the very best for file size,
+# but it's generally the point where choosing higher values
+# starts yielding diminishing returns.
+if (( ${#rows} )); then
+	magick_opt+=(-define tiff:rows-per-strip=${rows[-1]})
+fi
+
+magick \
+	-read ${ifile} \
+	${magick_opt} \
+	-density 0 \
+	-orient undefined \
+	-strip \
+	tiff:${ofile}
