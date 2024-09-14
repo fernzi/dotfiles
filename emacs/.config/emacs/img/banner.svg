@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+  width="64"
+  height="64"
+  viewBox="0 0 64 64"
+  version="1.1"
+  id="svg1"
+  inkscape:version="1.3.2 (091e20ef0f, 2023-11-25)"
+  sodipodi:docname="banner.svg"
+  xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+  xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:svg="http://www.w3.org/2000/svg">
+ <defs
+   id="defs1" />
+ <sodipodi:namedview
+   id="namedview1"
+   pagecolor="#202020"
+   bordercolor="#eeeeee"
+   borderopacity="1"
+   inkscape:showpageshadow="0"
+   inkscape:pageopacity="0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   showgrid="true"
+   showguides="true"
+   inkscape:zoom="13.09375"
+   inkscape:cx="31.961814"
+   inkscape:cy="32"
+   inkscape:current-layer="g22">
+  <inkscape:grid
+    id="grid1"
+    units="px"
+    originx="0"
+    originy="0"
+    spacingx="1"
+    spacingy="1"
+    empcolor="#0099e5"
+    empopacity="0.30196078"
+    color="#0099e5"
+    opacity="0.14901961"
+    empspacing="8"
+    dotted="false"
+    gridanglex="30"
+    gridanglez="30"
+    visible="true" />
+  <sodipodi:guide
+    position="0,56"
+    orientation="0,-1"
+    id="guide1"
+    inkscape:locked="false" />
+  <sodipodi:guide
+    position="0,8"
+    orientation="0,-1"
+    id="guide2"
+    inkscape:locked="false" />
+  <sodipodi:guide
+    position="8,0"
+    orientation="1,0"
+    id="guide3"
+    inkscape:locked="false" />
+  <sodipodi:guide
+    position="56,0"
+    orientation="1,0"
+    id="guide4"
+    inkscape:locked="false" />
+  <sodipodi:guide
+    position="32,32"
+    orientation="0.5,0.8660254"
+    id="guide5"
+    inkscape:locked="false"
+    inkscape:label=""
+    inkscape:color="rgb(0,134,229)" />
+  <sodipodi:guide
+    position="32,32"
+    orientation="-0.5,0.8660254"
+    id="guide6"
+    inkscape:locked="false"
+    inkscape:label=""
+    inkscape:color="rgb(0,134,229)" />
+ </sodipodi:namedview>
+ <g
+   id="layer1"
+   inkscape:groupmode="layer"
+   inkscape:label="Body">
+  <path
+    sodipodi:type="star"
+    style="fill:#ff1080;stroke:#ff1080;stroke-width:2"
+    id="path4"
+    inkscape:flatsided="true"
+    sodipodi:sides="6"
+    sodipodi:cx="32"
+    sodipodi:cy="32"
+    sodipodi:r1="23"
+    sodipodi:r2="20.784611"
+    sodipodi:arg1="0"
+    sodipodi:arg2="0.5235987"
+    inkscape:rounded="0.5"
+    inkscape:randomized="0"
+    d="m 55,32 c 0,11.5 -1.540708,14.168584 -11.5,19.918584 -9.959292,5.75 -13.040708,5.75 -23,0 C 10.540708,46.168584 9,43.5 9,32 9,20.5 10.540708,17.831416 20.5,12.081416 c 9.959292,-5.7500003 13.040708,-5.7500003 23,0 C 53.459292,17.831416 55,20.5 55,32 Z" />
+  <path
+    style="fill:#ff1080"
+    d="m 10,21 c 0,0 4,-13 6,-13 2,0 6,8 6,8"
+    id="path6"
+    sodipodi:nodetypes="czc" />
+  <path
+    style="fill:#881050"
+    d="M 18,17 16,9 c 2,1 4,6 4,6"
+    id="path7"
+    sodipodi:nodetypes="ccc" />
+  <use
+    xlink:href="#path7"
+    id="use7"
+    transform="translate(20,11)" />
+ </g>
+ <g
+   inkscape:groupmode="layer"
+   id="layer2"
+   inkscape:label="Screen">
+  <path
+    id="path10"
+    style="fill:#881050"
+    d="m 37.015265,42.383491 c 0,11.5 -3.515265,12.981567 -3.515265,12.981567 0,0 -3.040708,2.303526 -13,-3.446474 C 10.540708,46.168584 9,43.5 9,32 9,20.5 12.515266,19.018433 12.515266,19.018433 c 0,0 3.040707,-2.303526 12.999999,3.446474 9.959292,5.75 11.5,8.418584 11.5,19.918584 z"
+    sodipodi:nodetypes="scsscss" />
+  <path
+    id="path11"
+    style="fill:#202020"
+    d="m 12,32 c 0,-10 2.752405,-11.112605 2.752405,-11.112605 0,0 2.339746,-1.82735 11,3.17265 8.660254,5.000001 9.999999,7.320509 9.999999,17.320509 0,10 -2.752405,11.112605 -2.752405,11.112605 0,0 -2.339746,1.82735 -11,-3.17265 C 13.339745,44.320508 12,42 12,32 Z"
+    sodipodi:nodetypes="scsscss" />
+  <use
+    xlink:href="#g22"
+    id="use22"
+    transform="matrix(1,0.57735027,0,1,14,28)" />
+ </g>
+ <g
+   inkscape:groupmode="layer"
+   id="layer3"
+   inkscape:label="Face"
+   style="display:none">
+  <g
+    id="g22">
+   <use
+     x="0"
+     y="0"
+     xlink:href="#g25"
+     id="use25"
+     transform="translate(11)" />
+   <use
+     x="0"
+     y="0"
+     xlink:href="#path24"
+     id="use26"
+     transform="matrix(-1,0,0,1,17,0)" />
+   <circle
+     id="path22"
+     cx="6"
+     cy="-2"
+     r="1"
+     style="fill:#ffffff" />
+   <use
+     x="0"
+     y="0"
+     xlink:href="#path22"
+     id="use23"
+     transform="translate(5)" />
+   <g
+     id="g25">
+    <ellipse
+      style="fill:#ffffff"
+      id="path23"
+      cx="3"
+      cy="4"
+      rx="3"
+      ry="4" />
+    <path
+      style="fill:#202020"
+      d="M 3,4 7,1 v 6 z"
+      id="path25"
+      sodipodi:nodetypes="cccc" />
+   </g>
+   <path
+     style="fill:#202020"
+     d="M 0,7 7,6 V 9 H 0 Z"
+     id="path24"
+     sodipodi:nodetypes="ccccc" />
+   <path
+     style="fill:none;stroke:#ffffff;stroke-width:1.5;stroke-linecap:round"
+     d="M 5.5,9.5 C 6,11 7,9.470432 8.5,9.5 10,9.529568 11,11 11.5,9.5"
+     id="path19"
+     sodipodi:nodetypes="czc" />
+  </g>
+ </g>
+</svg>
