@@ -31,12 +31,6 @@ if [[ ! -v __zsh_open_cmd ]]; then
 		# and my personal choice (if it was packaged on Gentoo).
 		__zsh_open_cmd=handlr
 		__zsh_open_opt=(open)
-	elif [[ -v commands[mimeopen] ]]; then
-		# This comes with the Perl package that `xdg-open`
-		# requires to actually be XDG compliant. And it's
-		# already a better option to begin with.
-		__zsh_open_cmd=mimeopen
-		__zsh_open_opt=(-n)
 	fi
 
 	# TODO: Support MacOS's `open`, but I don't have a Mac to test it.
