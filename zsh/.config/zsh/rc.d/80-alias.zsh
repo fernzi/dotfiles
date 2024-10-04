@@ -5,6 +5,13 @@
 
 local cmd
 
+# Debian installs `fd` as `fdfind` cause of a name clash.
+# This `fd` is one of the few UNIX utils replacements that's
+# actually useful, so I don't mind shadowing that other one.
+if [[ -v commands[fdfind] ]]; then
+	alias fd=fdfind
+fi
+
 # I don't really keep up with the flavour of the month
 # AUR helper, so which ones and in which order this checks
 # is kind of arbitrary.
