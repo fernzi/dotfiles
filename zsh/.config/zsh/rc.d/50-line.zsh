@@ -17,7 +17,8 @@ PROMPT_EOL_MARK='%F{red}%S↵%s%f'
 
 unsetopt beep
 
-WORDCHARS='-_'
+# Moving and deleting words is a bit greedy by default.
+WORDCHARS=${WORDCHARS//[\/=._-]/}
 
 setopt autocd
 
