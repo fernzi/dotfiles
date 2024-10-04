@@ -10,7 +10,7 @@
 if [[ ! -v __zsh_sudo_cmd ]]; then
 	typeset -g __zsh_sudo_cmd=sudo
 
-	if [[ -v commands[doas] ]] && doas -C /etc/doas.conf 2>&-; then
+	if [[ -v commands[doas] ]] && [[ -f /etc/doas.conf ]]; then
 		# Use `doas` when it's available and correctly configured,
 		# For OpenBSD and the weirdos who use it on Linux. Like me.
 		__zsh_sudo_cmd=doas
