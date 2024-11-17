@@ -98,11 +98,15 @@
 (setup frame
   (:option
    ;; Let's make the cursor a bit more pleasing to the eye.
+   ;; The timing is based on Firefox's. Fairly sure it's identical.
    cursor-type 'bar
    blink-cursor-blinks 5
    blink-cursor-delay 1
    blink-cursor-interval 1.4
    x-stretch-cursor t))
+
+(setup fringe-mode
+  (:option fringe-mode (my/scale-pixel 8)))
 
 ;; Set the back and forward mouse buttons
 ;; to go back and forward on the help.
