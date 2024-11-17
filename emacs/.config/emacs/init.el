@@ -508,7 +508,7 @@
        (lambda () (get-buffer-create dashboard-buffer-name)))
    dashboard-banner-logo-title (format "✦ %s ✦" my/db-title)
    dashboard-startup-banner
-     (expand-file-name "img/banner.png" user-emacs-directory)
+     (expand-file-name "img/banner.svg" user-emacs-directory)
    dashboard-image-banner-max-height (my/scale-pixel 256)
    dashboard-center-content t
    dashboard-vertically-center-content t
