@@ -1,0 +1,36 @@
+#######################################################################
+# Fern's Dotfiles -- Alacritty - Kins Colour Scheme
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+[colors.primary]
+background = "#202020"
+foreground = "#E2E2E2"
+
+[colors.cursor]
+cursor = "#F8F8F8"
+text = "#303030"
+
+[colors.selection]
+background = "#404040"
+text = "#E2E2E2"
+
+[colors.normal]
+black = "#404040"
+blue = "#00D8FF"
+cyan = "#10F0B0"
+green = "#C0F000"
+magenta = "#A870FF"
+red = "#FF1080"
+white = "#B9B9B9"
+yellow = "#FFD800"
+
+[colors.bright]
+black = "#646464"
+blue = "#58F8FF"
+cyan = "#80FFE0"
+green = "#E0FF68"
+magenta = "#A098FF"
+red = "#F868B0"
+white = "#F8F8F8"
+yellow = "#FFF070"

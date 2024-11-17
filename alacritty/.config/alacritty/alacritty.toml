@@ -1,0 +1,46 @@
+#######################################################################
+# Fern's Dotfiles -- Alacritty Terminal Emulator
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+import = [
+	"~/.config/alacritty/themes/kins-dark.toml"
+]
+
+## Appearance #########################################################
+
+[window]
+dimensions = { columns = 80, lines = 24 }
+dynamic_padding = true
+padding = { x = 24, y = 24 }
+resize_increments = true
+
+[font]
+normal = { family = "monospace" }
+size = 12
+
+[cursor.style]
+shape = "Underline"
+blinking = "On"
+
+## Mouse ##############################################################
+
+[mouse]
+hide_when_typing = true
+
+## Bindings ###########################################################
+
+[[keyboard.bindings]]
+action = "SpawnNewInstance"
+key = "N"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+chars = "\u001B[13;2u"
+key = "Return"
+mods = "Shift"
+
+[[keyboard.bindings]]
+chars = "\u001B[13;5u"
+key = "Return"
+mods = "Control"
