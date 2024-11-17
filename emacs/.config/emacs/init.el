@@ -547,7 +547,8 @@
 ;; This means my config only works on Emacs 29 onward,
 ;; but I'm totally worth it.
 (setup treesit
-  (setq treesit-language-source-alist nil)
+  (setq treesit-language-source-alist nil
+        treesit-extra-load-path '("~/.guix-profile/lib/tree-sitter"))
   (defsetup :treesit (&rest defs)
     "Setup a Tree-sitter grammar install source"
     `(push ',defs treesit-language-source-alist)))
