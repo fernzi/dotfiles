@@ -492,6 +492,14 @@
            doom-modeline-buffer-file-name-style 'buffer-name
            doom-modeline-major-mode-icon nil))
 
+;; By default, documentation is shown on the minibuffer on hover,
+;; which I honestly find pretty annoying. I don't like the window
+;; shifting around just cause I moved the cursor.
+;;
+;; So `eldoc-box' moves it to its own floating frame instead,
+;; like code editors made in the last twenty years tend to do.
+(setup (:package eldoc-box))
+
 ;;;; Custom startup screen.
 ;; Just a bit more useful than the stock one.
 ;; And, honestly, I just think it looks purdy.
@@ -565,6 +573,8 @@
   (:when-loaded
     (add-to-list 'eglot-server-programs
                  '(lua-mode "lua-language-server")))
+  (:with-mode eglot-managed-mode
+    (:hook eldoc-box-hover-mode))
   (:ryo
    (:mode 'eglot--managed-mode)
    ("SPC l" (("a" eglot-code-actions)
