@@ -3,8 +3,9 @@
 # https://github.com/fernzi/dotfiles
 #######################################################################
 
+[general]
 import = [
-	"~/.config/alacritty/themes/kins-dark.toml"
+	"themes/kins-dark.toml"
 ]
 
 ## Appearance #########################################################
