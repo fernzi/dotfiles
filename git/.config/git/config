@@ -21,6 +21,7 @@
 	dfh = diff @~ @
 	dfs = diff --staged
 	killit = reset --hard
+	ls-untracked = ls-files --exclude-standard --others
 	st = status -s
 	us = restore --staged
 
