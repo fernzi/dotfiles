@@ -2,8 +2,8 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="224"
-   height="112"
+   width="224px"
+   height="112px"
    viewBox="0 0 224 112"
    version="1.1"
    id="svg5"
@@ -530,7 +530,7 @@
      inkscape:groupmode="layer"
      id="layer11"
      inkscape:label="Name"
-     style="fill:#303030;font-size:6;font-stretch:expanded;font-weight:300;font-family:Iosevkins;-inkscape-font-specification:'Iosevkins Light Expanded';text-align:center;text-anchor:middle">
+     style="fill:#303030;font-size:6px;font-stretch:expanded;font-weight:300;font-family:Iosevkins;-inkscape-font-specification:'Iosevkins Light Expanded';text-align:center;text-anchor:middle">
     <g
        inkscape:groupmode="layer"
        id="layer17"
@@ -748,7 +748,7 @@
      inkscape:groupmode="layer"
      id="layer12"
      inkscape:label="RGB"
-     style="font-size:3;font-family:Iosevkins;-inkscape-font-specification:Iosevkins;fill:#303030">
+     style="font-size:3px;font-family:Iosevkins;-inkscape-font-specification:Iosevkins;fill:#303030">
     <g
        inkscape:groupmode="layer"
        id="layer20"
@@ -1023,7 +1023,7 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Terminal"
-     style="font-size:3;font-family:Iosevkins;-inkscape-font-specification:Iosevkins;text-align:end;text-anchor:end;fill:#303030">
+     style="font-size:3px;font-family:Iosevkins;-inkscape-font-specification:Iosevkins;text-align:end;text-anchor:end;fill:#303030">
     <g
        inkscape:groupmode="layer"
        id="layer14"
@@ -1297,7 +1297,7 @@
      inkscape:label="Lightness"
      inkscape:groupmode="layer"
      id="layer1"
-     style="font-size:3;font-family:Iosevkins;-inkscape-font-specification:Iosevkins;text-align:end;text-anchor:end;fill:#303030">
+     style="font-size:3px;font-family:Iosevkins;-inkscape-font-specification:Iosevkins;text-align:end;text-anchor:end;fill:#303030">
     <g
        inkscape:groupmode="layer"
        id="layer23"

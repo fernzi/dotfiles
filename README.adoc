@@ -146,7 +146,7 @@ It can, and will, change randomly at my whim, whenever I feel that
 I don't quite like any of the colours anymore, but can probably
 count on it staying bright and neonish.
 
-image::.assets/images/palette.svg[]
+image::.assets/images/palette.svg[width=100%]
 
 == Fonts
 :url-hwei: http://developer.huawei.com/consumer/cn/design/resource/
