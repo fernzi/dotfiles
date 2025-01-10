@@ -574,7 +574,7 @@
     (add-to-list 'eglot-server-programs
                  '(lua-mode "lua-language-server")))
   (:with-mode eglot-managed-mode
-    (:hook eldoc-box-hover-mode))
+    (:hook eldoc-box-hover-at-point-mode))
   (:ryo
    (:mode 'eglot--managed-mode)
    ("SPC l" (("a" eglot-code-actions)
@@ -625,6 +625,7 @@
    c-ts-mode-indent-style "linux"))
 
 (setup c++-ts-mode
+  (:file-match "\\.c\\(c\\|pp\\|xx\\|++\\)m\\'")
   (:hook eglot-ensure)
   (:treesit cpp "https://github.com/tree-sitter/tree-sitter-cpp")
   (:option
