@@ -6,6 +6,7 @@
 
 use utf8;
 use v5.36;
+use experimental qw(for_list);
 use open qw(:std :encoding(utf-8));
 
 use Archive::Zip;
@@ -31,12 +32,13 @@ sub name_for($file, $ext = 'jpg')
 		$CACHE_DIR, $st->ino, $st->size, $st->mtime, $st->ctime, $ext;
 }
 
-sub print_exif($info, %fields)
+sub print_exif($info, @fields)
 {
-	my $pad = max(map(length, values %fields));
-	foreach (keys %fields) {
-		if (exists $$info{$_}) {
-			printf("%-*s : %s\n", $pad, $fields{$_}, $$info{$_});
+	my @odd = do { my $f = 1; grep { $f ^= 1 } @fields };
+	my $pad = max(map(length, @odd));
+	foreach my ($k, $v) (@fields) {
+		if (exists $info->{$k}) {
+			printf("%-*s : %s\n", $pad, $v, $info->{$k});
 		}
 	}
 }
