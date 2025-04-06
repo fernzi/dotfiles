@@ -43,6 +43,13 @@ sub print_exif($info, @fields)
 	}
 }
 
+sub print_file($file)
+{
+	open my $fh, '<', $file;
+	print <$fh>;
+	close $fh;
+}
+
 ## Thumbnail Generators ###############################################
 
 sub thumb_bln($file)
@@ -130,9 +137,7 @@ sub prev_txt($file, $w, $h, $x, $y)
 	}
 
 	# Print the file un-highlighted:
-	open my $fh, '<', $file;
-	print <$fh>;
-	close $fh;
+	print_file($file);
 	return 0;
 }
 
