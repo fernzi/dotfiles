@@ -10,7 +10,6 @@ use experimental qw(for_list);
 use open qw(:std :encoding(utf-8));
 
 use Archive::Zip;
-use Data::Dumper;
 use File::MimeInfo qw(mimetype_isa);
 use File::MimeInfo::Magic;
 use File::Which;
@@ -18,7 +17,6 @@ use File::stat;
 use IPC::System::Simple qw(runx);
 use Image::ExifTool qw(ImageInfo);
 use List::Util qw(any max);
-use Try::Tiny;
 
 ## Utilities ##########################################################
 
@@ -244,7 +242,6 @@ sub prev_rff($file, $w, $h, $x, $y)
 ## File Type Handlers #################################################
 
 my @NAME_HANDLERS = (
-	# qr(\.(kra|ora)$) => \&prev_kra,
 );
 
 my @MIME_HANDLERS = (
@@ -268,24 +265,21 @@ sub main($file, $w, $h, $x = 0, $y = 0)
 	$file = readlink $file if -l $file;
 
 	# Match file name:
-	for (my $i = 0; $NAME_HANDLERS[$i]; $i += 2) {
-		my ($k, $v) = @NAME_HANDLERS[$i, $i + 1];
+	foreach my ($k, $v) (@NAME_HANDLERS) {
 		if ($file =~ /$k/s) {
-			my $r = eval { $v->($file, $w, $h, $x, $y) };
-			return defined $r ? $r : 1;
+			return eval { $v->($file, $w, $h, $x, $y) } // 1;
 		}
 	}
 
 	# Match mime type:
 	my $mime = mimetype($file);
-	for (my $i = 0; $MIME_HANDLERS[$i]; $i += 2) {
-		my ($k, $v) = @MIME_HANDLERS[$i, $i + 1];
+	foreach my ($k, $v) (@MIME_HANDLERS) {
 		if (any { /$k/s } $mime, mimetype_isa $mime) {
-			my $r = eval { $v->($file, $w, $h, $x, $y) };
-			return defined $r ? $r : 1;
+			return eval { $v->($file, $w, $h, $x, $y) } // 1;
 		}
 	}
 
+	# No matches, just show type:
 	say '(', $mime ,')';
 	return 1;
 }
