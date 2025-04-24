@@ -437,7 +437,7 @@
 ;; Don't remember all of Emacs' key bindings,
 ;; and I very much doubt anyone actually does.
 ;; So let's give ourselves a hand, okay?
-(setup (:package which-key)
+(setup which-key
   (which-key-mode)
   (:option which-key-idle-delay 1
            which-key-idle-secondary-delay 0.2
@@ -527,19 +527,12 @@
           (info-emacs-manual)))))
    dashboard-footer-messages my/db-messages))
 
-;; File browser on the side. Feeling kinda mixed bout this one,
-;; cause not sure I even use it, but we'll see.
-(setup (:package treemacs)
-  (:ryo ("SPC o t" treemacs-select-window)))
-
 ;;; Language Support ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Tree-sitter my beloved. Major modes are so easy now.
 ;; This means my config only works on Emacs 29 onward,
 ;; but I'm totally worth it.
-(setup treesit
-  (setq treesit-language-source-alist nil
-        treesit-extra-load-path '("~/.guix-profile/lib/tree-sitter")))
+(setq treesit-extra-load-path '("~/.guix-profile/lib/tree-sitter"))
 
 ;; And if there's any one reason why I can tolerate
 ;; Visual Studio Code's existence, it's language servers.
@@ -632,12 +625,6 @@
 (setup (:package fennel-mode)
   (:file-match "\\.fnl\\'"))
 
-;;;; Fish
-
-(setup (:package fish-mode)
-  (:file-match "\\.fish\\'")
-  (:option fish-indent-offset my/tab-width))
-
 ;;;; Git
 
 (setup (:package git-modes))
@@ -652,10 +639,10 @@
 
 ;;;; Lua
 
-(setup (:package lua-mode)
+(setup lua-ts-mode
   (:file-match "\\.lua\\'")
   (:hook eglot-ensure)
-  (:option lua-indent-level my/tab-width))
+  (:option lua-ts-indent-offset my/tab-width))
 
 ;;;; Markdown
 
@@ -712,7 +699,7 @@
 ;;;; Type/JavaScript
 
 (setup typescript-ts-mode
-  (:file-match "\\.[jt]sx?\\'")
+  (:file-match "\\.tsx?\\'")
   (:hook eglot-ensure))
 
 ;;;; JSON
