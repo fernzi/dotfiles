@@ -19,13 +19,6 @@
 (when (eval-when-compile (version< emacs-version "27"))
   (package-initialize))
 
-(require 'package)
-
-(setq package-name-column-width 40
-      package-version-column-width 14
-      package-status-column-width 12
-      package-archive-column-width 8)
-
 ;; Refresh the package list and
 ;; install `setup' if it's missing.
 (unless (package-installed-p 'setup)
@@ -449,10 +442,6 @@
 
 ;; (setup (:package cape)
 ;; )
-
-(setup (:package yasnippet)
-  (:with-mode yas-minor-mode
-    (:hook-into lua-mode)))
 
 ;;;; Key suggestions.
 ;; Don't remember all of Emacs' key bindings,

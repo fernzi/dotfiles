@@ -16,18 +16,6 @@
   (revert-buffer nil t t)
   (message (concat "Reverted buffer `" (buffer-name) "'")))
 
-;; Might get rid of this one eventually.
-;; Gentoo has a lot of Tree-sitter grammars available
-;; as packages, and I'd rather use those than install
-;; em manually thru Emacs.
-(defun my/treesit-install-grammars ()
-  "Install all currently defined Tree-sitter grammars."
-  (interactive)
-  (mapc (lambda (lang)
-          (unless (treesit-language-available-p lang)
-            (treesit-install-language-grammar lang)))
-        (mapcar #'car treesit-language-source-alist)))
-
 ;;; Regular Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun my/or-fallback (sym fb)

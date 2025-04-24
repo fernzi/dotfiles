@@ -17,6 +17,8 @@
 (put 'site-run-file 'orig-value site-run-file)
 (setq site-run-file nil)
 
+(require 'xdg)
+
 (when (eval-when-compile (featurep 'native-compile))
   ;; And this saves a bit of time wasted on compilation.
   ;; Emacs' native-compiled files should already come compiled,
@@ -27,7 +29,6 @@
 
   ;; Get Emacs' native comp cache out of my configs.
   (when (boundp 'native-comp-eln-load-path)
-    (require 'xdg)
     (let ((cdir (expand-file-name "emacs/eln/" (xdg-cache-home))))
       ;; Emacs 28 seems to be pretty wonky about this.
       ;; Sometimes find the `eln-cache' directory in my configs
@@ -58,7 +59,6 @@
 
 ;; Get packages into a place that makes more sense.
 ;; Please, they're not configuration.
-(require 'xdg)
 (setq package-user-dir
       (expand-file-name "emacs/elpa" (xdg-data-home)))
 
