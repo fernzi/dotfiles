@@ -14,6 +14,7 @@
 
 [alias]
 	br = branch
+	cl = clone
 	cm = commit
 	co = checkout
 	curr = show --stat HEAD
@@ -30,6 +31,9 @@
 
 [url "git@gitlab.com:"]
 	insteadOf = gl:
+
+[url "ssh://git@codeberg.org/"]
+	insteadOf = cb:
 
 [include]
 	path = local
