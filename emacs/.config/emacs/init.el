@@ -14,11 +14,6 @@
 ;; Does less magic, and makes it very easy to define keywords.
 ;; Simple and clean. (is the way that you're making me feel tonight.)
 
-(require 'util)
-
-(when (eval-when-compile (version< emacs-version "27"))
-  (package-initialize))
-
 ;; Refresh the package list and
 ;; install `setup' if it's missing.
 (unless (package-installed-p 'setup)
@@ -49,8 +44,6 @@
 ;; and I mean *everything*, including built-in stuff.
 ;; Much easier to read and remember my own tweaks
 ;; when all's done the same way, if you ask me.
-
-(require 'conf)
 
 (setup emacs
   (:option
@@ -177,9 +170,6 @@
 ;; between em and the text without modifying Emacs' C source,
 ;; so I just turned them off, and I've survived so far.
 (setup display-line-numbers
-;;   (:hook-into prog-mode
-;;               text-mode
-;;               conf-mode)
   (:option display-line-numbers-type 'visual
            display-line-numbers-width-start 999))
 
@@ -549,19 +539,13 @@
 ;; but I'm totally worth it.
 (setup treesit
   (setq treesit-language-source-alist nil
-        treesit-extra-load-path '("~/.guix-profile/lib/tree-sitter"))
-  (defsetup :treesit (&rest defs)
-    "Setup a Tree-sitter grammar install source"
-    `(push ',defs treesit-language-source-alist)))
+        treesit-extra-load-path '("~/.guix-profile/lib/tree-sitter")))
 
 ;; And if there's any one reason why I can tolerate
 ;; Visual Studio Code's existence, it's language servers.
 ;; All that completion and checking goodness, in any editor.
 ;; Note that servers still have to be installed outside Emacs.
 (setup eglot
-  (:when-loaded
-    (add-to-list 'eglot-server-programs
-                 '(lua-mode "lua-language-server")))
   (:with-mode eglot-managed-mode
     (:hook eldoc-box-hover-at-point-mode))
   (:ryo
@@ -607,7 +591,6 @@
 (setup c-ts-mode
   (:file-match "\\.lsl\\'")             ; Purdy janky.
   (:hook eglot-ensure)
-  (:treesit c "https://github.com/tree-sitter/tree-sitter-c")
   (:option
    (prepend major-mode-remap-alist) '(c-mode . c-ts-mode)
    c-ts-mode-indent-offset my/tab-width
@@ -616,7 +599,6 @@
 (setup c++-ts-mode
   (:file-match "\\.c\\(c\\|pp\\|xx\\|++\\)m\\'")
   (:hook eglot-ensure)
-  (:treesit cpp "https://github.com/tree-sitter/tree-sitter-cpp")
   (:option
    (prepend major-mode-remap-alist) '(c++-mode . c++-ts-mode)))
 
@@ -628,8 +610,7 @@
 
 (setup cmake-ts-mode
   (:file-match "CMakeLists\\.txt\\'"
-               "\\.cmake\\'")
-  (:treesit cmake "https://github.com/uyha/tree-sitter-cmake"))
+               "\\.cmake\\'"))
 
 ;;;; CSS
 
@@ -667,8 +648,6 @@
   (:file-match "\\.go\\'"
                "go\\.mod\\'")
   (:hook eglot-ensure)
-  (:treesit go "https://github.com/tree-sitter/tree-sitter-go")
-  (:treesit gomod "https://github.com/camdencheek/tree-sitter-go-mod")
   (:option go-ts-mode-indent-offset my/tab-width))
 
 ;;;; Lua
@@ -703,7 +682,6 @@
 
 (setup python-ts-mode
   (:hook eglot-ensure)
-  (:treesit python "https://github.com/tree-sitter/tree-sitter-python")
   (:option
    (prepend major-mode-remap-alist) '(python-mode . python-ts-mode)))
 
@@ -728,7 +706,6 @@
 ;;;; TOML
 
 (setup toml-ts-mode
-  (:treesit toml "https://github.com/tree-sitter/tree-sitter-toml")
   (:option
    (prepend major-mode-remap-alist) '(conf-toml-mode . toml-ts-mode)))
 
@@ -736,19 +713,12 @@
 
 (setup typescript-ts-mode
   (:file-match "\\.[jt]sx?\\'")
-  (:hook eglot-ensure)
-  (:treesit
-   typescript "https://github.com/tree-sitter/tree-sitter-typescript"
-   nil "typescript/src")
-  (:treesit
-   tsx "https://github.com/tree-sitter/tree-sitter-typescript"
-   nil "tsx/src"))
+  (:hook eglot-ensure))
 
 ;;;; JSON
 
 (setup json-ts-mode
-  (:file-match "\\.json\\'")
-  (:treesit json "https://github.com/tree-sitter/tree-sitter-json.git"))
+  (:file-match "\\.json\\'"))
 
 ;;;; HTML and More
 
@@ -767,8 +737,6 @@
 
 (setup yaml-ts-mode
   (:file-match "\\.clang-[a-z]+\\'")
-  (:treesit
-   yaml "https://github.com/ikatyang/tree-sitter-yaml")
   (:option (prepend major-mode-remap-alist) '(yaml-mode . yaml-ts-mode)))
 
 ;; One package's notable for its absence…
