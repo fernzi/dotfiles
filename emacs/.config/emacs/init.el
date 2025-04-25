@@ -251,6 +251,17 @@
                         "hunspell"))
            ispell-dictionary "en_US"))
 
+;;;; Undo History
+;; Get undo/redo to work like in a sane editor.
+;; Doesn't have a visualizer like `undo-tree' did,
+;; but don't think I ever actually used it anyway.
+(setup (:package undo-fu))
+(setup (:package undo-fu-session)
+  (:option
+   undo-fu-session-compression nil
+   undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'"))
+  (undo-fu-session-global-mode))
+
 ;;;; Modal editing.
 ;; Using Vi is not a sin; it is a penance.
 ;;
@@ -301,7 +312,7 @@
    ("r" kak/char-replace)
    ;; ("s")
    ;; ("t")
-   ;; ("u")
+   ("u" undo-fu-only-undo)
    ;; ("v")
    ("w" kak/word-select-next-beg)
    ("x" kak/line-select)
@@ -328,7 +339,7 @@
    ("R" kak/replace)
    ;; ("S")
    ;; ("T")
-   ;; ("U")
+   ("U" undo-fu-only-redo)
    ;; ("V")
    ("W" kak/word-extend-next-beg)
    ;; ("X")
@@ -391,14 +402,6 @@
    ("7" "M-7" :norepeat t)
    ("8" "M-8" :norepeat t)
    ("9" "M-9" :norepeat t)))
-
-;; Get undo/redo to work like in a sane editor.
-;; Ain't the `:ryo' keyword convenient?
-(setup (:package undo-tree)
-  (global-undo-tree-mode)
-  (:ryo ("u" undo-tree-undo)
-        ("U" undo-tree-redo)
-        ("SPC o u" undo-tree-visualize)))
 
 ;;; Completion ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
