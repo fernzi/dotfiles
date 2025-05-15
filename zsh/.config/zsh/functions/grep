@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Convenient text search
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+# All we do here for now is check if `grep` supports colour.
+# I'd like to wrap `ugrep` and `rg` as well at some point.
+
+if [[ ! -v __zsh_grep_opt ]]; then
+  typeset -ga __zsh_grep_opt
+
+  if command grep --color=auto '' &>/dev/null <<< ''; then
+    __zsh_grep_opt+='--color=auto'
+  fi
+fi
+
+command grep $__zsh_grep_opt "$@"
