@@ -35,3 +35,11 @@ fi
 if [[ -v commands[7zz] ]]; then
   alias 7z=7zz
 fi
+
+# Why must FFmpeg show a whole screen worth of compile-time
+# flags every time you run it is a mystery for the ages.
+for cmd in ff{mpeg,play,probe}; do
+  if [[ -v commands[${cmd}] ]]; then
+    alias ${cmd}="${cmd} -hide_banner"
+  fi
+done
