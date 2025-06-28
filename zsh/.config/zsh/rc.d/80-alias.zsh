@@ -25,7 +25,13 @@ done
 # If the cost of not creating untracked files
 # is defining an alias, I'll gladly pay it.
 if [[ -v commands[corepack] ]]; then
-        for c in npm npx pnpm pnpx; do
-                alias ${c}="corepack ${c}"
-        done
+  for cmd in npm npx pnpm pnpx; do
+    alias ${cmd}="corepack ${cmd}"
+  done
+fi
+
+# Gentoo installs upstream 7zip as `7zz` as to not conflict
+# with p7zip, I imagine. Problem is p7zip is kinda dead.
+if [[ -v commands[7zz] ]]; then
+  alias 7z=7zz
 fi
