@@ -248,10 +248,9 @@
            ispell-dictionary "en_US"))
 
 ;;;; Undo History
-;; Get undo/redo to work like in a sane editor.
-;; Doesn't have a visualizer like `undo-tree' did,
-;; but don't think I ever actually used it anyway.
-(setup (:package undo-fu))
+;; Been using `undo-only' instead of a package,
+;; and it's worked just fine, so now we're only using
+;; `undo-fu-session' for the persistent undo history.
 (setup (:package undo-fu-session)
   (:option
    undo-fu-session-compression nil
@@ -308,7 +307,7 @@
    ("r" kak/char-replace)
    ;; ("s")
    ;; ("t")
-   ("u" undo-fu-only-undo)
+   ("u" undo-only)
    ;; ("v")
    ("w" kak/word-select-next-beg)
    ("x" kak/line-select)
@@ -335,7 +334,7 @@
    ("R" kak/replace)
    ;; ("S")
    ;; ("T")
-   ("U" undo-fu-only-redo)
+   ("U" undo-redo)
    ;; ("V")
    ("W" kak/word-extend-next-beg)
    ;; ("X")
