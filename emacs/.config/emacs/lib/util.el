@@ -18,10 +18,6 @@
 
 ;;; Regular Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun my/or-fallback (sym fb)
-  "Return the value of `fb' if the symbol `sym' is not defined."
-  (if (boundp sym) (symbol-value sym) fb))
-
 ;; Don't believe Emacs has this as a function,
 ;; but checking if the average char width is larger
 ;; than 10 pixels is how Emacs decides if the screen

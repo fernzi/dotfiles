@@ -138,7 +138,7 @@
         (min-width . 1)
         (height . 44)
         (width . 80)
-        (border-width . ,(my/or-fallback 'my/border-width 0))
+        (border-width . ,(or (bound-and-true-p my/border-width) 0))
         (menu-bar-lines . 0)
         (tool-bar-lines . 0)
         (vertical-scroll-bars . right))

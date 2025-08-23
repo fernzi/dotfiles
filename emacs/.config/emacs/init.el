@@ -55,7 +55,7 @@
    tooltip-mode nil
 
    ;; Neaten up the editor as well.
-   line-spacing (my/or-fallback 'my/line-spacing 0)
+   line-spacing (or (bound-and-true-p my/line-spacing) 0)
 
    ;; Make TABs a bit saner.
    tab-width my/tab-width
