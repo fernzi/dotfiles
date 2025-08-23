@@ -51,6 +51,7 @@
    ;; you how to do everything and then complain that
    ;; Emacs "lacks discoverability."
    menu-bar-mode nil
+   scroll-bar-mode nil
    tool-bar-mode nil
    tooltip-mode nil
 
@@ -77,7 +78,6 @@
    ;; Minibuffer except not (less) janky.
    minibuffer-prompt-properties
    '(readonly t cursor-intangible t face minibuffer-prompt))
-  (set-window-scroll-bars (minibuffer-window) nil nil)
   (:with-feature cursor-intangible
     (:hook-into minibuffer-setup-hook)))
 
@@ -134,8 +134,6 @@
 ;; Probably'll make a custom one eventually,
 ;; so not gonna stay with this forever.
 (setup (:package doom-themes)
-  (:option (prepend custom-theme-load-path)
-           (expand-file-name "theme" user-emacs-directory))
   (load-theme 'doom-molokai t))
 
 ;; Set all em fonts!
@@ -146,9 +144,7 @@
  `(fixed-pitch
    ((t (:family ,my/font-monospace :height ,my/font-size))))
  `(variable-pitch
-   ((t (:family ,my/font-variable :height ,my/font-size))))
- `(scroll-bar
-   ((t (:foreground "#383838")))))
+   ((t (:family ,my/font-variable :height ,my/font-size)))))
 
 ;; Make numbers stand out a bit.
 (setup (:package highlight-numbers)
