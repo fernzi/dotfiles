@@ -4,13 +4,32 @@
 # https://github.com/fernzi/dotfiles
 #######################################################################
 
-local -a fs
-local -a es
+# This should look like the default error message.
+# And we only print the fancy formatted package list
+# if we actually found any.
 
-# Search for the binary and put the result in an array.
+printf 'zsh: command not found: %s\n' "$1"
+
+# Some systems have their own command-finder program,
+# so we just use that over doing any custom handling,
+# if it's an option.
+
+if [[ -v commands[cnf] ]]; then
+	# We can use the `cnf` command in OpenSUSE.
+	cnf ${(Q)1}
+	return $?
+fi
+
+# Otherwise, we have to parse package manager output
+# to figure out which package includes the command.
+#
+# First, we search for the binary and store the result.
 # Wish there was a standard output format for this.
 # The array contains groups of four in the shape:
 # ($REPOSITORY $PACKAGE_NAME $VERSION $COMMAND_PATH)
+
+local -a fs
+local -a es
 
 if [[ -v commands[pkgfile] ]]; then
 	# Having `pkgfile` means we're in Arch.
@@ -37,11 +56,6 @@ elif [[ -v commands[xbps-query] ]]; then
 		es+=('' "${fs[1]%-*}" "${${test[2]##*-}:0:-1}" "${fs[2]}")
 	done
 fi
-
-# This should look like the default error message.
-# And we only print the fancy formatted package list
-# if we actually found any.
-printf 'zsh: command not found: %s\n' "$1"
 
 if (( ${#es[@]} )); then
 	print 'it may be found in the following packages:'
