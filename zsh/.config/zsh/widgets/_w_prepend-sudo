@@ -8,12 +8,18 @@
 # and end up pressing home and typing it by hand.
 
 if [[ ! -v __zsh_sudo_cmd ]]; then
-	typeset -g __zsh_sudo_cmd=sudo
+	# Because of Systemd's takeover of Linux, the `run0` command
+	# should almost always be available, even if it's not great.
+	typeset -g __zsh_sudo_cmd=run0
 
 	if [[ -v commands[doas] ]] && [[ -f /etc/doas.conf ]]; then
 		# Use `doas` when it's available and correctly configured,
 		# For OpenBSD and the weirdos who use it on Linux. Like me.
 		__zsh_sudo_cmd=doas
+	elif [[ -v commands[sudo] ]]; then
+		# The real default. It's only here so it gets
+		# picked over `run0` when both are installed.
+		__zsh_sudo_cmd=sudo
 	fi
 fi
 
