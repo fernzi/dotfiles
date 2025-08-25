@@ -64,8 +64,8 @@ map <c-e> push :edit<space>
 map <delete> trash
 
 # Clipboard
-map YY &printf '%s\n' $fx | head -c -1 | xclip -sel clip
-map Yd &printf '%s' "${PWD}" | xclip -sel clip
+map YY &${LF_CONFIG_DIR}/scripts/yank ${fx}
+map Yd &${LF_CONFIG_DIR}/scripts/yank ${PWD}
 
 # Drag & drop
 map .. guidrag

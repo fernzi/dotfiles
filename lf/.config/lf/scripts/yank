@@ -1,0 +1,50 @@
+#!/usr/bin/env perl
+# Copyright © 2025 Fern Zapata
+# This file is under the terms of the GNU GPL version 3, or (at your
+# option) any later version. If you didn't receive a copy of the GPL
+# along with this file, see <https://www.gnu.org/licenses/>.
+
+use v5.36;
+use open qw(:std :encoding(utf-8));
+
+use File::Which;
+use List::Util qw(first);
+use URI::file;
+
+my %commands = (
+  wayland => [
+    [qw(wl-copy -t text/uri-list)],
+    [qw(wclip i text/uri-list)],
+  ],
+  x11 => [
+    [qw(xclip -t text/uri-list -sel clip)],
+    [qw(xsel -b)],
+  ],
+);
+
+sub main
+{
+  my $clip;
+
+  if (exists $ENV{WAYLAND_DISPLAY}) {
+    # We're on a Wayland compositor.
+    $clip = $commands{wayland};
+  } else {
+    # We're running on good ol' X11.
+    $clip = $commands{x11};
+  }
+
+  $clip = first { which $_->[0] } @$clip;
+
+  unless ($clip) {
+    say('no clipboard command available');
+    return 1;
+  }
+
+  open(my $pipe, '|-', @$clip);
+  for (@_) {
+    $pipe->print(URI::file->new_abs($_), "\r\n");
+  }
+}
+
+exit(main @ARGV) unless caller;
