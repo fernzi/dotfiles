@@ -1,23 +1,25 @@
 #!/bin/sh -efu
-# Copyright © 2022-2023 Fern Zapata
-# This program is subject to the terms of the GNU GPL, v. 3, or
-# (at your option) any later version. If a copy of the GPL was not
-# distributed with this file, see <https://www.gnu.org/licenses/>.
+# Copyright © 2022-2025 Fern Zapata
+# This file is under the terms of the GNU GPL version 3, or (at your
+# option) any later version. If you didn't receive a copy of the GPL
+# along with this file, see <https://www.gnu.org/licenses/>.
+
+: ${VISUAL:=${EDITOR:-nano}}
 
 readonly RENAME_OLD="$(mktemp -p "${LF_RUNTIME_DIR}" rename.old.XXXX)"
 readonly RENAME_NEW="$(mktemp -p "${LF_RUNTIME_DIR}" rename.new.XXXX)"
 readonly RENAME_EXE="$(mktemp -p "${LF_RUNTIME_DIR}" rename.exe.XXXX.sh)"
 
 rename_clean() {
-	rm "${RENAME_OLD}" "${RENAME_NEW}" "${RENAME_EXE}"
+  rm "${RENAME_OLD}" "${RENAME_NEW}" "${RENAME_EXE}"
 }
 
 trap rename_clean HUP INT QUIT TERM PWR EXIT
 
 realpath -s --relative-to "${PWD}" "$@" |
-	tee "${RENAME_OLD}" > "${RENAME_NEW}"
+  tee "${RENAME_OLD}" > "${RENAME_NEW}"
 
-command "${EDITOR:-vi}" "${RENAME_NEW}"
+"${VISUAL}" "${RENAME_NEW}"
 
 cat << WARN > "${RENAME_EXE}"
 # The following commands will be executed.
@@ -25,9 +27,9 @@ cat << WARN > "${RENAME_EXE}"
 
 WARN
 paste -d '\n' "${RENAME_OLD}" "${RENAME_NEW}" |
-	awk 'NR % 2 { x = $0; next } x != $0 { print x; print $0 }' |
-	xargs -rd '\n' printf 'mv -- \\\n %q \\\n %q\n' >> "${RENAME_EXE}"
+  awk 'NR % 2 { x = $0; next } x != $0 { print x; print $0 }' |
+  xargs -rd '\n' printf 'mv -- \\\n %q \\\n %q\n' >> "${RENAME_EXE}"
 
-command "${EDITOR:-vi}" "${RENAME_EXE}"
+"${VISUAL}" "${RENAME_EXE}"
 
 . "${RENAME_EXE}"
