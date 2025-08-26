@@ -1,12 +1,10 @@
 #!/usr/bin/env perl
 # Copyright © 2022-2025 Fern Zapata
-# This file is under the terms of the GNU GPL ver. 3, or (at your
-# option) any later version. If a copy of the GPL wasn't included
+# This file is under the terms of the GNU GPL version 3, or (at your
+# option) any later version. If you didn't receive a copy of the GPL
 # along with this file, see <https://www.gnu.org/licenses/>.
 
-use utf8;
-use v5.36;
-use experimental qw(for_list);
+use v5.40;
 use open qw(:std :encoding(utf-8));
 
 use Archive::Zip;
@@ -16,7 +14,7 @@ use File::Which;
 use File::stat;
 use IPC::System::Simple qw(runx);
 use Image::ExifTool qw(ImageInfo);
-use List::Util qw(any max);
+use List::Util qw(any max pairmap);
 
 ## Utilities ##########################################################
 
@@ -32,9 +30,8 @@ sub name_for($file, $ext = 'jpg')
 
 sub print_exif($info, @fields)
 {
-	my @odd = do { my $f = 1; grep { $f ^= 1 } @fields };
-	my $pad = max(map(length, @odd));
-	foreach my ($k, $v) (@fields) {
+  my $pad = max(pairmap { length $b } @fields);
+  for my ($k, $v) (@fields) {
 		if (exists $info->{$k}) {
 			printf("%-*s : %s\n", $pad, $v, $info->{$k});
 		}
@@ -43,9 +40,8 @@ sub print_exif($info, @fields)
 
 sub print_file($file)
 {
-	open my $fh, '<', $file;
-	print <$fh>;
-	close $fh;
+  open(my $fh, '<', $file);
+  print(<$fh>);
 }
 
 ## Thumbnail Generators ###############################################
@@ -58,7 +54,7 @@ sub thumb_bln($file)
 		runx 'blender-4.2-thumbnailer', $file, $thumb;
 	}
 
-	$thumb if -r $thumb;
+  return $thumb if (-r $thumb);
 }
 
 sub thumb_kra($file)
@@ -70,7 +66,7 @@ sub thumb_kra($file)
 		$zip->extractMember('mergedimage.png', $thumb);
 	}
 
-	$thumb if -r $thumb;
+  return $thumb if (-r $thumb);
 }
 
 sub thumb_pdf($file)
@@ -87,7 +83,7 @@ sub thumb_pdf($file)
 		}
 	}
 
-	$thumb if -r $thumb;
+  return $thumb if (-r $thumb);
 }
 
 sub thumb_vid($file)
@@ -106,7 +102,7 @@ sub thumb_vid($file)
 			'--', $thumb;
 	}
 
-	$thumb if -r $thumb;
+  return $thumb if (-r $thumb);
 }
 
 ## Previewers #########################################################
@@ -162,13 +158,11 @@ sub prev_img($file, $w, $h, $x, $y)
 	return 1;
 }
 
-sub prev_vid
+sub prev_vid($file, @args)
 {
-	my $file = shift;
-
-	if (my $thumb = thumb_vid $file) {
-		return prev_img $thumb, @_;
-	}
+  if (my $thumb = thumb_vid($file)) {
+    return prev_img($thumb, @args);
+  }
 
 	print_exif ImageInfo($file),
 		'FileType'  => 'Format',
@@ -178,13 +172,11 @@ sub prev_vid
 	return 1;
 }
 
-sub prev_pdf
+sub prev_pdf($file, @args)
 {
-	my $file = shift;
-
-	if (my $thumb = thumb_pdf $file) {
-		return prev_img $thumb, @_;
-	}
+  if (my $thumb = thumb_pdf($file)) {
+    return prev_img($thumb, @args);
+  }
 
 	print_exif ImageInfo($file),
 		'Format'     => 'Format',
@@ -197,16 +189,16 @@ sub prev_pdf
 
 sub prev_kra
 {
-	if (my $thumb = thumb_kra $_[0]) {
-		return prev_img $thumb, @_[1..$#_];
-	}
+  if (my $thumb = thumb_kra(shift)) {
+    return prev_img($thumb, @_);
+  }
 }
 
 sub prev_bln
 {
-	if (my $thumb = thumb_bln $_[0]) {
-		return prev_img $thumb, @_[1..$#_];
-	}
+  if (my $thumb = thumb_bln(shift)) {
+    return prev_img($thumb, @_);
+  }
 }
 
 sub prev_sql($file, $w, $h, $x, $y)
@@ -245,14 +237,16 @@ my @NAME_HANDLERS = (
 );
 
 my @MIME_HANDLERS = (
-	qr(^image/svg|application/.*pdf$) => \&prev_pdf,
-	qr(application/.*blender) => \&prev_bln,
+  qr(^image/svg) => \&prev_img,
+  qr(/[a-z-]*pdf$) => \&prev_pdf,
+  qr(/(x-)?blender$) => \&prev_bln,
 	qr(krita$) => \&prev_kra,
 	qr(roff(-man)?$) => \&prev_rff,
 	qr(torrent$) => \&prev_tor,
 	qr(sqlite3?$) => \&prev_sql,
 
-	qr(^application/json.*) => \&prev_txt,
+  qr(^application/([a-z]+\+)?json) => \&prev_txt,
+  qr(/([a-z]+\+)?xml$) => \&prev_txt,
 
 	qr(^image/) => \&prev_img,
 	qr(^text/) => \&prev_txt,
@@ -265,7 +259,7 @@ sub main($file, $w, $h, $x = 0, $y = 0)
 	$file = readlink $file if -l $file;
 
 	# Match file name:
-	foreach my ($k, $v) (@NAME_HANDLERS) {
+  for my ($k, $v) (@NAME_HANDLERS) {
 		if ($file =~ /$k/s) {
 			return eval { $v->($file, $w, $h, $x, $y) } // 1;
 		}
@@ -273,15 +267,15 @@ sub main($file, $w, $h, $x = 0, $y = 0)
 
 	# Match mime type:
 	my $mime = mimetype($file);
-	foreach my ($k, $v) (@MIME_HANDLERS) {
+  for my ($k, $v) (@MIME_HANDLERS) {
 		if (any { /$k/s } $mime, mimetype_isa $mime) {
 			return eval { $v->($file, $w, $h, $x, $y) } // 1;
 		}
 	}
 
 	# No matches, just show type:
-	say '(', $mime ,')';
+  say("($mime)");
 	return 1;
 }
 
-exit(main(@ARGV)) unless caller;
+exit(main @ARGV) unless caller;
