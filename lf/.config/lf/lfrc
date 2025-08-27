@@ -1,7 +1,6 @@
 #######################################################################
-# Fern's Dotfiles
+# Fern's Dotfiles -- LF File Manager
 # https://github.com/fernzi/dotfiles
-# LF File Manager
 #######################################################################
 
 set icons true
@@ -9,6 +8,7 @@ set ifs       "\n"
 set scrolloff 3
 set shell     'sh'
 set shellopts '-eu'
+set sixel true
 
 set previewer ~/.config/lf/scripts/preview
 

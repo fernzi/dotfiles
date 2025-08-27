@@ -137,18 +137,10 @@ sub prev_txt($file, $w, $h, $x, $y)
 
 sub prev_img($file, $w, $h, $x, $y)
 {
-	if (which 'chafa') {
-		return runx qw(
-			chafa
-			--colors 240
-			--symbols ascii+vhalf+block+space
-			--font-ratio 1/2
-			--size), "${w}x${h}",
-				'--', $file;
-	} elsif (which 'img2txt') {
-		return runx
-			qw(img2txt -x 1 -y 2 -f utf8 -W), $w, '--', $file;
-	}
+  if (which 'chafa') {
+    return runx(qw(chafa --animate off --bg 202020 --dither fs -t 1),
+      '--size', "${w}x${h}", '--', $file);
+  }
 
 	print_exif ImageInfo($file),
 		'FileType'  => 'Format',
