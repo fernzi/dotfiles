@@ -110,16 +110,12 @@ sub thumb_vid($file)
 sub prev_txt($file, $w, $h, $x, $y)
 {
 	if (which 'bat') {
-		return runx qw(
-			bat
+    return runx(qw(
+      bat -pp
 			--color always
-			--style plain
-			--paging never
 			--tabs 2
 			--theme base16),
-				'--terminal-width', $w - 2,
-				'--line-range', ":$h",
-				'--', $file;
+      '--', $file);
 	} elsif (which 'highlight') {
 		return runx qw(
 			highlight
@@ -128,7 +124,9 @@ sub prev_txt($file, $w, $h, $x, $y)
 			--replace-tabs 2
 			--style base16/monokai
 			--), $file;
-	}
+  } elsif (which 'pygmentize') {
+    return runx(qw(pygmentize -f terminal -O tabsize=2 --), $file);
+  }
 
 	# Print the file un-highlighted:
 	print_file($file);
