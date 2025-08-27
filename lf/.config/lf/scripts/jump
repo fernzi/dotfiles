@@ -1,71 +1,98 @@
-#!/bin/sh -efu
-# Copyright © 2022 Fern Zapata
-# This program is subject to the terms of the GNU GPL, either
-# version 3 of the License or (at your option) any later version.
-# You should have received a copy of the License along with this
-# file. If not, see <https://www.gnu.org/licenses/>.
+#!/usr/bin/env perl
+# Copyright © 2022-2025 Fern Zapata
+# This file is under the terms of the GNU GPL version 3, or (at your
+# option) any later version. If you didn't receive a copy of the GPL
+# along with this file, see <https://www.gnu.org/licenses/>.
 
-iscmd() {
-	command -v -- "$1" >/dev/null 2>&1
+use v5.40;
+
+use File::Find;
+use File::Which;
+use IO::Socket::UNIX;
+use IPC::Open2;
+
+my @FINDER_CMD = qw(
+  fd
+  --no-ignore-vcs
+  --exclude .git
+  --exclude node_modules
+  --exclude *.py[co]
+  --exclude __pycache__
+  --color always
+);
+
+sub finder($pipe, %opts)
+{
+  my $path = $opts{path} // '.';
+
+  if (which $FINDER_CMD[0]) {
+    # Prefer using `fd`, which has colour output,
+    # and it's probably the fastest option.
+    my @cmd = @FINDER_CMD;
+    push(@cmd, '--hidden') if $opts{hidden};
+    return open2('>&' . fileno($pipe), undef, @cmd, '--', $path);
+  }
+
+  # Otherwise we use Perl's own `File::Find` cause
+  # it sucks a little less than the `find` command.
+  my sub wanted
+  {
+    if ($_ eq $path) {
+      return;
+    }
+    if (!$opts{hidden} && /^\./s) {
+      return $File::Find::prune = 1;
+    }
+    if (/(^(.git|node_modules|__pycache__)|\.py[co])\z/s) {
+      return $File::Find::prune = 1;
+    }
+    $pipe->say(substr($File::Find::name, 2), '/' x (-d $_));
+  }
+
+  find(\&wanted, $path);
 }
 
-search() {
-	local opt_hidden=
+my @PICKER_CMD = qw(fzf --no-multi --layout reverse --ansi);
+my $PICKER_PS1 = "\x{F0349}  ";
 
-	if iscmd fd; then
-		if test "${lf_hidden}" = 'true'; then
-			opt_hidden='--hidden'
-		fi
-
-		fd --follow ${opt_hidden} \
-			--no-ignore-vcs --exclude '.git' \
-			--exclude '*.py[co]' --exclude '__pycache__' \
-			--color=always
-	else
-		if test "${lf_hidden}" = 'true'; then
-			opt_hidden='-false'
-		else
-			opt_hidden='-path */\.* -prune'
-		fi
-
-		# Increasingly convinced that `find` was expressly designed
-		# to be the most obnoxious of all the Unix commands.
-		# So let's use it as a fallback.
-		find -L . -mindepth 1 ${opt_hidden} -o \
-			\( -name '\.git' -o \
-				-iname '\.*py[co]' -o \
-				-name '__pycache__' \) -prune -o \
-			-print | cut -b3-
-	fi
+sub picker
+{
+  open2($_[0], $_[1], @PICKER_CMD, '--prompt', $PICKER_PS1);
 }
 
-picker() {
-	local prompt='󰍉  '
-	local fzf="$(command -v sk || command -v fzf || :)"
-
-	if test -n "${fzf}"; then
-		"${fzf}" --prompt="${prompt}" \
-			--no-multi --layout=reverse --ansi
-	elif iscmd fzy; then
-		fzy --prompt "${prompt}" --lines $(tput lines) |
-			sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g'
-	else
-		return 1
-	fi
+sub lfr($id, @cmd)
+{
+  my $rdir = $ENV{XDG_RUNTIME_DIR} || '/tmp';
+  my $user = $ENV{LOGNAME} || $ENV{USER} || getpwuid($<);
+  my $sock = IO::Socket::UNIX->new(
+    Type => SOCK_STREAM,
+    Peer => "${rdir}/lf.${user}.sock",
+  );
+  $sock->print("send $id");
+  $sock->print(" $_") for (@cmd);
+  $sock->print("\n");
 }
 
-readonly target="$(search | picker || :)"
+sub main
+{
+  my $pid = picker(my $opipe, my $ipipe);
+  my $fid = finder($ipipe, hidden => $ENV{lf_hidden} eq 'true');
+  close($ipipe);
+  my $sel = do { local $/; <$opipe> } =~ s/\R\z//r;
+  close($opipe);
 
-if test -d "${target}"; then
-	command='cd'
-elif test -f "${target}"; then
-	command='select'
-else
-	lf -remote "send ${id} echo 'jump: search cancelled'"
-	exit 0
-fi
+  waitpid($pid, 0);
+  waitpid($fid, 0);
 
-# This probably fails when a filename has a `"` on it,
-# but `lf` doesn't escape in the same way the shell does
-# and I can't be bothered to figure it out.
-lf -remote "send ${id} ${command} \"${target}\""
+  my $lid = $ENV{id};
+  my $cmd = (-d $sel) ? 'cd' : (-f $sel) ? 'select' : undef;
+
+  unless ($cmd) {
+    lfr($lid, "echo 'jump: search cancelled'");
+    return 1;
+  }
+
+  lfr($lid, $cmd, quotemeta($sel));
+}
+
+exit(main @ARGV) unless caller;
