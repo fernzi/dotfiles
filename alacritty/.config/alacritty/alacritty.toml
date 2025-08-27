@@ -13,7 +13,7 @@ import = [
 [window]
 dimensions = { columns = 80, lines = 24 }
 dynamic_padding = true
-padding = { x = 16, y = 16 }
+padding = { x = 12, y = 12 }
 
 [font]
 normal = { family = "monospace" }
