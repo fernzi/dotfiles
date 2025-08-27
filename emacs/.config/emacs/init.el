@@ -62,6 +62,7 @@
    tab-width my/tab-width
    backward-delete-char-untabify-method nil
    electric-indent-inhibit t
+   indent-tabs-mode nil
 
    ;; Less headache-inducing scrolling.
    scroll-margin 2
@@ -660,8 +661,9 @@
 
 (setup cperl-mode
   (:option
-   (prepend major-mode-remap-alist) '(perl-mode . cperl-mode)))
-  ;; (:option perl-indent-level my/tab-width))
+   (prepend major-mode-remap-alist) '(perl-mode . cperl-mode)
+   cperl-indent-parens-as-block t
+   cperl-close-paren-offset (- my/tab-width)))
 
 ;;;; Python
 
