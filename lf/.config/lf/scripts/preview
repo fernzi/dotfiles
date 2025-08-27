@@ -19,23 +19,23 @@ use List::Util qw(any max pairmap);
 ## Utilities ##########################################################
 
 my $THUMB_SIZE = 1024;
-my $CACHE_DIR = $ENV{LF_CACHE_DIR} || "$ENV{HOME}/.cache/lf";
+my $CACHE_DIR  = $ENV{LF_CACHE_DIR} || "$ENV{HOME}/.cache/lf";
 
 sub name_for($file, $ext = 'jpg')
 {
-	my $st = stat($file);
-	sprintf '%s/%d%d%d%d.%s',
-		$CACHE_DIR, $st->ino, $st->size, $st->mtime, $st->ctime, $ext;
+  my $st = stat($file);
+  sprintf('%s/%d%d%d%d.%s',
+    $CACHE_DIR, $st->ino, $st->size, $st->mtime, $st->ctime, $ext);
 }
 
 sub print_exif($info, @fields)
 {
   my $pad = max(pairmap { length $b } @fields);
   for my ($k, $v) (@fields) {
-		if (exists $info->{$k}) {
-			printf("%-*s : %s\n", $pad, $v, $info->{$k});
-		}
-	}
+    if (exists $info->{$k}) {
+      printf("%-*s : %s\n", $pad, $v, $info->{$k});
+    }
+  }
 }
 
 sub print_file($file)
@@ -48,59 +48,59 @@ sub print_file($file)
 
 sub thumb_bln($file)
 {
-	my $thumb = name_for $file, 'png';
+  my $thumb = name_for($file, 'png');
 
-	if (! -r $thumb && which 'blender-4.2-thumbnailer') {
-		runx 'blender-4.2-thumbnailer', $file, $thumb;
-	}
+  if (!-r $thumb && which 'blender-4.2-thumbnailer') {
+    runx('blender-4.4-thumbnailer', $file, $thumb);
+  }
 
   return $thumb if (-r $thumb);
 }
 
 sub thumb_kra($file)
 {
-	my $thumb = name_for $file, 'png';
+  my $thumb = name_for($file, 'png');
 
-	if (! -r $thumb) {
-		my $zip = Archive::Zip->new($file);
-		$zip->extractMember('mergedimage.png', $thumb);
-	}
+  if (!-r $thumb) {
+    my $zip = Archive::Zip->new($file);
+    $zip->extractMember('mergedimage.png', $thumb);
+  }
 
   return $thumb if (-r $thumb);
 }
 
 sub thumb_pdf($file)
 {
-	my $thumb = name_for $file;
+  my $thumb = name_for($file);
 
-	if (! -r $thumb) {
-		if (which 'vips') {
-			runx qw(vips thumbnail --size down),
-				$file, "${thumb}[optimize_coding,strip]", $THUMB_SIZE;
-		} elsif (which 'magick') {
-			runx 'magick', "${file}[0]",
-				'-thumbnail', "${THUMB_SIZE}^>", $thumb;
-		}
-	}
+  if (!-r $thumb) {
+    if (which 'vips') {
+      runx(
+        qw(vips thumbnail --size down),    $file,
+        "${thumb}[optimize_coding,strip]", $THUMB_SIZE
+      );
+    } elsif (which 'magick') {
+      runx('magick', "${file}[0]", '-thumbnail', "${THUMB_SIZE}^>",
+        $thumb);
+    }
+  }
 
   return $thumb if (-r $thumb);
 }
 
 sub thumb_vid($file)
 {
-	my $thumb = name_for $file;
+  my $thumb = name_for($file);
 
-	if (! -r $thumb && which 'ffmpeg') {
-		my $filter = <<~EOF;
-			thumbnail,
-			scale='min($THUMB_SIZE,iw)':'min($THUMB_SIZE,ih)':
-			force_original_aspect_ratio=decrease
-			EOF
-		runx qw(ffmpeg -v quiet -y -i), $file,
-			'-frames:v', '1',
-			'-vf', $filter,
-			'--', $thumb;
-	}
+  if (!-r $thumb && which 'ffmpeg') {
+    my $filter = <<~EOF;
+      thumbnail,
+      scale='min($THUMB_SIZE,iw)':'min($THUMB_SIZE,ih)':
+      force_original_aspect_ratio=decrease
+      EOF
+    runx(qw(ffmpeg -v quiet -y -i),
+      $file, '-frames:v', '1', '-vf', $filter, '--', $thumb);
+  }
 
   return $thumb if (-r $thumb);
 }
@@ -109,43 +109,59 @@ sub thumb_vid($file)
 
 sub prev_txt($file, $w, $h, $x, $y)
 {
-	if (which 'bat') {
-    return runx(qw(
-      bat -pp
-			--color always
-			--tabs 2
-			--theme base16),
-      '--', $file);
-	} elsif (which 'highlight') {
-		return runx qw(
-			highlight
-			--force
-			--out-format truecolor
-			--replace-tabs 2
-			--style base16/monokai
-			--), $file;
+  if (which 'bat') {
+    return runx(
+      qw(bat -pp
+        --color always
+        --tabs 2
+        --theme base16
+        --),
+      $file,
+    );
+  } elsif (which 'highlight') {
+    return runx(
+      qw(highlight --force
+        --out-format truecolor
+        --replace-tabs 2
+        --style base16/monokai
+        --),
+      $file,
+    );
   } elsif (which 'pygmentize') {
-    return runx(qw(pygmentize -f terminal -O tabsize=2 --), $file);
+    return runx(
+      qw(pygmentize
+        -f terminal
+        -O tabsize=2
+        --),
+      $file,
+    );
   }
 
-	# Print the file un-highlighted:
-	print_file($file);
-	return 0;
+  # Print the file un-highlighted:
+  print_file($file);
+  return 0;
 }
 
 sub prev_img($file, $w, $h, $x, $y)
 {
   if (which 'chafa') {
-    return runx(qw(chafa --animate off --bg 202020 --dither fs -t 1),
-      '--size', "${w}x${h}", '--', $file);
+    return runx(
+      qw(chafa
+        --animate off
+        --bg 202020
+        --dither diffusion
+        --threshold 1),
+      '--size', "${w}x${h}",
+      '--', $file,
+    );
   }
 
-	print_exif ImageInfo($file),
-		'FileType'  => 'Format',
-		'ColorType' => 'Type',
-		'ImageSize' => 'Size';
+  print_exif ImageInfo($file),
+    'FileType'  => 'Format',
+    'ColorType' => 'Type',
+    'ImageSize' => 'Size';
 
-	return 1;
+  return 1;
 }
 
 sub prev_vid($file, @args)
@@ -154,12 +170,12 @@ sub prev_vid($file, @args)
     return prev_img($thumb, @args);
   }
 
-	print_exif ImageInfo($file),
-		'FileType'  => 'Format',
-		'Duration'  => 'Duration',
-		'ImageSize' => 'Size';
+  print_exif ImageInfo($file),
+    'FileType'  => 'Format',
+    'Duration'  => 'Duration',
+    'ImageSize' => 'Size';
 
-	return 1;
+  return 1;
 }
 
 sub prev_pdf($file, @args)
@@ -168,13 +184,13 @@ sub prev_pdf($file, @args)
     return prev_img($thumb, @args);
   }
 
-	print_exif ImageInfo($file),
-		'Format'     => 'Format',
-		'Title'      => 'Title',
-		'Author'     => 'Author',
-		'CreateDate' => 'Date';
+  print_exif ImageInfo($file),
+    'Format'     => 'Format',
+    'Title'      => 'Title',
+    'Author'     => 'Author',
+    'CreateDate' => 'Date';
 
-	return 1;
+  return 1;
 }
 
 sub prev_kra
@@ -193,79 +209,79 @@ sub prev_bln
 
 sub prev_sql($file, $w, $h, $x, $y)
 {
-	if (which 'sqlite3') {
-		return runx qw(sqlite --readonly --), $file,
-			q(SELECT name, sql FROM sqlite_master WHERE type='table');
-	}
+  if (which 'sqlite3') {
+    my $q = q(SELECT name, sql FROM sqlite_master WHERE type='table');
+    return runx(qw(sqlite --readonly --), $file, $q);
+  }
 
-	return 1;
+  return 1;
 }
 
 sub prev_tor($file, $w, $h, $x, $y)
 {
-	if (which 'transmission-show') {
-		return runx qw(transmission-show --), $file
-	}
+  if (which 'transmission-show') {
+    return runx(qw(transmission-show --), $file);
+  }
 
-	return 1;
+  return 1;
 }
 
 sub prev_rff($file, $w, $h, $x, $y)
 {
-	if (which 'grog') {
-		$w -= 2;
-		return runx qw(grog -Tutf8 -man -k --run),
-				"-rLL=${w}n", "-rLT=${w}n", $file;
-	} else {
-		return prev_txt $file, $w, $h, $x, $y;
-	}
+  if (which 'grog') {
+    $w -= 2;
+    return runx(qw(grog -Tutf8 -man -k --run),
+      "-rLL=${w}n", "-rLT=${w}n", $file);
+  } else {
+    return prev_txt $file, $w, $h, $x, $y;
+  }
 }
 
 ## File Type Handlers #################################################
 
-my @NAME_HANDLERS = (
-);
+my @NAME_HANDLERS = ();
 
 my @MIME_HANDLERS = (
-  qr(^image/svg) => \&prev_img,
-  qr(/[a-z-]*pdf$) => \&prev_pdf,
+  qr(^image/svg)     => \&prev_img,
+  qr(/[a-z-]*pdf$)   => \&prev_pdf,
   qr(/(x-)?blender$) => \&prev_bln,
-	qr(krita$) => \&prev_kra,
-	qr(roff(-man)?$) => \&prev_rff,
-	qr(torrent$) => \&prev_tor,
-	qr(sqlite3?$) => \&prev_sql,
+  qr(krita$)         => \&prev_kra,
+  qr(roff(-man)?$)   => \&prev_rff,
+  qr(torrent$)       => \&prev_tor,
+  qr(sqlite3?$)      => \&prev_sql,
+  qr(/openraster$)   => \&prev_kra,
 
-  qr(^application/([a-z]+\+)?json) => \&prev_txt,
-  qr(/([a-z]+\+)?xml$) => \&prev_txt,
+  qr(jsonl?$) => \&prev_txt,
+  qr(xml$)    => \&prev_txt,
 
-	qr(^image/) => \&prev_img,
-	qr(^text/) => \&prev_txt,
-	qr(^audio/) => \&prev_aud,
-	qr(^video/) => \&prev_vid,
+  qr(^image/) => \&prev_img,
+  qr(^text/)  => \&prev_txt,
+  qr(^audio/) => \&prev_aud,
+  qr(^video/) => \&prev_vid,
 );
 
 sub main($file, $w, $h, $x = 0, $y = 0)
 {
-	$file = readlink $file if -l $file;
+  $file = readlink($file) if (-l $file);
 
-	# Match file name:
+  # Match file name:
   for my ($k, $v) (@NAME_HANDLERS) {
-		if ($file =~ /$k/s) {
-			return eval { $v->($file, $w, $h, $x, $y) } // 1;
-		}
-	}
+    if ($file =~ /$k/s) {
+      return eval { $v->($file, $w, $h, $x, $y) } // 1;
+    }
+  }
 
-	# Match mime type:
-	my $mime = mimetype($file);
+  # Match mime type:
+  my $mime = mimetype($file);
   for my ($k, $v) (@MIME_HANDLERS) {
-		if (any { /$k/s } $mime, mimetype_isa $mime) {
-			return eval { $v->($file, $w, $h, $x, $y) } // 1;
-		}
-	}
+    if (any { /$k/s } $mime, mimetype_isa $mime) {
+      return eval { $v->($file, $w, $h, $x, $y) } // 1;
+    }
+  }
 
-	# No matches, just show type:
+  # No matches, just show type:
   say("($mime)");
-	return 1;
+  return 1;
 }
 
 exit(main @ARGV) unless caller;
