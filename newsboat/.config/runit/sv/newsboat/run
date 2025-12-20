@@ -1,2 +1,0 @@
-#!/bin/sh
-exec snooze -H/1 newsboat -x reload
