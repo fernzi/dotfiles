@@ -38,6 +38,10 @@
 (setup (:package gcmh)
   (gcmh-mode 1))
 
+;; Get Custom's settings off my face.
+(setq custom-file
+      (expand-file-name "emacs/custom.el" (xdg-data-home)))
+
 ;;; Base Customization ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Note that I configure everything through `setup',
@@ -731,9 +735,6 @@
 
 ;;; Other ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Get Custom's settings off my face.
-(setq custom-file
-      (expand-file-name "emacs/custom.el" (xdg-data-home)))
 (when (file-exists-p custom-file)
   (load custom-file))
 
