@@ -1,0 +1,33 @@
+#######################################################################
+# Fern's Dotfiles -- Nano Editor
+# https://codeberg.org/fernzi/dotfiles
+#######################################################################
+
+set afterends
+set multibuffer
+set smarthome
+set wordchars "*?[]~&;!#$%^(){}<>"
+set zap
+
+include /usr/share/nano/*.nanorc
+
+## Appearance #########################################################
+
+set constantshow
+set nohelp
+set minibar
+set guidestripe 72
+set stateflags
+
+set atblanks
+set softwrap
+
+### Colors ###
+set titlecolor white,#444
+set stripecolor ,#333
+
+## Input ##############################################################
+
+set mouse
+
+bind M-K comment main
