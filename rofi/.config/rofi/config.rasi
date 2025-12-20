@@ -7,7 +7,6 @@ configuration {
 	modi: "drun,run,filebrowser,window";
 
 	/* Appearance */
-	dpi: 0;
 	font: "HarmonyOS Sans, 11";
 	show-icons: true;
 	icon-theme: "Papirus";
