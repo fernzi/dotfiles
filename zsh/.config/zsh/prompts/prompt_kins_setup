@@ -1,0 +1,79 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - My Very Own Prompt Theme
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+prompt_kins_gitstatus() {
+  # Honestly, I find Zsh's own `vcs_info` confusing,
+  # and don't think there's any way to get it to show
+  # the amount of files counted, so we just parse the
+  # output of `git` here.
+
+  local awkprog='
+    $1 == "#" && $2 == "branch.head" {
+      printf "  %s ", $3
+    }
+    $1~/1|2/ && $2~/[^.]./ {
+      staged++
+    }
+    $1~/1|2/ {
+      modified++
+    }
+    $1 == "?" {
+      untracked++
+    }
+    END {
+      if (NR > 0) {
+        if (staged)
+          printf "•%d ", staged
+        if (modified)
+          printf "+%d ", modified
+        if (untracked)
+          printf "-%d ", untracked
+        if (!(staged || modified || untracked))
+          printf "✔ "
+      }
+    }
+  '
+
+  git status 2>/dev/null \
+    --branch --ignore-submodules=dirty --porcelain=v2 |
+    awk $awkprog
+}
+
+prompt_kins_precmd() {
+  setopt localoptions noxtrace noksharrays
+  psvar=()
+  psvar[1]=$(prompt_kins_gitstatus)
+  printf '\e]133;A\e\'
+}
+
+prompt_kins_setup() {
+  # Customizable colours.
+  # The colour of the first section of the prompt is set
+  # with `$1` and `$2` for left and right respectively.
+  local -A pc=(
+    ol "%F{${1:-green}}%B%S"
+    or "%F{${2:-cyan}}%B%S"
+    o1 "%K{${3:-0}}"
+    o2 "%K{${4:-8}}"
+  )
+  local pr='%s%b%f%k'
+
+  # Left prompt.
+  PS1=$'\n'
+  PS1+="${pc[ol]} %n ${pr}"
+  PS1+="${pc[o1]} %D{%R} ${pr}"
+  PS1+=' '
+
+  # Right prompt.
+  RPS1=''
+  RPS1+="${pc[o1]} %1~ ${pr}"
+  RPS1+="${pc[o2]}%1v${pr}"
+  RPS1+="${pc[or]} %m ${pr}"
+
+  add-zsh-hook precmd prompt_kins_precmd
+}
+
+prompt_kins_setup "$@"

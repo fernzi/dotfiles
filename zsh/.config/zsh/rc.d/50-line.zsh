@@ -6,9 +6,9 @@
 autoload -Uz promptinit
 promptinit
 
-# Load the absolute best and most creatively named
-# prompt theme of all time ever forever.
-prompt fernzi
+# Load the best and slightly more creatively
+# named prompt theme of all time ever forever.
+prompt kins
 
 # Remove that annoying space after the right prompt.
 ZLE_RPROMPT_INDENT=0
