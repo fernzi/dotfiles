@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+#######################################################################
+# Fern's Dotfiles -- Zsh - Search Gentoo packages, conveniently
+# https://github.com/fernzi/dotfiles
+#######################################################################
+
+# Probably more than half of my `eix` uses end up with me repeating
+# the same search piped into `less` cause there's too many results.
+
+command eix -F "$@" | less -FR
