@@ -96,9 +96,6 @@
    blink-cursor-interval 1.4
    x-stretch-cursor t))
 
-(setup fringe-mode
-  (:option fringe-mode (my/scale-pixel 8)))
-
 ;; Set the back and forward mouse buttons
 ;; to go back and forward on the help.
 (setup help-mode
@@ -463,16 +460,25 @@
 ;; Some other packages like using these.
 ;; I remember when `all-the-icons' was the cool one to use.
 ;; Also, Nerd fonts are stupid. Learn to use FontConfig, sheesh.
-(setup (:package nerd-icons))
+(setup (:package nerd-icons)
+  (:require nerd-icons))
+
+(setup (:package spacious-padding)
+  (:option spacious-padding-widths
+           `(:internal-border-width 0
+             :mode-line-width 8))
+  (spacious-padding-mode 1))
 
 ;; Fancy mode line/status bar.
 ;; It even shows when Ryo's active and everything!
 (setup (:package doom-modeline)
   (doom-modeline-mode t)
   (:option column-number-mode t
-           doom-modeline-height (my/scale-pixel 32)
            doom-modeline-buffer-file-name-style 'buffer-name
-           doom-modeline-major-mode-icon nil))
+           doom-modeline-major-mode-icon nil)
+  ;; The pointless bar won't go away unless we set it like this,
+  ;; after `doom-modeline' loaded, without using the custom system.
+  (setq doom-modeline-bar-width 0))
 
 ;; By default, documentation is shown on the minibuffer on hover,
 ;; which I honestly find pretty annoying. I don't like the window
