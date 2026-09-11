@@ -10,6 +10,30 @@ _zsh_term_osc() {
   printf '\e]%d;%s\e\\' "$@"
 }
 
+### Set terminal emulator title ###
+
+_zsh_term_title() {
+  print '\e]0;'
+
+  # Show the user and host only when running on SSH.
+  if [[ -v SSH_CLIENT || -v SSH_TTY ]]; then
+    printf '%s@%s : ' ${USER} ${HOST%%.*}
+  fi
+
+  # Add the current command's name when something is running.
+  # The `preexec` hook passes the command line as arguments,
+  # and the `precmd` hook then clears it.
+  if [[ $# -gt 0 ]]; then
+    printf '%s : ' ${1%% *}
+  fi
+
+  # Print the base name of the current directory,
+  # substituting the home for a `~` when necessary.
+  printf '%s — Zsh\a' ${${PWD/#$HOME/\~}##*/}
+}
+add-zsh-hook precmd  _zsh_term_title
+add-zsh-hook preexec _zsh_term_title
+
 ### Set the current working directory (OSC-7) ###
 
 _zsh_term_osc7() {

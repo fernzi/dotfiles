@@ -23,9 +23,3 @@ done
 for f in $ZSH_CONFIG/rc.d/*.zsh(N.); do
 	() { source $f }
 done
-
-# Set terminal emulator title
-if declare -f zsh-title >/dev/null; then
-	add-zsh-hook precmd  zsh-title
-	add-zsh-hook preexec zsh-title
-fi
