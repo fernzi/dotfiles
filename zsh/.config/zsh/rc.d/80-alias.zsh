@@ -30,12 +30,6 @@ if [[ -v commands[corepack] ]]; then
   done
 fi
 
-# Gentoo installs upstream 7zip as `7zz` as to not conflict
-# with p7zip, I imagine. Problem is p7zip is kinda dead.
-if [[ -v commands[7zz] ]]; then
-  alias 7z=7zz
-fi
-
 # Why must FFmpeg show a whole screen worth of compile-time
 # flags every time you run it is a mystery for the ages.
 for cmd in ff{mpeg,play,probe}; do

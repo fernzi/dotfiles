@@ -46,19 +46,6 @@ zstyle ':completion:*:*:kill:*:processes' \
 zstyle ':completion:*' cache-path ${ZSH_CACHE}/completion
 zstyle ':completion:*' use-cache true
 
-## Custom Comlpletions ################################################
-
-# Tabtab for Node programs
-local tabtab="${XDG_CONFIG_HOME:-$HOME/.config}/tabtab/zsh/__tabtab.zsh"
-if [[ -f $tabtab ]]; then
-	. $tabtab || true
-fi
-
-# AUR helper wrapper/shorthand `pacman`.
-if [[ -v commands[pacman] ]]; then
-	compdef p=pacman
-fi
-
 ## Initialization #####################################################
 
 # This makes loaded widgets use the 'new' completion system,

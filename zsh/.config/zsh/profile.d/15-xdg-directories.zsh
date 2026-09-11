@@ -49,9 +49,5 @@ export CARGO_HOME="${data}/cargo"
 
 ## Games ##############################################################
 
-# Firestorm Viewer
-export FIRESTORM_USER_DIR="${data}/firestorm"
-export FIRESTORM_X64_USER_DIR="${FIRESTORM_USER_DIR}"
-
 # Nethack
 export NETHACKOPTIONS="${conf}/nethack/nethackrc"
