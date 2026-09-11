@@ -17,21 +17,16 @@ if [[ ! -v __zsh_open_cmd ]]; then
 		# Anyone who has this installed is probably using KDE,
 		# So we prefer it over the more generic ones below.
 		__zsh_open_cmd=kde-open
-	elif (( ${desktop[(I)gnome*]} )); then
-		# One'd imagine this only comes with Gnome, but it's
-		# there as long as there's even one Gtk app installed,
-		# which, I mean, it's pretty hard to avoid.
-		__zsh_open_cmd=gio
-		__zsh_open_opt=(open)
 	elif (( ${desktop[(I)xfce]} )); then
 		# XFCE has its own default apps system that isn't GIO.
 		__zsh_open_cmd=exo-open
-	elif [[ -v commands[handlr] ]]; then
-		# The most featureful, desktop-agnostic opener I know,
-		# and my personal choice (if it was packaged on Gentoo).
-		__zsh_open_cmd=handlr
-		__zsh_open_opt=(open)
-	fi
+  elif [[ -v commands[gio] ]]; then
+    # One'd imagine this only comes with Gnome, but it's
+    # there as long as there's anything that uses GLib.
+    # It pretty much always works, honestly.
+    __zsh_open_cmd=gio
+    __zsh_open_opt=(open)
+  fi
 
 	# TODO: Support MacOS's `open`, but I don't have a Mac to test it.
 	# Maybe just passing thru all the arguments would be the best way.
