@@ -1,6 +1,6 @@
 #######################################################################
 # Fern's Dotfiles -- Git Version Control
-# https://github.com/fernzi/dotfiles
+# https://codeberg.org/fernzi/home
 #######################################################################
 
 [core]
@@ -23,14 +23,14 @@
 	st = status -s
 	us = restore --staged
 
-[url "git@github.com:"]
-	insteadOf = gh:
+[url "ssh://git@github.com/"]
+	pushInsteadOf = https://github.com/
 
-[url "git@gitlab.com:"]
-	insteadOf = gl:
+[url "ssh://git@gitlab.com/"]
+	pushInsteadOf = https://gitlab.com/
 
 [url "ssh://git@codeberg.org/"]
-	insteadOf = cb:
+	pushInsteadOf = https://codeberg.org/
 
 [include]
 	path = local
