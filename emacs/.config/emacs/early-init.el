@@ -7,10 +7,11 @@
 ;; Stole most of these from Doom, honestly.
 ;; And I get the feeling most of em don't really do that much.
 
-;; This really just sets garbage collection to a super high
-;; threshold so it doesn't kick in on startup, and we later use
-;; the `gcmh' package to automatically set it to something sane.
-(setq gc-cons-threshold most-positive-fixnum)
+;; This prevents garbage collection from kicking in during startup.
+;; Apparently, there's no need to ever have it higher than 80MiB,
+;; but see `https://emacsconf.org/2023/talks/gc/' for the details.
+(setq gc-cons-threshold (* 80 1024 1024)
+      gc-cons-percentage 0.2)
 
 ;; Supress loading the site-lisp files.
 ;; We undo this at the end after init's over.

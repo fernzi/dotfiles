@@ -33,11 +33,6 @@
        (cl-function (lambda ,sig ,@body))
        ,@opts)))
 
-;; Enable automatic garbage collection management.
-;; Setting this before loading every other package.
-(setup (:package gcmh)
-  (gcmh-mode 1))
-
 ;; Get Custom's settings off my face.
 (setq custom-file
       (expand-file-name "emacs/custom.el" (xdg-data-home)))
