@@ -9,9 +9,6 @@
 [init]
 	defaultBranch = master
 
-[diff]
-	algorithm = histogram
-
 [alias]
 	br = branch
 	cl = clone
